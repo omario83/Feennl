@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Opdrachtgever Dashboard - Feen</title>
+    <meta name="description" content="Feen hanteert de laagste fees van Nederland. Verbind uw organisatie met professionals in de financiële dienstverlening tegen slechts 6%.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Maven+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a1a2e;
+            --accent: #b8f470;
+            --accent-dark: #9ad45a;
+            --white: #ffffff;
+            --light-bg: #f4f6fb;
+            --dark-bg: #1a1a2e;
+            --card-bg: #ffffff;
+            --text: #2d2d3a;
+            --text-light: #7a7a8e;
+            --border: #e4e7ee;
+            --shadow: 0 4px 24px rgba(26,26,46,0.07);
+            --shadow-hover: 0 12px 40px rgba(26,26,46,0.14);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Lato', sans-serif;
+            color: var(--text);
+            background: var(--light-bg);
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, h4 { font-family: 'Maven Pro', sans-serif; }
+
+        /* ===== HEADER ===== */
+        .header {
+            background: var(--dark-bg);
+            padding: 14px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+        }
+        .header-inner {
+            max-width: 1260px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 24px;
+        }
+        .logo { height: 46px; }
+        .nav { display: flex; gap: 22px; list-style: none; }
+        .nav a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 14px;
+            letter-spacing: 0.3px;
+            transition: color 0.25s;
+        }
+        .nav a:hover, .nav a.active { color: var(--accent); }
+        .mobile-toggle {
+            display: none; background: none; border: none;
+            color: white; font-size: 26px; cursor: pointer;
+        }
+
+        /* ===== HERO BANNER ===== */
+        .hero {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 60%, #0f3460 100%);
+            color: var(--white);
+            padding: 55px 24px 45px;
+            text-align: center;
+        }
+        .hero-badge {
+            display: inline-block;
+            background: rgba(184,244,112,0.15);
+            color: var(--accent);
+            padding: 6px 20px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            margin-bottom: 16px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .hero h1 { font-size: 2.4rem; margin-bottom: 12px; font-weight: 800; }
+        .hero h1 span { color: var(--accent); }
+        .hero p { font-size: 1.05rem; max-width: 620px; margin: 0 auto 24px; color: #b0b8cc; }
+        .hero-cta {
+            display: inline-block;
+            background: var(--accent);
+            color: var(--dark-bg);
+            padding: 13px 36px;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 1rem;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .hero-cta:hover { background: var(--accent-dark); transform: translateY(-2px); }
+
+        /* ===== DASHBOARD GRID ===== */
+        .dashboard {
+            max-width: 1260px;
+            margin: -30px auto 0;
+            padding: 0 24px 50px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .dash-nav {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 14px;
+            margin-bottom: 40px;
+        }
+        .dash-nav-btn {
+            background: var(--white);
+            border: 2px solid transparent;
+            border-radius: 14px;
+            padding: 18px 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: var(--shadow);
+        }
+        .dash-nav-btn:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
+        .dash-nav-btn.active { border-color: var(--accent); background: #f4ffe4; }
+        .dash-nav-icon { font-size: 1.8rem; margin-bottom: 6px; display: block; }
+        .dash-nav-label {
+            font-family: 'Maven Pro', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: var(--text);
+        }
+
+        /* ===== PANELS / SECTIONS ===== */
+        .panel {
+            display: none;
+            animation: panelIn 0.4s ease;
+        }
+        .panel.active { display: block; }
+        @keyframes panelIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .panel-card {
+            background: var(--white);
+            border-radius: 18px;
+            box-shadow: var(--shadow);
+            padding: 40px;
+            margin-bottom: 24px;
+        }
+        .panel-card h2 {
+            font-size: 1.7rem;
+            margin-bottom: 8px;
+            color: var(--dark-bg);
+        }
+        .panel-card h2 span { color: var(--accent-dark); }
+        .panel-card > .subtitle {
+            color: var(--text-light);
+            margin-bottom: 30px;
+            font-size: 1rem;
+        }
+
+        /* CTA STRIP inside panels */
+        .cta-strip {
+            background: linear-gradient(135deg, var(--dark-bg), #16213e);
+            border-radius: 14px;
+            padding: 22px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+        .cta-strip p {
+            color: #ccc;
+            font-size: 0.95rem;
+            flex: 1;
+        }
+        .cta-strip p strong { color: var(--white); }
+        .cta-btn {
+            display: inline-block;
+            background: var(--accent);
+            color: var(--dark-bg);
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 0.9rem;
+            text-decoration: none;
+            white-space: nowrap;
+            transition: all 0.25s;
+            border: none;
+            cursor: pointer;
+        }
+        .cta-btn:hover { background: var(--accent-dark); transform: translateY(-2px); }
+        .cta-btn-outline {
+            display: inline-block;
+            background: transparent;
+            color: var(--accent);
+            border: 2px solid var(--accent);
+            padding: 10px 24px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: all 0.25s;
+            cursor: pointer;
+        }
+        .cta-btn-outline:hover { background: var(--accent); color: var(--dark-bg); }
+
+        /* ===== DIENSTEN (Panel 1) ===== */
+        .diensten-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+        }
+        .dienst-item {
+            background: var(--light-bg);
+            border-radius: 14px;
+            padding: 28px 22px;
+            text-align: center;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        .dienst-item:hover { border-color: var(--accent); transform: translateY(-3px); }
+        .dienst-item .icon { font-size: 2.2rem; margin-bottom: 10px; display: block; }
+        .dienst-item h3 { font-size: 1.1rem; margin-bottom: 6px; }
+        .dienst-item p { font-size: 0.88rem; color: var(--text-light); }
+
+        /* ===== REKENTOOL (Panel 2) ===== */
+        .calc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .calc-grid .full { grid-column: 1 / -1; }
+        .form-group { margin-bottom: 0; }
+        .form-group label {
+            display: block; margin-bottom: 5px;
+            font-weight: 700; font-size: 0.88rem; color: var(--text);
+        }
+        .form-group input, .form-group select {
+            width: 100%; padding: 12px 14px; border: 2px solid var(--border);
+            border-radius: 10px; font-size: 0.95rem; background: var(--light-bg);
+            color: var(--text); transition: border-color 0.25s;
+        }
+        .form-group input:focus, .form-group select:focus {
+            outline: none; border-color: var(--accent);
+        }
+        .calc-button {
+            width: 100%; background: var(--accent); color: var(--dark-bg);
+            border: none; padding: 14px; border-radius: 10px;
+            font-size: 1rem; font-weight: 800; cursor: pointer;
+            transition: background 0.25s; margin-top: 6px;
+        }
+        .calc-button:hover { background: var(--accent-dark); }
+
+        .result-box {
+            margin-top: 24px;
+            background: linear-gradient(135deg, var(--accent), #a8e860);
+            border-radius: 14px; padding: 28px; text-align: center;
+            display: none;
+        }
+        .result-box.visible { display: block; animation: panelIn 0.4s ease; }
+        .result-label { font-size: 0.88rem; color: var(--dark-bg); font-weight: 700; }
+        .result-amount { font-size: 2.4rem; font-weight: 900; color: var(--dark-bg); margin: 4px 0; }
+        .result-detail { font-size: 0.85rem; color: #2a2a4e; }
+        .result-comparison {
+            margin-top: 14px; padding-top: 14px;
+            border-top: 2px solid rgba(26,26,46,0.12);
+        }
+        .result-comparison p { font-size: 0.9rem; color: #2a2a4e; }
+        .savings { font-size: 1.2rem; font-weight: 800; color: var(--dark-bg); }
+
+        /* ===== VRAGENLIJST (Panel 3) ===== */
+        .quiz-progress {
+            display: flex; gap: 6px; margin-bottom: 28px;
+        }
+        .quiz-progress .dot {
+            flex: 1; height: 6px; border-radius: 3px;
+            background: var(--border); transition: background 0.3s;
+        }
+        .quiz-progress .dot.done { background: var(--accent); }
+
+        .quiz-question {
+            background: var(--light-bg);
+            border-radius: 14px; padding: 24px 28px;
+            margin-bottom: 16px; border-left: 4px solid var(--accent);
+        }
+        .quiz-question h4 { margin-bottom: 14px; font-size: 1rem; }
+        .quiz-question .qnum { color: var(--accent-dark); font-weight: 800; }
+        .quiz-options { display: flex; gap: 10px; flex-wrap: wrap; }
+        .quiz-option {
+            flex: 1; min-width: 100px; padding: 10px 16px;
+            border: 2px solid var(--border); border-radius: 10px;
+            text-align: center; cursor: pointer; font-weight: 700;
+            font-size: 0.9rem; background: var(--white); transition: all 0.25s;
+        }
+        .quiz-option:hover { border-color: var(--accent); background: #f0fce0; }
+        .quiz-option.selected { border-color: var(--accent); background: var(--accent); color: var(--dark-bg); }
+
+        .quiz-result {
+            background: linear-gradient(135deg, var(--dark-bg), #16213e);
+            color: var(--white); border-radius: 16px; padding: 36px;
+            text-align: center; display: none; animation: panelIn 0.4s ease;
+        }
+        .quiz-result.visible { display: block; }
+        .quiz-result h3 { font-size: 1.6rem; margin-bottom: 12px; }
+        .quiz-result h3 span { color: var(--accent); }
+        .quiz-result p { color: #b0b8cc; max-width: 500px; margin: 0 auto 20px; font-size: 0.95rem; }
+
+        /* ===== VACATURE AANMELDEN (Panel 4) ===== */
+        .vac-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .vac-form-grid .full { grid-column: 1 / -1; }
+        .form-group textarea {
+            width: 100%; padding: 12px 14px; border: 2px solid var(--border);
+            border-radius: 10px; font-size: 0.95rem; background: var(--light-bg);
+            color: var(--text); min-height: 100px; resize: vertical;
+            font-family: 'Lato', sans-serif; transition: border-color 0.25s;
+        }
+        .form-group textarea:focus { outline: none; border-color: var(--accent); }
+        .vac-success {
+            background: linear-gradient(135deg, var(--accent), #a8e860);
+            border-radius: 14px; padding: 28px; text-align: center;
+            display: none; animation: panelIn 0.4s ease;
+        }
+        .vac-success.visible { display: block; }
+        .vac-success h3 { color: var(--dark-bg); margin-bottom: 8px; }
+        .vac-success p { color: #2a2a4e; }
+
+        /* ===== INTAKE PLANNEN (Panel 5) ===== */
+        .intake-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; align-items: start; }
+        .intake-info { padding: 20px 0; }
+        .intake-info h3 { font-size: 1.3rem; margin-bottom: 12px; }
+        .intake-info p { color: var(--text-light); margin-bottom: 16px; font-size: 0.95rem; }
+        .intake-steps { list-style: none; }
+        .intake-steps li {
+            display: flex; align-items: flex-start; gap: 12px;
+            margin-bottom: 14px; font-size: 0.93rem;
+        }
+        .intake-steps .step-num {
+            flex-shrink: 0; width: 30px; height: 30px;
+            background: var(--accent); color: var(--dark-bg);
+            border-radius: 50%; display: flex; align-items: center;
+            justify-content: center; font-weight: 800; font-size: 0.85rem;
+        }
+        .time-slots { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 12px; }
+        .time-slot {
+            padding: 10px 8px; border: 2px solid var(--border); border-radius: 10px;
+            text-align: center; cursor: pointer; font-weight: 700; font-size: 0.85rem;
+            background: var(--light-bg); transition: all 0.25s;
+        }
+        .time-slot:hover { border-color: var(--accent); background: #f0fce0; }
+        .time-slot.selected { border-color: var(--accent); background: var(--accent); color: var(--dark-bg); }
+        .time-slot.unavailable {
+            opacity: 0.4; cursor: not-allowed;
+            text-decoration: line-through; pointer-events: none;
+        }
+        .intake-success {
+            background: linear-gradient(135deg, var(--accent), #a8e860);
+            border-radius: 14px; padding: 28px; text-align: center;
+            display: none; animation: panelIn 0.4s ease;
+        }
+        .intake-success.visible { display: block; }
+
+        /* ===== PROFESSIONALS STAT BAR ===== */
+        .pro-bar {
+            background: var(--dark-bg);
+            border-radius: 18px;
+            padding: 30px 36px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 30px;
+            text-align: center;
+        }
+        .pro-bar-item h3 { color: var(--accent); font-size: 2rem; font-weight: 800; }
+        .pro-bar-item p { color: #b0b8cc; font-size: 0.88rem; }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: var(--dark-bg);
+            color: #777;
+            padding: 28px 24px;
+            text-align: center;
+            font-size: 0.85rem;
+            margin-top: 20px;
+        }
+        .footer a { color: var(--accent); text-decoration: none; }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 900px) {
+            .dash-nav { grid-template-columns: repeat(3, 1fr); }
+            .intake-layout { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 640px) {
+            .hero h1 { font-size: 1.7rem; }
+            .dash-nav { grid-template-columns: repeat(2, 1fr); }
+            .dash-nav-btn { padding: 14px 8px; }
+            .panel-card { padding: 24px 18px; }
+            .calc-grid { grid-template-columns: 1fr; }
+            .vac-form-grid { grid-template-columns: 1fr; }
+            .nav {
+                display: none; flex-direction: column;
+                position: absolute; top: 74px; left: 0; right: 0;
+                background: var(--dark-bg); padding: 20px; gap: 14px;
+            }
+            .nav.open { display: flex; }
+            .mobile-toggle { display: block; }
+            .pro-bar { grid-template-columns: 1fr; }
+            .time-slots { grid-template-columns: repeat(2, 1fr); }
+            .cta-strip { flex-direction: column; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+    <div class="header-inner">
+        <a href="/">
+            <img src="https://primary.jwwb.nl/public/j/q/c/temp-bubpssuhqgoxqtzyfqhe/image-high-aunh7o.png?enable-io=true&enable=upscale&height=70" alt="Feen" class="logo">
+        </a>
+        <button class="mobile-toggle" onclick="document.querySelector('.nav').classList.toggle('open')" aria-label="Menu">&#9776;</button>
+        <ul class="nav">
+            <li><a href="/">Home</a></li>
+            <li><a href="/vacature">Vacature</a></li>
+            <li><a href="/opdrachtgever" class="active">Opdrachtgever</a></li>
+            <li><a href="/over-ons">Over Ons</a></li>
+            <li><a href="/contact">Contact</a></li>
+            <li><a href="/blogs">Blogs</a></li>
+        </ul>
+    </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-badge">Slechts 6% bemiddelingskosten</div>
+    <h1>De <span>laagste fees</span> van Nederland</h1>
+    <p>Feen verbindt opdrachtgevers met gekwalificeerde professionals in de financiële dienstverlening. Snel, betrouwbaar en ongeëvenaard in prijs.</p>
+    <a href="#" class="hero-cta" onclick="showPanel('vacature'); return false;">Vacature aanmelden</a>
+</section>
+
+<!-- DASHBOARD -->
+<div class="dashboard">
+
+    <!-- NAV TILES -->
+    <div class="dash-nav">
+        <div class="dash-nav-btn active" onclick="showPanel('diensten')">
+            <span class="dash-nav-icon">🔗</span>
+            <span class="dash-nav-label">Wat Feen Doet</span>
+        </div>
+        <div class="dash-nav-btn" onclick="showPanel('rekentool')">
+            <span class="dash-nav-icon">🧮</span>
+            <span class="dash-nav-label">Rekentool</span>
+        </div>
+        <div class="dash-nav-btn" onclick="showPanel('vragenlijst')">
+            <span class="dash-nav-icon">📝</span>
+            <span class="dash-nav-label">Vragenlijst</span>
+        </div>
+        <div class="dash-nav-btn" onclick="showPanel('vacature')">
+            <span class="dash-nav-icon">📢</span>
+            <span class="dash-nav-label">Vacature Aanmelden</span>
+        </div>
+        <div class="dash-nav-btn" onclick="showPanel('intake')">
+            <span class="dash-nav-icon">📅</span>
+            <span class="dash-nav-label">Intake Inplannen</span>
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PANEL 1: WAT FEEN DOET -->
+    <!-- ============================================ -->
+    <div class="panel active" id="panel-diensten">
+        <div class="panel-card">
+            <h2>Wat Feen doet voor <span>opdrachtgevers</span></h2>
+            <p class="subtitle">Wij zijn uw partner in het vinden van de juiste financiële professionals. Snel, betrouwbaar en tegen de laagste kosten van Nederland.</p>
+
+            <div class="diensten-grid">
+                <div class="dienst-item">
+                    <span class="icon">🔗</span>
+                    <h3>Verbinden</h3>
+                    <p>Wij koppelen uw organisatie aan de juiste professionals in accountancy, finance, fiscaal en controlling.</p>
+                </div>
+                <div class="dienst-item">
+                    <span class="icon">💰</span>
+                    <h3>Laagste kosten</h3>
+                    <p>Met slechts 6% bemiddelingskosten hanteren wij de laagste fees van heel Nederland.</p>
+                </div>
+                <div class="dienst-item">
+                    <span class="icon">✅</span>
+                    <h3>Gekwalificeerd</h3>
+                    <p>Al onze professionals zijn zorgvuldig geselecteerd op vakbekwaamheid en ervaring.</p>
+                </div>
+                <div class="dienst-item">
+                    <span class="icon">📊</span>
+                    <h3>Accountancy</h3>
+                    <p>Van registeraccountants tot assistent-accountants — de juiste match voor uw praktijk.</p>
+                </div>
+                <div class="dienst-item">
+                    <span class="icon">📈</span>
+                    <h3>Finance &amp; Controlling</h3>
+                    <p>Controllers, business analysts en financieel managers die direct waarde toevoegen.</p>
+                </div>
+                <div class="dienst-item">
+                    <span class="icon">📋</span>
+                    <h3>Fiscaal &amp; Salaris</h3>
+                    <p>Belastingadviseurs, fiscalisten en salarisadministrateurs met actuele kennis.</p>
+                </div>
+            </div>
+
+            <!-- CTA -->
+            <div class="cta-strip">
+                <p><strong>Klaar om te starten?</strong> Meld uw vacature aan en wij vinden de perfecte professional voor uw organisatie.</p>
+                <a href="#" class="cta-btn" onclick="showPanel('vacature'); return false;">Vacature aanmelden →</a>
+            </div>
+        </div>
+
+        <!-- PROFESSIONALS BAR -->
+        <div class="pro-bar">
+            <div class="pro-bar-item">
+                <h3>100+</h3>
+                <p>Professionals in ons netwerk</p>
+            </div>
+            <div class="pro-bar-item">
+                <h3>6%</h3>
+                <p>Laagste fee van Nederland</p>
+            </div>
+            <div class="pro-bar-item">
+                <h3>50+</h3>
+                <p>Openstaande vacatures</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PANEL 2: REKENTOOL -->
+    <!-- ============================================ -->
+    <div class="panel" id="panel-rekentool">
+        <div class="panel-card">
+            <h2>Bereken uw <span>besparing</span></h2>
+            <p class="subtitle">Ontdek hoeveel u bespaart met Feen. Vul de gegevens in en zie direct wat u kwijt bent aan bemiddelingskosten — slechts 6%.</p>
+
+            <div class="calc-grid">
+                <div class="form-group">
+                    <label>Functie van de professional</label>
+                    <select id="calc-functie">
+                        <option value="">Selecteer een functie...</option>
+                        <option value="Accountant">Accountant</option>
+                        <option value="Assistent-accountant">Assistent-accountant</option>
+                        <option value="Financial Controller">Financial Controller</option>
+                        <option value="Business Analyst">Business Analyst</option>
+                        <option value="Fiscalist">Fiscalist</option>
+                        <option value="Salarisadministrateur">Salarisadministrateur</option>
+                        <option value="Boekhouder">Boekhouder</option>
+                        <option value="Financieel Manager">Financieel Manager</option>
+                        <option value="Belastingadviseur">Belastingadviseur</option>
+                        <option value="Overig">Overig</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Aantal medewerkers</label>
+                    <input type="number" id="calc-medewerkers" placeholder="Bijv. 2" min="1" max="100">
+                </div>
+                <div class="form-group">
+                    <label>Uurloon van de professional (€)</label>
+                    <input type="number" id="calc-uurloon" placeholder="Bijv. 45" min="1" max="500">
+                </div>
+                <div class="form-group">
+                    <label>Uren per maand (per medewerker)</label>
+                    <input type="number" id="calc-uren" placeholder="Bijv. 160" min="1" max="744">
+                </div>
+                <div class="form-group full">
+                    <button class="calc-button" onclick="berekenKosten()">Bereken mijn besparing</button>
+                </div>
+            </div>
+
+            <div class="result-box" id="resultBox">
+                <div class="result-label">Uw bemiddelingskosten via Feen</div>
+                <div class="result-amount" id="resultAmount">€ 0,00</div>
+                <div class="result-detail" id="resultDetail"></div>
+                <div class="result-comparison">
+                    <p>Bij een gemiddelde bemiddelaar (15-20%) betaalt u:</p>
+                    <div class="savings" id="resultComparison"></div>
+                    <p style="margin-top:8px;font-weight:800;">U bespaart met Feen: <span id="resultSavings"></span></p>
+                </div>
+            </div>
+
+            <!-- CTA -->
+            <div class="cta-strip">
+                <p><strong>Overtuigd van de besparing?</strong> Meld nu uw vacature aan en start vandaag nog met besparen.</p>
+                <a href="#" class="cta-btn" onclick="showPanel('vacature'); return false;">Vacature aanmelden →</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PANEL 3: VRAGENLIJST -->
+    <!-- ============================================ -->
+    <div class="panel" id="panel-vragenlijst">
+        <div class="panel-card">
+            <h2>Heeft uw organisatie <span>versterking</span> nodig?</h2>
+            <p class="subtitle">Beantwoord deze 5 korte vragen en ontdek of het tijd is om actie te ondernemen.</p>
+
+            <div class="quiz-progress">
+                <div class="dot" id="dot-1"></div>
+                <div class="dot" id="dot-2"></div>
+                <div class="dot" id="dot-3"></div>
+                <div class="dot" id="dot-4"></div>
+                <div class="dot" id="dot-5"></div>
+            </div>
+
+            <div class="quiz-question">
+                <h4><span class="qnum">Vraag 1/5</span> — Heeft u momenteel openstaande posities die langer dan 4 weken onvervuld zijn?</h4>
+                <div class="quiz-options">
+                    <div class="quiz-option" onclick="selectAnswer(this, 1)">Ja</div>
+                    <div class="quiz-option" onclick="selectAnswer(this, 1)">Nee</div>
+                </div>
+            </div>
+
+            <div class="quiz-question">
+                <h4><span class="qnum">Vraag 2/5</span> — Merkt u dat uw huidige team overbelast raakt door onderbezetting?</h4>
+                <div class="quiz-options">
+                    <div class="quiz-option" onclick="selectAnswer(this, 2)">Ja, regelmatig</div>
+                    <div class="quiz-option" onclick="selectAnswer(this, 2)">Soms</div>
+                    <div class="quiz-option" onclick="selectAnswer(this, 2)">Nee</div>
+                </div>
+            </div>
+
+            <div class="quiz-question">
+                <h4><span class="qnum">Vraag 3/5</span> — Heeft u de komende 3 maanden extra professionals nodig voor drukke periodes?</h4>
+                <div class="quiz-options">
+                    <div class="quiz-option" onclick="selectAnswer(this, 3)">Zeker</div>
+                    <div class="quiz-option" onclick="selectAnswer(this, 3)">Mogelijk</div>
+                    <div class="quiz-option" onclick="selectAnswer(this, 3)">Nee</div>
+                </div>
+            </div>
+
+            <div class="quiz-question">
+                <h4><span class="qnum">Vraag 4/5</span> — Vindt u het lastig om gekwalificeerde financiële professionals te vinden?</h4>
+                <div class="quiz-options">
+                    <div class="quiz-option" onclick="selectAnswer(this, 4)">Ja, zeer lastig</div>
+                    <div class="quiz-option" onclick="selectAnswer(this, 4)">Het kost veel tijd</div>
+                    <div class="quiz-option" onclick="selectAnswer(this, 4)">Valt mee</div>
+                </div>
+            </div>
+
+            <div class="quiz-question">
+                <h4><span class="qnum">Vraag 5/5</span> — Betaalt u momenteel meer dan 10% bemiddelingskosten?</h4>
+                <div class="quiz-options">
+                    <div class="quiz-option" onclick="selectAnswer(this, 5)">Ja</div>
+                    <div class="quiz-option" onclick="selectAnswer(this, 5)">Weet ik niet</div>
+                    <div class="quiz-option" onclick="selectAnswer(this, 5)">Nee</div>
+                </div>
+            </div>
+
+            <div class="quiz-result" id="quizResult">
+                <h3>Het is tijd om te <span>schakelen!</span></h3>
+                <p>Uw organisatie heeft baat bij snelle toegang tot gekwalificeerde professionals. Wacht niet langer — elke dag zonder de juiste mensen kost geld en energie.</p>
+                <a href="#" class="cta-btn" onclick="showPanel('vacature'); return false;">Vacature aanmelden →</a>
+                <div style="margin-top:10px;">
+                    <a href="#" class="cta-btn-outline" onclick="showPanel('intake'); return false;">Of plan een intake gesprek</a>
+                </div>
+            </div>
+
+            <!-- CTA -->
+            <div class="cta-strip">
+                <p><strong>Wacht niet langer.</strong> Meld uw vacature aan en versterk uw team met de juiste professionals.</p>
+                <a href="#" class="cta-btn" onclick="showPanel('vacature'); return false;">Vacature aanmelden →</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PANEL 4: VACATURE AANMELDEN -->
+    <!-- ============================================ -->
+    <div class="panel" id="panel-vacature">
+        <div class="panel-card">
+            <h2>Vacature <span>aanmelden</span></h2>
+            <p class="subtitle">Vul onderstaand formulier in en wij gaan direct voor u aan de slag. Binnen 48 uur ontvangt u de eerste profielen.</p>
+
+            <div id="vacForm">
+                <div class="vac-form-grid">
+                    <div class="form-group">
+                        <label>Bedrijfsnaam *</label>
+                        <input type="text" id="vac-bedrijf" placeholder="Uw bedrijfsnaam">
+                    </div>
+                    <div class="form-group">
+                        <label>Contactpersoon *</label>
+                        <input type="text" id="vac-contact" placeholder="Volledige naam">
+                    </div>
+                    <div class="form-group">
+                        <label>E-mailadres *</label>
+                        <input type="email" id="vac-email" placeholder="uw@email.nl">
+                    </div>
+                    <div class="form-group">
+                        <label>Telefoonnummer *</label>
+                        <input type="tel" id="vac-telefoon" placeholder="+31 6 ...">
+                    </div>
+                    <div class="form-group">
+                        <label>Gewenste functie</label>
+                        <select id="vac-functie">
+                            <option value="">Selecteer...</option>
+                            <option>Accountant</option>
+                            <option>Assistent-accountant</option>
+                            <option>Financial Controller</option>
+                            <option>Business Analyst</option>
+                            <option>Fiscalist</option>
+                            <option>Salarisadministrateur</option>
+                            <option>Boekhouder</option>
+                            <option>Financieel Manager</option>
+                            <option>Belastingadviseur</option>
+                            <option>Overig</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Aantal professionals</label>
+                        <input type="number" id="vac-aantal" placeholder="Bijv. 2" min="1" max="50">
+                    </div>
+                    <div class="form-group full">
+                        <label>Toelichting / wensen</label>
+                        <textarea id="vac-toelichting" placeholder="Beschrijf kort de functie-eisen, gewenste startdatum, etc."></textarea>
+                    </div>
+                    <div class="form-group full">
+                        <button class="calc-button" onclick="submitVacature()">Vacature aanmelden →</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="vac-success" id="vacSuccess">
+                <h3>✅ Uw vacature is ontvangen!</h3>
+                <p>Wij nemen binnen 24 uur contact met u op. Wilt u direct een intake plannen?</p>
+                <a href="#" class="cta-btn" style="margin-top:12px; display:inline-block;" onclick="showPanel('intake'); return false;">Intake inplannen →</a>
+            </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="cta-strip" style="margin-top: 24px;">
+            <p><strong>Liever eerst bellen?</strong> Neem direct contact op met ons team voor een persoonlijk gesprek.</p>
+            <a href="tel:+31687848515" class="cta-btn">Bel +31 6 87848515</a>
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PANEL 5: INTAKE INPLANNEN -->
+    <!-- ============================================ -->
+    <div class="panel" id="panel-intake">
+        <div class="panel-card">
+            <h2>Intake gesprek <span>inplannen</span></h2>
+            <p class="subtitle">Kies een datum en tijd die u uitkomt. Wij bellen u op het afgesproken moment.</p>
+
+            <div id="intakeForm">
+                <div class="intake-layout">
+                    <div class="intake-info">
+                        <h3>Hoe werkt het?</h3>
+                        <p>In een kort gesprek van 15 minuten bespreken we uw wensen en gaan we direct aan de slag.</p>
+                        <ul class="intake-steps">
+                            <li>
+                                <span class="step-num">1</span>
+                                <span>Kies een datum en tijd hiernaast</span>
+                            </li>
+                            <li>
+                                <span class="step-num">2</span>
+                                <span>Vul uw contactgegevens in</span>
+                            </li>
+                            <li>
+                                <span class="step-num">3</span>
+                                <span>Wij bellen u op het afgesproken moment</span>
+                            </li>
+                            <li>
+                                <span class="step-num">4</span>
+                                <span>Binnen 48 uur ontvangt u de eerste profielen</span>
+                            </li>
+                        </ul>
+
+                        <div class="cta-strip" style="margin-top: 20px;">
+                            <p><strong>Geen tijd om te wachten?</strong></p>
+                            <a href="#" class="cta-btn" onclick="showPanel('vacature'); return false;">Meld gelijk uw vacature aan →</a>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="form-group">
+                            <label>Uw naam *</label>
+                            <input type="text" id="intake-naam" placeholder="Volledige naam">
+                        </div>
+                        <div class="form-group">
+                            <label>Telefoonnummer *</label>
+                            <input type="tel" id="intake-telefoon" placeholder="+31 6 ...">
+                        </div>
+                        <div class="form-group">
+                            <label>E-mailadres *</label>
+                            <input type="email" id="intake-email" placeholder="uw@email.nl">
+                        </div>
+                        <div class="form-group">
+                            <label>Kies een datum *</label>
+                            <input type="date" id="intake-datum" min="">
+                        </div>
+                        <div class="form-group">
+                            <label>Kies een tijd *</label>
+                            <div class="time-slots" id="timeSlots">
+                                <div class="time-slot" onclick="selectTime(this)">09:00</div>
+                                <div class="time-slot" onclick="selectTime(this)">09:30</div>
+                                <div class="time-slot" onclick="selectTime(this)">10:00</div>
+                                <div class="time-slot" onclick="selectTime(this)">10:30</div>
+                                <div class="time-slot" onclick="selectTime(this)">11:00</div>
+                                <div class="time-slot" onclick="selectTime(this)">11:30</div>
+                                <div class="time-slot" onclick="selectTime(this)">13:00</div>
+                                <div class="time-slot" onclick="selectTime(this)">13:30</div>
+                                <div class="time-slot" onclick="selectTime(this)">14:00</div>
+                                <div class="time-slot" onclick="selectTime(this)">14:30</div>
+                                <div class="time-slot" onclick="selectTime(this)">15:00</div>
+                                <div class="time-slot" onclick="selectTime(this)">15:30</div>
+                                <div class="time-slot" onclick="selectTime(this)">16:00</div>
+                                <div class="time-slot" onclick="selectTime(this)">16:30</div>
+                                <div class="time-slot unavailable">17:00</div>
+                            </div>
+                        </div>
+                        <button class="calc-button" style="margin-top:16px;" onclick="submitIntake()">Intake inplannen →</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="intake-success" id="intakeSuccess">
+                <h3>✅ Uw intake is ingepland!</h3>
+                <p id="intakeConfirm">Wij bellen u op het afgesproken moment.</p>
+                <p style="margin-top: 12px; color: #2a2a4e;">Wilt u alvast een vacature aanmelden zodat wij direct aan de slag kunnen?</p>
+                <a href="#" class="cta-btn" style="margin-top:12px; display:inline-block;" onclick="showPanel('vacature'); return false;">Vacature aanmelden →</a>
+            </div>
+        </div>
+    </div>
+
+</div><!-- /dashboard -->
+
+<!-- FOOTER -->
+<footer class="footer">
+    <p>&copy; 2023 - 2026 Feen | <a href="/contact">Contact</a> | <a href="https://linkedin.com/company/feennl/" target="_blank" rel="noopener">LinkedIn</a> | <a href="https://api.whatsapp.com/send?phone=31687848515" target="_blank" rel="noopener">WhatsApp</a></p>
+</footer>
+
+<script>
+    // ===== DASHBOARD NAV =====
+    function showPanel(name) {
+        // Hide all panels
+        var panels = document.querySelectorAll('.panel');
+        for (var i = 0; i < panels.length; i++) panels[i].classList.remove('active');
+        // Show target
+        var target = document.getElementById('panel-' + name);
+        if (target) {
+            target.classList.remove('active');
+            // Force reflow for animation
+            void target.offsetWidth;
+            target.classList.add('active');
+        }
+        // Update nav buttons
+        var btns = document.querySelectorAll('.dash-nav-btn');
+        var names = ['diensten','rekentool','vragenlijst','vacature','intake'];
+        for (var i = 0; i < btns.length; i++) {
+            btns[i].classList.toggle('active', names[i] === name);
+        }
+        // Scroll to top of dashboard
+        document.querySelector('.dashboard').scrollIntoView({behavior: 'smooth', block: 'start'});
+    }
+
+    // ===== REKENTOOL =====
+    function berekenKosten() {
+        var functie = document.getElementById('calc-functie').value;
+        var medewerkers = parseInt(document.getElementById('calc-medewerkers').value);
+        var uurloon = parseFloat(document.getElementById('calc-uurloon').value);
+        var uren = parseInt(document.getElementById('calc-uren').value);
+
+        if (!functie || !medewerkers || !uurloon || !uren) {
+            alert('Vul alle velden in om de berekening te maken.');
+            return;
+        }
+
+        var totaleLoonkosten = medewerkers * uurloon * uren;
+        var feenKosten = totaleLoonkosten * 0.06;
+        var marktKosten = totaleLoonkosten * 0.175;
+        var besparing = marktKosten - feenKosten;
+
+        document.getElementById('resultAmount').textContent = '€ ' + feenKosten.toLocaleString('nl-NL', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        document.getElementById('resultDetail').textContent = medewerkers + 'x ' + functie + ' · ' + uren + ' uur · €' + uurloon + '/uur · 6% fee';
+        document.getElementById('resultComparison').textContent = '€ ' + marktKosten.toLocaleString('nl-NL', {minimumFractionDigits: 2, maximumFractionDigits: 2}) + ' per maand';
+        document.getElementById('resultSavings').textContent = '€ ' + besparing.toLocaleString('nl-NL', {minimumFractionDigits: 2, maximumFractionDigits: 2}) + ' per maand!';
+
+        var box = document.getElementById('resultBox');
+        box.classList.add('visible');
+        box.scrollIntoView({behavior: 'smooth', block: 'center'});
+    }
+
+    // ===== VRAGENLIJST =====
+    var quizAnswered = {};
+    function selectAnswer(el, q) {
+        var options = el.parentElement.querySelectorAll('.quiz-option');
+        for (var i = 0; i < options.length; i++) options[i].classList.remove('selected');
+        el.classList.add('selected');
+        quizAnswered[q] = true;
+
+        // Update progress dots
+        document.getElementById('dot-' + q).classList.add('done');
+
+        if (Object.keys(quizAnswered).length >= 5) {
+            var result = document.getElementById('quizResult');
+            result.classList.add('visible');
+            result.scrollIntoView({behavior: 'smooth', block: 'center'});
+        }
+    }
+
+    // ===== VACATURE FORM =====
+    function submitVacature() {
+        var bedrijf = document.getElementById('vac-bedrijf').value.trim();
+        var contact = document.getElementById('vac-contact').value.trim();
+        var email = document.getElementById('vac-email').value.trim();
+        var telefoon = document.getElementById('vac-telefoon').value.trim();
+
+        if (!bedrijf || !contact || !email || !telefoon) {
+            alert('Vul alle verplichte velden in (*)');
+            return;
+        }
+
+        document.getElementById('vacForm').style.display = 'none';
+        document.getElementById('vacSuccess').classList.add('visible');
+        document.getElementById('vacSuccess').scrollIntoView({behavior: 'smooth', block: 'center'});
+    }
+
+    // ===== INTAKE PLANNER =====
+    // Set min date to today
+    (function() {
+        var today = new Date().toISOString().split('T')[0];
+        document.getElementById('intake-datum').setAttribute('min', today);
+    })();
+
+    var selectedTimeSlot = null;
+    function selectTime(el) {
+        var slots = document.querySelectorAll('.time-slot:not(.unavailable)');
+        for (var i = 0; i < slots.length; i++) slots[i].classList.remove('selected');
+        el.classList.add('selected');
+        selectedTimeSlot = el.textContent;
+    }
+
+    function submitIntake() {
+        var naam = document.getElementById('intake-naam').value.trim();
+        var telefoon = document.getElementById('intake-telefoon').value.trim();
+        var email = document.getElementById('intake-email').value.trim();
+        var datum = document.getElementById('intake-datum').value;
+
+        if (!naam || !telefoon || !email || !datum || !selectedTimeSlot) {
+            alert('Vul alle velden in en kies een tijdstip.');
+            return;
+        }
+
+        var datumFormatted = new Date(datum).toLocaleDateString('nl-NL', {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'});
+
+        document.getElementById('intakeForm').style.display = 'none';
+        document.getElementById('intakeConfirm').textContent = 'Wij bellen u op ' + datumFormatted + ' om ' + selectedTimeSlot + ' uur.';
+        document.getElementById('intakeSuccess').classList.add('visible');
+        document.getElementById('intakeSuccess').scrollIntoView({behavior: 'smooth', block: 'center'});
+    }
+</script>
+
+</body>
+</html>
