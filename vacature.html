@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vacatures | Feen</title>
+    <meta name="description" content="Bekijk alle vacatures bij Feen. Filter op locatie, sector, dienstverband en meer. Vind jouw ideale baan in finance & accountancy.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400;1,700&family=Maven+Pro:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* === Reset & Base === */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Lato', sans-serif;
+            background-color: #1a1a2e;
+            color: #ffffff;
+            line-height: 1.6;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        /* === Header === */
+        .header {
+            background-color: #1a1a2e;
+            padding: 16px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-logo img {
+            height: 55px;
+            width: auto;
+        }
+
+        .header-nav ul {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+
+        .header-nav a {
+            font-family: 'Maven Pro', sans-serif;
+            font-size: 15px;
+            color: #ffffff;
+            transition: color 0.2s;
+            padding: 8px 0;
+        }
+
+        .header-nav a:hover,
+        .header-nav a.active {
+            color: #b8f470;
+        }
+
+        /* Mobile menu toggle */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 28px;
+            cursor: pointer;
+        }
+
+        /* === Hero Banner === */
+        .hero {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            padding: 60px 40px 50px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-family: 'Maven Pro', sans-serif;
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .hero h1 span {
+            color: #b8f470;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: rgba(255,255,255,0.7);
+            max-width: 600px;
+            margin: 0 auto 28px;
+        }
+
+        /* Search bar */
+        .search-bar {
+            max-width: 650px;
+            margin: 0 auto;
+            display: flex;
+            gap: 0;
+            background: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .search-bar input {
+            flex: 1;
+            padding: 14px 20px;
+            font-size: 15px;
+            border: none;
+            outline: none;
+            font-family: 'Lato', sans-serif;
+            color: #333;
+        }
+
+        .search-bar button {
+            padding: 14px 28px;
+            background-color: #b8f470;
+            color: #1a1a2e;
+            font-weight: 700;
+            font-family: 'Maven Pro', sans-serif;
+            font-size: 15px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .search-bar button:hover {
+            background-color: #a6e050;
+        }
+
+        /* === Main Layout === */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            display: flex;
+            gap: 30px;
+            align-items: flex-start;
+        }
+
+        /* === Sidebar Filters === */
+        .filters {
+            width: 280px;
+            flex-shrink: 0;
+            position: sticky;
+            top: 100px;
+        }
+
+        .filters-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .filters-header h2 {
+            font-family: 'Maven Pro', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .filters-reset {
+            font-size: 13px;
+            color: #b8f470;
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-family: 'Lato', sans-serif;
+        }
+
+        .filters-reset:hover {
+            text-decoration: underline;
+        }
+
+        .filter-group {
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .filter-group h3 {
+            font-family: 'Maven Pro', sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 14px;
+            color: #b8f470;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .filter-group h3 .toggle-icon {
+            font-size: 18px;
+            transition: transform 0.2s;
+        }
+
+        .filter-group h3.collapsed .toggle-icon {
+            transform: rotate(-90deg);
+        }
+
+        .filter-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .filter-options.hidden {
+            display: none;
+        }
+
+        .filter-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            color: rgba(255,255,255,0.85);
+            transition: color 0.2s;
+        }
+
+        .filter-option:hover {
+            color: #ffffff;
+        }
+
+        .filter-option input[type="checkbox"] {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 4px;
+            background: transparent;
+            cursor: pointer;
+            position: relative;
+            flex-shrink: 0;
+            transition: all 0.2s;
+        }
+
+        .filter-option input[type="checkbox"]:checked {
+            background-color: #b8f470;
+            border-color: #b8f470;
+        }
+
+        .filter-option input[type="checkbox"]:checked::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 12px;
+            color: #1a1a2e;
+            font-weight: 700;
+        }
+
+        .filter-option .count {
+            margin-left: auto;
+            font-size: 12px;
+            color: rgba(255,255,255,0.4);
+            background: rgba(255,255,255,0.08);
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+
+        /* === Vacancy Listings === */
+        .vacancies {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .vacancies-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .results-count {
+            font-size: 15px;
+            color: rgba(255,255,255,0.6);
+        }
+
+        .results-count strong {
+            color: #ffffff;
+        }
+
+        .sort-select {
+            padding: 8px 14px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 6px;
+            color: #ffffff;
+            font-family: 'Lato', sans-serif;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .sort-select option {
+            background: #1a1a2e;
+            color: #ffffff;
+        }
+
+        /* Active filters chips */
+        .active-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .active-filters:empty {
+            display: none;
+        }
+
+        .filter-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: rgba(184, 244, 112, 0.15);
+            border: 1px solid rgba(184, 244, 112, 0.3);
+            border-radius: 20px;
+            font-size: 13px;
+            color: #b8f470;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-chip:hover {
+            background: rgba(184, 244, 112, 0.25);
+        }
+
+        .filter-chip .remove {
+            font-size: 16px;
+            line-height: 1;
+        }
+
+        /* Vacancy Card */
+        .vacancy-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 28px;
+            margin-bottom: 16px;
+            transition: all 0.25s;
+            cursor: pointer;
+        }
+
+        .vacancy-card:hover {
+            background: rgba(255,255,255,0.08);
+            border-color: rgba(184, 244, 112, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+        }
+
+        .vacancy-card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 14px;
+        }
+
+        .vacancy-title {
+            font-family: 'Maven Pro', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 4px;
+        }
+
+        .vacancy-company {
+            font-size: 14px;
+            color: #b8f470;
+            font-weight: 700;
+        }
+
+        .vacancy-badge {
+            flex-shrink: 0;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-new {
+            background: rgba(184, 244, 112, 0.2);
+            color: #b8f470;
+        }
+
+        .badge-urgent {
+            background: rgba(255, 107, 107, 0.2);
+            color: #ff6b6b;
+        }
+
+        .vacancy-description {
+            font-size: 14px;
+            color: rgba(255,255,255,0.65);
+            margin-bottom: 18px;
+            line-height: 1.7;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .vacancy-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .vacancy-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            color: rgba(255,255,255,0.55);
+        }
+
+        .vacancy-meta-item .icon {
+            font-size: 16px;
+            opacity: 0.7;
+        }
+
+        .vacancy-card-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 18px;
+            padding-top: 18px;
+            border-top: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .vacancy-salary {
+            font-family: 'Maven Pro', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            color: #b8f470;
+        }
+
+        .vacancy-date {
+            font-size: 13px;
+            color: rgba(255,255,255,0.4);
+        }
+
+        .btn-apply {
+            padding: 10px 24px;
+            background: #b8f470;
+            color: #1a1a2e;
+            font-weight: 700;
+            font-family: 'Maven Pro', sans-serif;
+            font-size: 14px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn-apply:hover {
+            background: #a6e050;
+        }
+
+        /* No results */
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            color: rgba(255,255,255,0.5);
+        }
+
+        .no-results h3 {
+            font-family: 'Maven Pro', sans-serif;
+            font-size: 22px;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        /* === Footer === */
+        .footer {
+            background: #12122a;
+            padding: 40px;
+            margin-top: 40px;
+            border-top: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .footer-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .footer-copy {
+            font-size: 14px;
+            color: rgba(255,255,255,0.45);
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 16px;
+        }
+
+        .footer-social a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.08);
+            color: #ffffff;
+            font-size: 18px;
+            transition: all 0.2s;
+        }
+
+        .footer-social a:hover {
+            background: #b8f470;
+            color: #1a1a2e;
+        }
+
+        /* === Mobile Filter Toggle === */
+        .mobile-filter-toggle {
+            display: none;
+            width: 100%;
+            padding: 14px;
+            background: rgba(184, 244, 112, 0.1);
+            border: 1px solid rgba(184, 244, 112, 0.3);
+            border-radius: 10px;
+            color: #b8f470;
+            font-family: 'Maven Pro', sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        /* === Responsive === */
+        @media (max-width: 900px) {
+            .header {
+                padding: 12px 20px;
+            }
+
+            .header-nav { display: none; }
+            .header-nav.open { display: block; }
+            .mobile-menu-btn { display: block; }
+
+            .header-nav.open {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: #1a1a2e;
+                border-bottom: 1px solid rgba(255,255,255,0.1);
+                padding: 20px;
+            }
+
+            .header-nav.open ul {
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .hero {
+                padding: 40px 20px 30px;
+            }
+
+            .hero h1 {
+                font-size: 28px;
+            }
+
+            .search-bar {
+                flex-direction: column;
+            }
+
+            .search-bar button {
+                padding: 14px;
+            }
+
+            .main-container {
+                flex-direction: column;
+                padding: 20px 16px;
+            }
+
+            .filters {
+                width: 100%;
+                position: static;
+                display: none;
+            }
+
+            .filters.open {
+                display: block;
+            }
+
+            .mobile-filter-toggle {
+                display: block;
+            }
+
+            .vacancy-card {
+                padding: 20px;
+            }
+
+            .vacancy-card-top {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .vacancy-card-bottom {
+                flex-direction: column;
+                gap: 12px;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+    <a href="/" class="header-logo">
+        <img src="https://primary.jwwb.nl/public/j/q/c/temp-bubpssuhqgoxqtzyfqhe/image-high-aunh7o.png?enable-io=true&enable=upscale&height=70" alt="Feen" title="Feen">
+    </a>
+    <button class="mobile-menu-btn" aria-label="Menu openen" onclick="document.querySelector('.header-nav').classList.toggle('open')">☰</button>
+    <nav class="header-nav">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/vacature" class="active">Vacatures</a></li>
+            <li><a href="/opdrachtgever">Opdrachtgever</a></li>
+            <li><a href="/over-ons">Over Ons</a></li>
+            <li><a href="/contact">Contact</a></li>
+            <li><a href="/blogs">Blogs</a></li>
+        </ul>
+    </nav>
+</header>
+
+<!-- Hero Section -->
+<section class="hero">
+    <h1>Vind jouw <span>ideale vacature</span></h1>
+    <p>Ontdek de beste kansen in finance &amp; accountancy. Filter, zoek en solliciteer direct.</p>
+    <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Zoek op functietitel, bedrijf of trefwoord..." aria-label="Zoek vacatures">
+        <button onclick="filterVacancies()">Zoeken</button>
+    </div>
+</section>
+
+<!-- Main Content -->
+<div class="main-container">
+
+    <!-- Mobile filter toggle -->
+    <button class="mobile-filter-toggle" onclick="document.querySelector('.filters').classList.toggle('open')">
+        ☰ Filters tonen / verbergen
+    </button>
+
+    <!-- Sidebar Filters -->
+    <aside class="filters" id="filtersPanel">
+        <div class="filters-header">
+            <h2>Filters</h2>
+            <button class="filters-reset" onclick="resetFilters()">Alles wissen</button>
+        </div>
+
+        <!-- Locatie -->
+        <div class="filter-group">
+            <h3 onclick="toggleFilter(this)">
+                📍 Locatie
+                <span class="toggle-icon">▾</span>
+            </h3>
+            <div class="filter-options" data-filter="locatie">
+                <label class="filter-option">
+                    <input type="checkbox" value="Amsterdam"> Amsterdam
+                    <span class="count">8</span>
+                </label>
+                <label class="filter-option">
+                    <input type="checkbox" value="Rotterdam"> Rotterdam
+                    <span class="count">5</span>
+                </label>
+                <label class="filter-option">
+                    <input type="checkbox" value="Utrecht"> Utrecht
+                    <span class="count">4</span>
+                </label>
+                <label class="filter-option">
+                    <input type="checkbox" value="Den Haag"> Den Haag
+                    <span class="count">3</span>
+                </label>
+                <label class="filter-option">
+                    <input type="checkbox" value="Eindhoven"> Eindhoven
+                    <span class="count">2</span>
+                </label>
+                <label class="filter-option">
+                    <input type="checkbox" value="Groningen"> Groningen
+                    <span class="count">2</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Sector / Dienstverlening -->
+        <div class="filter-group">
+            <h3 onclick="toggleFilter(this)">
+                🏢 Sector / Dienstverlening
+                <span class="toggle-icon">▾</span>
+            </h3>
+            <div class="filter-options" data-filter="sector">
+                <label class="filter-option">
+                    <input type="checkbox" value="Accountancy"> Accountancy
+                    <span class="count">10</span>
+                </label>
+                <label class="filter-option">
+                    <input type="checkbox" value="Finance"> Finance
+                    <span class="count">8</span>
+                </label>
+                <label class="filter-option">
+                    <input type="checkbox" value="Belastingadvies"> Belastingadvies
+                    <span class="count">4</span>
+                </label>
+                <label class="filter-option">
+                    <input type="checkbox" value="Audit"> Audit &amp; Assurance
+                    <span class="count">5</span>
+                </label>
+                <label class="filter-option">
+                    <input type="checkbox" value="Corporate Finance"> Corporate Finance
+                    <span class="count">3</span>
+                </label>
+                <label class="filter-option">
+                    <input type="checkbox" value="Consulting"> Consulting
+                    <span class="count">2</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Dienstverband -->
+        <div class="filter-group">
+            <h3 onclick="toggleFilter(this)">
+                📋 Dienstverband
+                <span class="toggle-icon">▾</span>
+            </h3>
+            <div class="filter-options" data-filter="dienstverband">
+                <label class="filter-option">
+                    <input type="checkbox" value="Vast"> Vast dienstverband
+                    <span class="count">12</span>
+                </label>
+                <label class="filter-option">
+                    <input type="checkbox" value="Tijdelijk"> Tijdelijk contract
+                    <span class="count">6</span>
+                </label>
+                <label class="filter-option">
+                    <input type="checkbox" value="ZZP"> ZZP / Freelance
+                    <span class="count">8</span>
+                </label>
+                <label class="filter-option">
+                    <input type="checkbox" value="Interim"> Interim
+                    <span class="count">5</span>
+                </label>
+                <label class="filter-option">
+                    <input type="checkbox" value="Detachering"> Detachering
+                    <span class="count">4</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Uren per week -->
+        <div class="filter-group">
+            <h3 onclick="toggleFilter(this)">
+                ⏰ Uren per week
+                <span class="toggle-icon">▾</span>
+            </h3>
+            <div class="filter-options" data-filter="uren">
+                <label class="filter-option">
+                    <input type="checkbox" value="Fulltime"> Fulltime (36-40 uur)
+                    <span class="count">15</span>
+                </label>
+                <label class="filter-option">
+                    <input type="checkbox" value="Parttime"> Parttime (16-32 uur)
+                    <span class="count">7</span>
+                </label>
+                <label class="filter-option">
+                    <input type="checkbox" value="Flexibel"> Flexibel
+                    <span class="count">3</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Ervaring -->
+        <div class="filter-group">
+            <h3 onclick="toggleFilter(this)">
+                🎓 Ervaringsniveau
+                <span class="toggle-icon">▾</span>
+            </h3>
+            <div class="filter-options" data-filter="ervaring">
+                <label class="filter-option">
+                    <input type="checkbox" value="Junior"> Junior (0-2 jaar)
+                    <span class="count">6</span>
+                </label>
+                <label class="filter-option">
+                    <input type="checkbox" value="Medior"> Medior (3-5 jaar)
+                    <span class="count">10</span>
+                </label>
+                <label class="filter-option">
+                    <input type="checkbox" value="Senior"> Senior (5+ jaar)
+                    <span class="count">9</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Salaris -->
+        <div class="filter-group">
+            <h3 onclick="toggleFilter(this)">
+                💰 Salarisindicatie
+                <span class="toggle-icon">▾</span>
+            </h3>
+            <div class="filter-options" data-filter="salaris">
+                <label class="filter-option">
+                    <input type="checkbox" value="2500-3500"> €2.500 - €3.500
+                    <span class="count">4</span>
+                </label>
+                <label class="filter-option">
+                    <input type="checkbox" value="3500-5000"> €3.500 - €5.000
+                    <span class="count">8</span>
+                </label>
+                <label class="filter-option">
+                    <input type="checkbox" value="5000-7000"> €5.000 - €7.000
+                    <span class="count">7</span>
+                </label>
+                <label class="filter-option">
+                    <input type="checkbox" value="7000+"> €7.000+
+                    <span class="count">3</span>
+                </label>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Vacancy Listings -->
+    <section class="vacancies">
+        <div class="vacancies-header">
+            <span class="results-count"><strong id="resultCount">8</strong> vacatures gevonden</span>
+            <select class="sort-select" id="sortSelect" onchange="sortVacancies()">
+                <option value="newest">Nieuwste eerst</option>
+                <option value="oldest">Oudste eerst</option>
+                <option value="salary-high">Salaris: hoog → laag</option>
+                <option value="salary-low">Salaris: laag → hoog</option>
+            </select>
+        </div>
+
+        <div class="active-filters" id="activeFilters"></div>
+
+        <div id="vacancyList">
+
+            <!-- Vacancy 1 -->
+            <div class="vacancy-card" data-locatie="Amsterdam" data-sector="Accountancy" data-dienstverband="Vast" data-uren="Fulltime" data-ervaring="Senior" data-salaris="5000-7000">
+                <div class="vacancy-card-top">
+                    <div>
+                        <div class="vacancy-title">Senior Accountant</div>
+                        <div class="vacancy-company">Vertrouwelijk - Big 4 kantoor</div>
+                    </div>
+                    <span class="vacancy-badge badge-new">Nieuw</span>
+                </div>
+                <div class="vacancy-description">
+                    Wij zoeken een ervaren Senior Accountant die verantwoordelijk wordt voor het leiden van auditteams en het opbouwen van klantrelaties. Je werkt aan diverse opdrachten voor middelgrote en grote ondernemingen.
+                </div>
+                <div class="vacancy-meta">
+                    <span class="vacancy-meta-item"><span class="icon">📍</span> Amsterdam</span>
+                    <span class="vacancy-meta-item"><span class="icon">📋</span> Vast dienstverband</span>
+                    <span class="vacancy-meta-item"><span class="icon">⏰</span> Fulltime</span>
+                    <span class="vacancy-meta-item"><span class="icon">🎓</span> Senior</span>
+                </div>
+                <div class="vacancy-card-bottom">
+                    <span class="vacancy-salary">€5.500 - €6.800 /maand</span>
+                    <span class="vacancy-date">Geplaatst: 5 maart 2026</span>
+                    <button class="btn-apply">Bekijk vacature →</button>
+                </div>
+            </div>
+
+            <!-- Vacancy 2 -->
+            <div class="vacancy-card" data-locatie="Rotterdam" data-sector="Finance" data-dienstverband="Vast" data-uren="Fulltime" data-ervaring="Medior" data-salaris="3500-5000">
+                <div class="vacancy-card-top">
+                    <div>
+                        <div class="vacancy-title">Financial Controller</div>
+                        <div class="vacancy-company">TechGrowth B.V.</div>
+                    </div>
+                    <span class="vacancy-badge badge-new">Nieuw</span>
+                </div>
+                <div class="vacancy-description">
+                    Als Financial Controller ben je verantwoordelijk voor de maandelijkse rapportages, budgettering en financiële analyses. Je rapporteert direct aan de CFO en speelt een sleutelrol in het financiële team.
+                </div>
+                <div class="vacancy-meta">
+                    <span class="vacancy-meta-item"><span class="icon">📍</span> Rotterdam</span>
+                    <span class="vacancy-meta-item"><span class="icon">📋</span> Vast dienstverband</span>
+                    <span class="vacancy-meta-item"><span class="icon">⏰</span> Fulltime</span>
+                    <span class="vacancy-meta-item"><span class="icon">🎓</span> Medior</span>
+                </div>
+                <div class="vacancy-card-bottom">
+                    <span class="vacancy-salary">€4.200 - €4.800 /maand</span>
+                    <span class="vacancy-date">Geplaatst: 4 maart 2026</span>
+                    <button class="btn-apply">Bekijk vacature →</button>
+                </div>
+            </div>
+
+            <!-- Vacancy 3 -->
+            <div class="vacancy-card" data-locatie="Utrecht" data-sector="Belastingadvies" data-dienstverband="Vast" data-uren="Fulltime" data-ervaring="Medior" data-salaris="3500-5000">
+                <div class="vacancy-card-top">
+                    <div>
+                        <div class="vacancy-title">Belastingadviseur</div>
+                        <div class="vacancy-company">FiscaalPro Partners</div>
+                    </div>
+                </div>
+                <div class="vacancy-description">
+                    Voor ons groeiende team in Utrecht zoeken wij een gedreven Belastingadviseur. Je adviseert MKB-ondernemers op het gebied van vennootschapsbelasting, inkomstenbelasting en btw.
+                </div>
+                <div class="vacancy-meta">
+                    <span class="vacancy-meta-item"><span class="icon">📍</span> Utrecht</span>
+                    <span class="vacancy-meta-item"><span class="icon">📋</span> Vast dienstverband</span>
+                    <span class="vacancy-meta-item"><span class="icon">⏰</span> Fulltime</span>
+                    <span class="vacancy-meta-item"><span class="icon">🎓</span> Medior</span>
+                </div>
+                <div class="vacancy-card-bottom">
+                    <span class="vacancy-salary">€4.000 - €5.000 /maand</span>
+                    <span class="vacancy-date">Geplaatst: 3 maart 2026</span>
+                    <button class="btn-apply">Bekijk vacature →</button>
+                </div>
+            </div>
+
+            <!-- Vacancy 4 -->
+            <div class="vacancy-card" data-locatie="Amsterdam" data-sector="Audit" data-dienstverband="ZZP" data-uren="Flexibel" data-ervaring="Senior" data-salaris="7000+">
+                <div class="vacancy-card-top">
+                    <div>
+                        <div class="vacancy-title">Interim Audit Manager</div>
+                        <div class="vacancy-company">Vertrouwelijk</div>
+                    </div>
+                    <span class="vacancy-badge badge-urgent">Urgent</span>
+                </div>
+                <div class="vacancy-description">
+                    Voor een gerenommeerde opdrachtgever zoeken wij een ervaren Audit Manager op interim basis. Je neemt de leiding over lopende controle-opdrachten en stuurt een team van 4-6 medewerkers aan.
+                </div>
+                <div class="vacancy-meta">
+                    <span class="vacancy-meta-item"><span class="icon">📍</span> Amsterdam</span>
+                    <span class="vacancy-meta-item"><span class="icon">📋</span> ZZP / Freelance</span>
+                    <span class="vacancy-meta-item"><span class="icon">⏰</span> Flexibel</span>
+                    <span class="vacancy-meta-item"><span class="icon">🎓</span> Senior</span>
+                </div>
+                <div class="vacancy-card-bottom">
+                    <span class="vacancy-salary">€85 - €110 /uur</span>
+                    <span class="vacancy-date">Geplaatst: 2 maart 2026</span>
+                    <button class="btn-apply">Bekijk vacature →</button>
+                </div>
+            </div>
+
+            <!-- Vacancy 5 -->
+            <div class="vacancy-card" data-locatie="Den Haag" data-sector="Finance" data-dienstverband="Tijdelijk" data-uren="Parttime" data-ervaring="Junior" data-salaris="2500-3500">
+                <div class="vacancy-card-top">
+                    <div>
+                        <div class="vacancy-title">Junior Financial Analyst</div>
+                        <div class="vacancy-company">GovFinance Consultancy</div>
+                    </div>
+                </div>
+                <div class="vacancy-description">
+                    Een mooie startersfunctie voor pas afgestudeerden in finance. Je ondersteunt bij het opstellen van financiële rapportages en draagt bij aan projecten voor overheidsorganisaties.
+                </div>
+                <div class="vacancy-meta">
+                    <span class="vacancy-meta-item"><span class="icon">📍</span> Den Haag</span>
+                    <span class="vacancy-meta-item"><span class="icon">📋</span> Tijdelijk contract</span>
+                    <span class="vacancy-meta-item"><span class="icon">⏰</span> Parttime</span>
+                    <span class="vacancy-meta-item"><span class="icon">🎓</span> Junior</span>
+                </div>
+                <div class="vacancy-card-bottom">
+                    <span class="vacancy-salary">€2.800 - €3.200 /maand</span>
+                    <span class="vacancy-date">Geplaatst: 1 maart 2026</span>
+                    <button class="btn-apply">Bekijk vacature →</button>
+                </div>
+            </div>
+
+            <!-- Vacancy 6 -->
+            <div class="vacancy-card" data-locatie="Eindhoven" data-sector="Corporate Finance" data-dienstverband="Vast" data-uren="Fulltime" data-ervaring="Senior" data-salaris="5000-7000">
+                <div class="vacancy-card-top">
+                    <div>
+                        <div class="vacancy-title">Corporate Finance Adviseur</div>
+                        <div class="vacancy-company">Brabant M&amp;A Group</div>
+                    </div>
+                </div>
+                <div class="vacancy-description">
+                    Begeleid fusies, overnames en herstructureringen voor middelgrote bedrijven in de Brainport-regio. Je maakt waarderingen, begeleidt due diligence-trajecten en onderhoudt klantrelaties.
+                </div>
+                <div class="vacancy-meta">
+                    <span class="vacancy-meta-item"><span class="icon">📍</span> Eindhoven</span>
+                    <span class="vacancy-meta-item"><span class="icon">📋</span> Vast dienstverband</span>
+                    <span class="vacancy-meta-item"><span class="icon">⏰</span> Fulltime</span>
+                    <span class="vacancy-meta-item"><span class="icon">🎓</span> Senior</span>
+                </div>
+                <div class="vacancy-card-bottom">
+                    <span class="vacancy-salary">€5.000 - €6.500 /maand</span>
+                    <span class="vacancy-date">Geplaatst: 28 feb 2026</span>
+                    <button class="btn-apply">Bekijk vacature →</button>
+                </div>
+            </div>
+
+            <!-- Vacancy 7 -->
+            <div class="vacancy-card" data-locatie="Rotterdam" data-sector="Accountancy" data-dienstverband="Detachering" data-uren="Fulltime" data-ervaring="Medior" data-salaris="3500-5000">
+                <div class="vacancy-card-top">
+                    <div>
+                        <div class="vacancy-title">Accountant Samenstelpraktijk</div>
+                        <div class="vacancy-company">Feen Detachering</div>
+                    </div>
+                </div>
+                <div class="vacancy-description">
+                    Op detacheringsbasis aan de slag bij diverse MKB-kantoren in de regio Rotterdam. Je stelt jaarrekeningen samen, verzorgt aangiften en bent het aanspreekpunt voor een eigen klantenportefeuille.
+                </div>
+                <div class="vacancy-meta">
+                    <span class="vacancy-meta-item"><span class="icon">📍</span> Rotterdam</span>
+                    <span class="vacancy-meta-item"><span class="icon">📋</span> Detachering</span>
+                    <span class="vacancy-meta-item"><span class="icon">⏰</span> Fulltime</span>
+                    <span class="vacancy-meta-item"><span class="icon">🎓</span> Medior</span>
+                </div>
+                <div class="vacancy-card-bottom">
+                    <span class="vacancy-salary">€3.800 - €4.500 /maand</span>
+                    <span class="vacancy-date">Geplaatst: 26 feb 2026</span>
+                    <button class="btn-apply">Bekijk vacature →</button>
+                </div>
+            </div>
+
+            <!-- Vacancy 8 -->
+            <div class="vacancy-card" data-locatie="Groningen" data-sector="Consulting" data-dienstverband="Interim" data-uren="Parttime" data-ervaring="Medior" data-salaris="5000-7000">
+                <div class="vacancy-card-top">
+                    <div>
+                        <div class="vacancy-title">Finance Consultant</div>
+                        <div class="vacancy-company">NorthVenture Advisory</div>
+                    </div>
+                </div>
+                <div class="vacancy-description">
+                    Adviseer organisaties in Noord-Nederland op het gebied van financiële processen, digitalisering en rapportagestructuren. Ideaal voor consultants die impact willen maken buiten de Randstad.
+                </div>
+                <div class="vacancy-meta">
+                    <span class="vacancy-meta-item"><span class="icon">📍</span> Groningen</span>
+                    <span class="vacancy-meta-item"><span class="icon">📋</span> Interim</span>
+                    <span class="vacancy-meta-item"><span class="icon">⏰</span> Parttime</span>
+                    <span class="vacancy-meta-item"><span class="icon">🎓</span> Medior</span>
+                </div>
+                <div class="vacancy-card-bottom">
+                    <span class="vacancy-salary">€65 - €85 /uur</span>
+                    <span class="vacancy-date">Geplaatst: 24 feb 2026</span>
+                    <button class="btn-apply">Bekijk vacature →</button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- No results message -->
+        <div class="no-results" id="noResults" style="display: none;">
+            <h3>Geen vacatures gevonden</h3>
+            <p>Pas je filters of zoekopdracht aan om meer resultaten te zien.</p>
+        </div>
+    </section>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="footer-inner">
+        <span class="footer-copy">&copy; 2023 - 2026 Feen</span>
+        <div class="footer-social">
+            <a href="https://linkedin.com/company/feennl/" target="_blank" rel="noopener" aria-label="LinkedIn">in</a>
+            <a href="https://api.whatsapp.com/send?phone=31687848515" target="_blank" rel="noopener" aria-label="WhatsApp">✆</a>
+        </div>
+    </div>
+</footer>
+
+<script>
+    // Toggle filter group open/close
+    function toggleFilter(header) {
+        header.classList.toggle('collapsed');
+        const options = header.nextElementSibling;
+        options.classList.toggle('hidden');
+    }
+
+    // Collect all checked filter values grouped by filter type
+    function getActiveFilters() {
+        const filters = {};
+        document.querySelectorAll('.filter-options').forEach(group => {
+            const filterName = group.dataset.filter;
+            const checked = Array.from(group.querySelectorAll('input:checked')).map(cb => cb.value);
+            if (checked.length > 0) {
+                filters[filterName] = checked;
+            }
+        });
+        return filters;
+    }
+
+    // Render active filter chips
+    function renderActiveFilters(filters) {
+        const container = document.getElementById('activeFilters');
+        container.innerHTML = '';
+        for (const [filterName, values] of Object.entries(filters)) {
+            values.forEach(val => {
+                const chip = document.createElement('span');
+                chip.className = 'filter-chip';
+                chip.innerHTML = val + ' <span class="remove">×</span>';
+                chip.addEventListener('click', () => {
+                    // Uncheck the corresponding checkbox
+                    const checkbox = document.querySelector(
+                        '.filter-options[data-filter="' + CSS.escape(filterName) + '"] input[value="' + CSS.escape(val) + '"]'
+                    );
+                    if (checkbox) {
+                        checkbox.checked = false;
+                    }
+                    filterVacancies();
+                });
+                container.appendChild(chip);
+            });
+        }
+    }
+
+    // Main filter function
+    function filterVacancies() {
+        const filters = getActiveFilters();
+        const searchQuery = document.getElementById('searchInput').value.toLowerCase().trim();
+        const cards = document.querySelectorAll('.vacancy-card');
+        let visibleCount = 0;
+
+        cards.forEach(card => {
+            let show = true;
+
+            // Check each active filter
+            for (const [filterName, values] of Object.entries(filters)) {
+                const cardValue = card.dataset[filterName];
+                if (cardValue && !values.includes(cardValue)) {
+                    show = false;
+                    break;
+                }
+            }
+
+            // Check search query
+            if (show && searchQuery) {
+                const cardText = card.textContent.toLowerCase();
+                if (!cardText.includes(searchQuery)) {
+                    show = false;
+                }
+            }
+
+            card.style.display = show ? '' : 'none';
+            if (show) visibleCount++;
+        });
+
+        document.getElementById('resultCount').textContent = visibleCount;
+        document.getElementById('noResults').style.display = visibleCount === 0 ? '' : 'none';
+
+        renderActiveFilters(filters);
+    }
+
+    // Reset all filters
+    function resetFilters() {
+        document.querySelectorAll('.filter-options input[type="checkbox"]').forEach(cb => {
+            cb.checked = false;
+        });
+        document.getElementById('searchInput').value = '';
+        filterVacancies();
+    }
+
+    // Sort vacancies
+    function sortVacancies() {
+        const list = document.getElementById('vacancyList');
+        const cards = Array.from(list.querySelectorAll('.vacancy-card'));
+        const sortBy = document.getElementById('sortSelect').value;
+
+        cards.sort((a, b) => {
+            if (sortBy === 'newest' || sortBy === 'oldest') {
+                const dateA = a.querySelector('.vacancy-date').textContent;
+                const dateB = b.querySelector('.vacancy-date').textContent;
+                const comparison = dateB.localeCompare(dateA);
+                return sortBy === 'newest' ? comparison : -comparison;
+            }
+            if (sortBy === 'salary-high' || sortBy === 'salary-low') {
+                const salaryA = parseInt(a.querySelector('.vacancy-salary').textContent.replace(/[^0-9]/g, '')) || 0;
+                const salaryB = parseInt(b.querySelector('.vacancy-salary').textContent.replace(/[^0-9]/g, '')) || 0;
+                return sortBy === 'salary-high' ? salaryB - salaryA : salaryA - salaryB;
+            }
+            return 0;
+        });
+
+        cards.forEach(card => list.appendChild(card));
+    }
+
+    // Attach filter change listeners to all checkboxes
+    document.querySelectorAll('.filter-options input[type="checkbox"]').forEach(cb => {
+        cb.addEventListener('change', filterVacancies);
+    });
+
+    // Search on Enter key
+    document.getElementById('searchInput').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            filterVacancies();
+        }
+    });
+</script>
+
+</body>
+</html>
