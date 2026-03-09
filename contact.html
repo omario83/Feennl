@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact — Feen</title>
+    <meta name="description" content="Neem contact op met Feen. Wij zijn altijd bereikbaar via telefoon, e-mail of WhatsApp. Flexibel en persoonlijk.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #1a1f3a;
+            --navy-deep: #12152a;
+            --accent: #b8f470;
+            --accent-dark: #9ad45a;
+            --white: #ffffff;
+            --off-white: #f8f9fb;
+            --text: #1a1f3a;
+            --text-muted: #6b7194;
+            --border: #e4e7ee;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; color: var(--text); background: var(--off-white); -webkit-font-smoothing: antialiased; }
+
+        /* NAV */
+        .nav { background: var(--navy-deep); padding: 0 48px; height: 72px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 24px rgba(0,0,0,0.15); }
+        .nav-logo { height: 32px; opacity: 0.9; }
+        .nav-links { display: flex; gap: 32px; list-style: none; }
+        .nav-links a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.25s; }
+        .nav-links a:hover, .nav-links a.active { color: var(--accent); }
+        .nav-cta { background: var(--accent); color: var(--navy); padding: 10px 24px; border-radius: 6px; font-weight: 700; font-size: 13px; text-decoration: none; transition: all 0.25s; }
+        .nav-cta:hover { background: var(--accent-dark); }
+        .mobile-toggle { display: none; background: none; border: none; color: white; font-size: 24px; cursor: pointer; }
+        .mobile-nav { position: fixed; inset: 0; background: rgba(18,21,42,0.98); z-index: 999; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 28px; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+        .mobile-nav.open { opacity: 1; pointer-events: all; }
+        .mobile-nav a { color: var(--white); text-decoration: none; font-size: 1.4rem; font-weight: 600; }
+        .mobile-nav a:hover { color: var(--accent); }
+        .mobile-nav-close { position: absolute; top: 24px; right: 24px; background: none; border: none; color: white; font-size: 28px; cursor: pointer; }
+
+        /* HERO */
+        .hero { position: relative; height: 50vh; min-height: 380px; display: flex; align-items: center; overflow: hidden; }
+        .hero-bg { position: absolute; inset: 0; background-image: url('https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1920&q=80&fit=crop'); background-size: cover; background-position: center; filter: brightness(0.5); }
+        .hero-overlay { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(18,21,42,0.85) 0%, rgba(18,21,42,0.3) 100%); }
+        .hero-content { position: relative; z-index: 2; max-width: 700px; padding: 0 48px; }
+        .hero-tag { display: inline-block; background: rgba(184,244,112,0.15); color: var(--accent); padding: 6px 16px; border-radius: 4px; font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 20px; }
+        .hero h1 { font-size: 3rem; font-weight: 800; color: var(--white); line-height: 1.1; margin-bottom: 14px; letter-spacing: -1px; }
+        .hero h1 span { color: var(--accent); }
+        .hero p { font-size: 1.1rem; color: rgba(255,255,255,0.75); line-height: 1.7; max-width: 550px; }
+
+        /* CONTACT LAYOUT */
+        .contact-section { max-width: 1100px; margin: -40px auto 0; padding: 0 24px 60px; position: relative; z-index: 10; }
+        .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+        .contact-card { background: var(--white); border-radius: 16px; padding: 40px; box-shadow: 0 4px 24px rgba(26,26,46,0.07); }
+        .contact-card h2 { font-size: 1.5rem; font-weight: 800; margin-bottom: 6px; }
+        .contact-card h2 span { color: var(--accent-dark); }
+        .contact-card > .subtitle { color: var(--text-muted); margin-bottom: 28px; font-size: 0.95rem; }
+
+        /* FORM */
+        .form-group { margin-bottom: 16px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: 700; font-size: 0.85rem; color: var(--text); }
+        .form-group input, .form-group textarea { width: 100%; padding: 12px 14px; border: 2px solid var(--border); border-radius: 10px; font-size: 0.95rem; font-family: 'Inter', sans-serif; transition: border-color 0.25s; background: var(--off-white); }
+        .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--accent); }
+        .form-group textarea { min-height: 120px; resize: vertical; }
+        .form-submit { width: 100%; background: var(--accent); color: var(--navy); border: none; padding: 14px; border-radius: 10px; font-size: 1rem; font-weight: 800; cursor: pointer; font-family: 'Inter', sans-serif; transition: background 0.25s; }
+        .form-submit:hover { background: var(--accent-dark); }
+        .form-success { display: none; background: linear-gradient(135deg, var(--accent), #a8e860); border-radius: 14px; padding: 32px; text-align: center; }
+        .form-success.visible { display: block; }
+        .form-success h3 { color: var(--navy); font-size: 1.3rem; margin-bottom: 8px; }
+        .form-success p { color: #2a2a4e; }
+
+        /* DIRECT CONTACT */
+        .contact-method { display: flex; align-items: flex-start; gap: 16px; padding: 20px 0; border-bottom: 1px solid var(--border); }
+        .contact-method:last-child { border-bottom: none; }
+        .method-icon { width: 52px; height: 52px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0; }
+        .method-icon.phone { background: rgba(39,174,96,0.1); }
+        .method-icon.wa { background: rgba(37,211,102,0.1); }
+        .method-icon.email { background: rgba(52,152,219,0.1); }
+        .method-icon.linkedin { background: rgba(10,102,194,0.1); }
+        .method-info h3 { font-size: 1rem; font-weight: 700; margin-bottom: 4px; }
+        .method-info p { font-size: 0.88rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 8px; }
+        .method-link { display: inline-flex; align-items: center; gap: 6px; background: var(--off-white); color: var(--navy); padding: 8px 18px; border-radius: 8px; font-weight: 700; font-size: 0.85rem; text-decoration: none; transition: all 0.25s; border: 1px solid var(--border); }
+        .method-link:hover { border-color: var(--accent); background: rgba(184,244,112,0.1); }
+
+        /* AVAILABILITY STRIP */
+        .avail-strip { background: var(--navy-deep); padding: 40px 48px; text-align: center; color: var(--white); }
+        .avail-strip h2 { font-size: 1.5rem; font-weight: 800; margin-bottom: 10px; }
+        .avail-strip h2 span { color: var(--accent); }
+        .avail-strip p { color: rgba(255,255,255,0.6); font-size: 0.95rem; max-width: 600px; margin: 0 auto 24px; line-height: 1.7; }
+        .avail-times { display: flex; justify-content: center; gap: 32px; flex-wrap: wrap; }
+        .avail-item { text-align: center; }
+        .avail-item .day { font-weight: 700; font-size: 0.85rem; color: var(--accent); margin-bottom: 4px; }
+        .avail-item .time { font-size: 0.88rem; color: rgba(255,255,255,0.7); }
+
+        /* CTA */
+        .cta-section { background: linear-gradient(135deg, var(--accent), #a0e060); padding: 48px; text-align: center; }
+        .cta-section h2 { color: var(--navy); font-size: 1.6rem; font-weight: 800; margin-bottom: 8px; }
+        .cta-section p { color: #2a2a4e; margin-bottom: 20px; }
+        .cta-btn-dark { display: inline-block; background: var(--navy); color: var(--white); padding: 13px 32px; border-radius: 6px; font-weight: 700; font-size: 14px; text-decoration: none; transition: all 0.25s; margin: 0 6px; }
+        .cta-btn-dark:hover { background: #2a2a4e; transform: translateY(-2px); }
+
+        /* FOOTER */
+        .footer { background: var(--navy-deep); padding: 40px 48px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+        .footer-copy { color: rgba(255,255,255,0.35); font-size: 0.82rem; }
+        .footer-links { display: flex; gap: 24px; }
+        .footer-links a { color: rgba(255,255,255,0.45); text-decoration: none; font-size: 0.82rem; font-weight: 500; transition: color 0.25s; }
+        .footer-links a:hover { color: var(--accent); }
+
+        @media (max-width: 768px) {
+            .nav { padding: 0 20px; }
+            .nav-links, .nav-cta { display: none; }
+            .mobile-toggle { display: block; }
+            .hero { min-height: 340px; height: 45vh; }
+            .hero h1 { font-size: 2.2rem; }
+            .hero-content { padding: 0 24px; }
+            .contact-grid { grid-template-columns: 1fr; }
+            .contact-card { padding: 28px 20px; }
+            .avail-strip { padding: 30px 24px; }
+            .avail-times { gap: 16px; }
+            .cta-section { padding: 36px 24px; }
+            .footer { padding: 30px 24px; flex-direction: column; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+    <a href="/"><img src="https://primary.jwwb.nl/public/j/q/c/temp-bubpssuhqgoxqtzyfqhe/image-high-aunh7o.png?enable-io=true&enable=upscale&height=64" alt="Feen" class="nav-logo"></a>
+    <ul class="nav-links">
+        <li><a href="/vacature">Vacatures</a></li>
+        <li><a href="/opdrachtgever">Opdrachtgever</a></li>
+        <li><a href="/over-ons">Over Ons</a></li>
+        <li><a href="/contact" class="active">Contact</a></li>
+        <li><a href="/blogs">Insights</a></li>
+        <li><a href="/inloggen" class="auth-login">Inloggen</a></li>
+        <li><a href="/mijn-sollicitaties" class="auth-portal" style="display:none">Mijn Feen</a></li>
+    </ul>
+    <a href="/vacature" class="nav-cta">Bekijk vacatures</a>
+    <button class="mobile-toggle" onclick="document.getElementById('mobileNav').classList.add('open')" aria-label="Menu">&#9776;</button>
+</nav>
+<div class="mobile-nav" id="mobileNav">
+    <button class="mobile-nav-close" onclick="document.getElementById('mobileNav').classList.remove('open')" aria-label="Sluit menu">&times;</button>
+    <a href="/">Home</a><a href="/vacature">Vacatures</a><a href="/opdrachtgever">Opdrachtgever</a>
+    <a href="/over-ons">Over Ons</a><a href="/contact">Contact</a><a href="/blogs">Insights</a>
+    <a href="/inloggen" class="auth-login">Inloggen</a>
+    <a href="/mijn-sollicitaties" class="auth-portal" style="display:none">Mijn Feen</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <div class="hero-tag">Contact</div>
+        <h1>Altijd <span>bereikbaar.</span><br>Altijd flexibel.</h1>
+        <p>Of u nu een opdrachtgever bent met een dringende vacature of een professional op zoek naar uw volgende stap — wij staan voor u klaar.</p>
+    </div>
+</section>
+
+<!-- CONTACT SECTION -->
+<div class="contact-section">
+    <div class="contact-grid">
+
+        <!-- EMAIL FORM -->
+        <div class="contact-card">
+            <h2>Stuur ons een <span>bericht</span></h2>
+            <p class="subtitle">Wij reageren altijd binnen 24 uur.</p>
+            <form id="contactForm" onsubmit="submitContact(event)">
+                <div class="form-group">
+                    <label>Uw naam *</label>
+                    <input type="text" id="c-naam" placeholder="Volledige naam" required>
+                </div>
+                <div class="form-group">
+                    <label>E-mailadres *</label>
+                    <input type="email" id="c-email" placeholder="uw@email.nl" required>
+                </div>
+                <div class="form-group">
+                    <label>Telefoonnummer</label>
+                    <input type="tel" id="c-telefoon" placeholder="+31 6 ...">
+                </div>
+                <div class="form-group">
+                    <label>Onderwerp *</label>
+                    <input type="text" id="c-onderwerp" placeholder="Waar kunnen wij u mee helpen?" required>
+                </div>
+                <div class="form-group">
+                    <label>Uw bericht *</label>
+                    <textarea id="c-bericht" placeholder="Vertel ons meer over uw vraag of wens..." required></textarea>
+                </div>
+                <button type="submit" class="form-submit" id="contactSubmitBtn">Bericht versturen &rarr;</button>
+            </form>
+            <div class="form-success" id="contactSuccess">
+                <h3>✅ Bericht verzonden!</h3>
+                <p>Bedankt voor uw bericht. Wij nemen zo snel mogelijk contact met u op.</p>
+            </div>
+        </div>
+
+        <!-- DIRECT CONTACT -->
+        <div class="contact-card">
+            <h2>Direct <span>contact</span></h2>
+            <p class="subtitle">Liever direct schakelen? Wij zijn bereikbaar via:</p>
+
+            <div class="contact-method">
+                <div class="method-icon phone">📞</div>
+                <div class="method-info">
+                    <h3>Bel ons</h3>
+                    <p>Direct een specialist aan de lijn. Wij nemen altijd op — of bellen zo snel mogelijk terug.</p>
+                    <a href="tel:+31687848515" class="method-link">+31 6 87 84 85 15</a>
+                </div>
+            </div>
+
+            <div class="contact-method">
+                <div class="method-icon wa">💬</div>
+                <div class="method-info">
+                    <h3>WhatsApp</h3>
+                    <p>Snel een vraag stellen? Stuur ons een appje — wij reageren vaak binnen minuten.</p>
+                    <a href="https://api.whatsapp.com/send?phone=31687848515" target="_blank" rel="noopener" class="method-link">WhatsApp openen &rarr;</a>
+                </div>
+            </div>
+
+            <div class="contact-method">
+                <div class="method-icon email">✉️</div>
+                <div class="method-info">
+                    <h3>E-mail</h3>
+                    <p>Uitgebreide vraag? Stuur ons een mail en wij reageren binnen 24 uur.</p>
+                    <a href="mailto:info@feennl.nl" class="method-link">info@feennl.nl</a>
+                </div>
+            </div>
+
+            <div class="contact-method">
+                <div class="method-icon linkedin">💼</div>
+                <div class="method-info">
+                    <h3>LinkedIn</h3>
+                    <p>Volg ons voor updates, vacatures en inzichten uit de financiële sector.</p>
+                    <a href="https://linkedin.com/company/feennl/" target="_blank" rel="noopener" class="method-link">Feen op LinkedIn &rarr;</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- AVAILABILITY STRIP -->
+<section class="avail-strip">
+    <h2>Wij zijn er <span>voor u</span></h2>
+    <p>Flexibiliteit staat bij ons voorop. Nood? Dan schakelen wij ook buiten kantooruren. Bij Feen bent u geen nummer.</p>
+    <div class="avail-times">
+        <div class="avail-item"><div class="day">Maandag – Vrijdag</div><div class="time">08:30 – 18:00</div></div>
+        <div class="avail-item"><div class="day">WhatsApp</div><div class="time">07:00 – 22:00</div></div>
+        <div class="avail-item"><div class="day">Spoedvragen</div><div class="time">Altijd bereikbaar</div></div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+    <h2>Liever direct aan de slag?</h2>
+    <p>Meld uw vacature aan of bekijk onze openstaande posities.</p>
+    <a href="/opdrachtgever" class="cta-btn-dark">Vacature aanmelden &rarr;</a>
+    <a href="/vacature" class="cta-btn-dark">Bekijk vacatures &rarr;</a>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+    <div class="footer-copy">&copy; 2023 – 2026 Feen. Alle rechten voorbehouden.</div>
+    <div class="footer-links">
+        <a href="/">Home</a>
+        <a href="/contact">Contact</a>
+        <a href="https://linkedin.com/company/feennl/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://api.whatsapp.com/send?phone=31687848515" target="_blank" rel="noopener">WhatsApp</a>
+    </div>
+</footer>
+
+<!-- FIREBASE SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script src="/firebase-config.js"></script>
+<script>
+async function submitContact(e) {
+    e.preventDefault();
+    var btn = document.getElementById('contactSubmitBtn');
+    btn.disabled = true; btn.textContent = 'Verzenden...';
+    try {
+        await db.collection('contact-berichten').add({
+            naam: document.getElementById('c-naam').value.trim(),
+            email: document.getElementById('c-email').value.trim(),
+            telefoon: document.getElementById('c-telefoon').value.trim(),
+            onderwerp: document.getElementById('c-onderwerp').value.trim(),
+            bericht: document.getElementById('c-bericht').value.trim(),
+            aangemaakt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        document.getElementById('contactForm').style.display = 'none';
+        document.getElementById('contactSuccess').classList.add('visible');
+    } catch(err) {
+        btn.disabled = false; btn.textContent = 'Bericht versturen →';
+        alert('Er ging iets mis. Probeer het opnieuw of neem telefonisch contact op.');
+    }
+}
+</script>
+</body>
+</html>

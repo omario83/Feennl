@@ -581,12 +581,13 @@
                             <th>Kandidaat</th>
                             <th>E-mail</th>
                             <th>Vacature</th>
+                            <th>CV / Documenten</th>
                             <th>Fase</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody id="reactiesTbody">
-                        <tr><td colspan="6" class="loading-text">Laden...</td></tr>
+                        <tr><td colspan="7" class="loading-text">Laden...</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -682,11 +683,13 @@
         <div class="kk-contact-bar" id="kkContactBar"></div>
         <div class="kk-tabs" id="kkTabs">
             <button class="kk-tab active" onclick="switchKkTab('overzicht', this)">Overzicht</button>
+            <button class="kk-tab" onclick="switchKkTab('documenten', this)">Documenten</button>
             <button class="kk-tab" onclick="switchKkTab('activiteit', this)">Activiteit</button>
             <button class="kk-tab" onclick="switchKkTab('notities', this)">Notities</button>
             <button class="kk-tab" onclick="switchKkTab('sollicitaties', this)">Sollicitaties</button>
         </div>
         <div class="kk-tab-content active" id="kkTab-overzicht"></div>
+        <div class="kk-tab-content" id="kkTab-documenten"></div>
         <div class="kk-tab-content" id="kkTab-activiteit"></div>
         <div class="kk-tab-content" id="kkTab-notities"></div>
         <div class="kk-tab-content" id="kkTab-sollicitaties"></div>
@@ -1349,7 +1352,7 @@ async function loadReacties() {
     tbody.innerHTML = '';
 
     if (allReacties.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="6" class="empty"><div class="icon">👥</div>Nog geen reacties van kandidaten</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="7" class="empty"><div class="icon">👥</div>Nog geen reacties van kandidaten</td></tr>';
         return;
     }
 
@@ -1366,10 +1369,20 @@ async function loadReacties() {
             ? '<a class="clickable-name" onclick="openKlantenkaart(\'' + esc(r.userId) + '\')">' + esc(r.naam || '—') + '</a>'
             : '<strong>' + esc(r.naam || '—') + '</strong>';
 
+        // CV / Documents column
+        let docsHtml = '<span style="color:var(--text-muted)">—</span>';
+        if (r.cvUrl) {
+            docsHtml = '<a class="btn-download" href="' + esc(r.cvUrl) + '" target="_blank" rel="noopener">📄 CV</a>';
+        }
+        if (r.motivatieUrl) {
+            docsHtml += ' <a class="btn-download" href="' + esc(r.motivatieUrl) + '" target="_blank" rel="noopener">📝 Motivatie</a>';
+        }
+
         row.innerHTML = '<td>' + fmtDate(r.aangemaakt) + '</td>'
             + '<td>' + nameLink + '</td>'
             + '<td>' + contactHtml + '</td>'
             + '<td>' + esc(r.vacatureFunctie || '—') + '</td>'
+            + '<td>' + docsHtml + '</td>'
             + '<td><select class="fase-select" onchange="updateFase(\'' + r.vacatureId + '\', \'' + r.reactieId + '\', \'' + r.userId + '\', parseInt(this.value))">' + faseOpts + '</select></td>'
             + '<td></td>';
         tbody.appendChild(row);
@@ -1475,6 +1488,9 @@ async function openKlantenkaart(userId) {
     // Tab: Activiteit
     await loadKkActiviteit(userId);
 
+    // Tab: Documenten
+    await loadKkDocumenten(userId);
+
     // Tab: Notities
     await loadKkNotities('gebruikers', userId);
 
@@ -1520,12 +1536,59 @@ async function openKlantenkaartAanvrager(docId) {
 
     document.getElementById('kkTab-activiteit').innerHTML = '<div class="kk-timeline"><div class="kk-event"><div class="event-date">' + fmtDate(d.aangemaakt) + '</div><div class="event-text">Vacature-aanvraag ingediend voor "' + esc(d.functie || '—') + '"</div></div></div>';
 
+    document.getElementById('kkTab-documenten').innerHTML = d.bestandUrl
+        ? '<table style="width:100%;"><thead><tr><th>Type</th><th>Bestand</th></tr></thead><tbody><tr><td><strong>Functieprofiel</strong></td><td><a class="btn-download" href="' + esc(d.bestandUrl) + '" target="_blank" rel="noopener">📎 ' + esc(d.bestandNaam || 'Download') + '</a></td></tr></tbody></table>'
+        : '<p style="color:var(--text-muted);">Geen documenten bij deze aanvraag.</p>';
+
     await loadKkNotities('vacature-aanvragen', docId);
 
     document.getElementById('kkTab-sollicitaties').innerHTML = '<p style="color:var(--text-muted);">Niet van toepassing voor opdrachtgevers.</p>';
 
     switchKkTab('overzicht', document.querySelector('.kk-tab'));
     document.getElementById('kkOverlay').classList.add('show');
+}
+
+async function loadKkDocumenten(userId) {
+    const el = document.getElementById('kkTab-documenten');
+    el.innerHTML = '<p style="color:var(--text-muted);">Documenten zoeken...</p>';
+
+    const docs = [];
+
+    // Search all vacature reacties for this user's uploaded files
+    const vacSnap = await db.collection('vacatures').get();
+    for (const vDoc of vacSnap.docs) {
+        const vData = vDoc.data();
+        const reSnap = await vDoc.ref.collection('reacties').where('userId', '==', userId).get();
+        reSnap.forEach(rDoc => {
+            const r = rDoc.data();
+            if (r.cvUrl) docs.push({ type: 'CV', url: r.cvUrl, naam: r.cvNaam || 'CV', vacature: vData.functie, datum: r.aangemaakt });
+            if (r.motivatieUrl) docs.push({ type: 'Motivatiebrief', url: r.motivatieUrl, naam: r.motivatieNaam || 'Motivatiebrief', vacature: vData.functie, datum: r.aangemaakt });
+        });
+    }
+
+    // Check gebruikers doc for profile uploads
+    const userDoc = await db.collection('gebruikers').doc(userId).get();
+    if (userDoc.exists) {
+        const u = userDoc.data();
+        if (u.cvUrl) docs.push({ type: 'CV (profiel)', url: u.cvUrl, naam: u.cvNaam || 'CV', vacature: '—', datum: u.aangemaakt });
+    }
+
+    if (docs.length === 0) {
+        el.innerHTML = '<p style="color:var(--text-muted);">Geen documenten gevonden voor deze kandidaat.</p>';
+        return;
+    }
+
+    let html = '<table style="width:100%;"><thead><tr><th>Type</th><th>Bestand</th><th>Vacature</th><th>Datum</th></tr></thead><tbody>';
+    docs.forEach(d => {
+        html += '<tr>'
+            + '<td><strong>' + esc(d.type) + '</strong></td>'
+            + '<td><a class="btn-download" href="' + esc(d.url) + '" target="_blank" rel="noopener">📎 ' + esc(d.naam) + '</a></td>'
+            + '<td>' + esc(d.vacature || '—') + '</td>'
+            + '<td>' + fmtDate(d.datum) + '</td>'
+            + '</tr>';
+    });
+    html += '</tbody></table>';
+    el.innerHTML = html;
 }
 
 async function loadKkActiviteit(userId) {
