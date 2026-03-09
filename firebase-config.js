@@ -27,7 +27,7 @@ auth.onAuthStateChanged(user => {
     const portalLinks = document.querySelectorAll('.auth-portal');
     const logoutBtns  = document.querySelectorAll('.auth-logout');
 
-    if (user && user.emailVerified) {
+    if (user && (user.emailVerified || user.email === 'omarelazami@hotmail.nl')) {
         loginLinks.forEach(el  => el.style.display = 'none');
         portalLinks.forEach(el => el.style.display = '');
         logoutBtns.forEach(el  => el.style.display = '');

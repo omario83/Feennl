@@ -262,7 +262,7 @@ const _redirectParam = new URLSearchParams(window.location.search).get('redirect
 const _redirectUrl = (_redirectParam && _redirectParam.startsWith('/')) ? _redirectParam : '/mijn-sollicitaties';
 
 auth.onAuthStateChanged(user => {
-    if (user && user.emailVerified) {
+    if (user && (user.emailVerified || user.email === 'omarelazami@hotmail.nl')) {
         window.location.href = _redirectUrl;
     }
 });
@@ -293,7 +293,8 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
     try {
         const cred = await auth.signInWithEmailAndPassword(email, wachtwoord);
 
-        if (!cred.user.emailVerified) {
+        // Admin account hoeft geen verificatie
+        if (!cred.user.emailVerified && cred.user.email !== 'omarelazami@hotmail.nl') {
             currentUser = cred.user;
             verifyDiv.classList.add('show');
             btn.disabled = false;
