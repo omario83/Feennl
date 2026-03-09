@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vacature — Feen</title>
+    <meta name="description" content="Bekijk de volledige vacature bij Feen.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #1a1f3a;
+            --navy-deep: #12152a;
+            --accent: #b8f470;
+            --accent-dark: #9ad45a;
+            --white: #ffffff;
+            --off-white: #f8f9fb;
+            --text: #1a1f3a;
+            --text-muted: #6b7194;
+            --border: #e2e5f0;
+            --success: #27ae60;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--text);
+            background: var(--off-white);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* NAV */
+        .nav {
+            background: var(--navy-deep);
+            padding: 0 48px; height: 72px;
+            display: flex; align-items: center; justify-content: space-between;
+            position: sticky; top: 0; z-index: 1000;
+            box-shadow: 0 2px 24px rgba(0,0,0,0.15);
+        }
+        .nav-logo { height: 32px; opacity: 0.9; }
+        .nav-links { display: flex; gap: 32px; list-style: none; }
+        .nav-links a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.25s; }
+        .nav-links a:hover, .nav-links a.active { color: var(--accent); }
+        .nav-cta { background: var(--accent); color: var(--navy); padding: 10px 24px; border-radius: 6px; font-weight: 700; font-size: 13px; text-decoration: none; transition: all 0.25s; }
+        .nav-cta:hover { background: var(--accent-dark); }
+        .mobile-toggle { display: none; background: none; border: none; color: white; font-size: 24px; cursor: pointer; }
+        .mobile-nav { position: fixed; inset: 0; background: rgba(18,21,42,0.98); z-index: 999; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 28px; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+        .mobile-nav.open { opacity: 1; pointer-events: all; }
+        .mobile-nav a { color: var(--white); text-decoration: none; font-size: 1.4rem; font-weight: 600; }
+        .mobile-nav a:hover { color: var(--accent); }
+        .mobile-nav-close { position: absolute; top: 24px; right: 24px; background: none; border: none; color: white; font-size: 28px; cursor: pointer; }
+
+        /* BREADCRUMB */
+        .breadcrumb {
+            max-width: 900px;
+            margin: 24px auto 0;
+            padding: 0 24px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+        .breadcrumb a { color: var(--text-muted); text-decoration: none; }
+        .breadcrumb a:hover { color: var(--navy); text-decoration: underline; }
+
+        /* DETAIL CONTAINER */
+        .detail {
+            max-width: 900px;
+            margin: 16px auto 60px;
+            padding: 0 24px;
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 32px;
+        }
+
+        /* MAIN COLUMN */
+        .detail-main {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 2px 16px rgba(26,31,58,0.06);
+        }
+        .detail-badge {
+            display: inline-block;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+        .badge-new { background: #eafaf1; color: var(--success); }
+        .badge-urgent { background: #fef2f2; color: #e74c3c; }
+        .detail-title {
+            font-size: 1.7rem;
+            font-weight: 800;
+            color: var(--navy);
+            margin-bottom: 6px;
+        }
+        .detail-company {
+            font-size: 1rem;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+        .detail-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+        .meta-chip {
+            display: flex; align-items: center; gap: 6px;
+            background: var(--off-white);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--navy);
+        }
+        .meta-chip .icon { font-size: 1rem; }
+
+        /* SECTIONS */
+        .section { margin-bottom: 28px; }
+        .section h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--accent);
+            display: inline-block;
+        }
+        .section p, .section li {
+            font-size: 0.92rem;
+            line-height: 1.7;
+            color: #3d4260;
+        }
+        .section ul {
+            list-style: none;
+            padding: 0;
+        }
+        .section ul li {
+            position: relative;
+            padding-left: 24px;
+            margin-bottom: 8px;
+        }
+        .section ul li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--accent-dark);
+            font-weight: 700;
+        }
+        .section ul.wishes li::before {
+            content: '★';
+            color: #f39c12;
+        }
+
+        /* SIDEBAR */
+        .detail-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .sidebar-card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 28px 24px;
+            box-shadow: 0 2px 16px rgba(26,31,58,0.06);
+        }
+        .sidebar-card h4 {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+            font-weight: 700;
+        }
+        .sidebar-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.88rem;
+        }
+        .sidebar-item:last-child { border-bottom: none; }
+        .sidebar-item .label { color: var(--text-muted); }
+        .sidebar-item .value { font-weight: 600; color: var(--navy); }
+
+        .btn-solliciteer {
+            width: 100%;
+            padding: 14px;
+            background: var(--accent);
+            color: var(--navy);
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.25s;
+        }
+        .btn-solliciteer:hover { background: var(--accent-dark); transform: translateY(-1px); }
+        .btn-solliciteer:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+        .solliciteer-success {
+            text-align: center;
+            display: none;
+            padding: 16px;
+        }
+        .solliciteer-success.show { display: block; }
+        .solliciteer-success .icon { font-size: 2rem; margin-bottom: 8px; }
+        .solliciteer-success p { color: var(--text-muted); font-size: 0.88rem; line-height: 1.5; }
+
+        .sidebar-contact a {
+            display: block;
+            padding: 10px 0;
+            color: var(--navy);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.25s;
+        }
+        .sidebar-contact a:hover { color: var(--accent-dark); }
+
+        /* LOADING */
+        .loading {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 80px;
+            color: var(--text-muted);
+        }
+        .loading .spinner {
+            width: 40px; height: 40px;
+            border: 3px solid var(--border);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 16px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* NOT FOUND */
+        .not-found {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 80px 24px;
+            background: var(--white);
+            border-radius: 16px;
+        }
+        .not-found h2 { margin-bottom: 8px; }
+        .not-found p { color: var(--text-muted); margin-bottom: 24px; }
+        .not-found a {
+            display: inline-block;
+            padding: 12px 28px;
+            background: var(--accent);
+            color: var(--navy);
+            border-radius: 8px;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            .nav { padding: 0 20px; }
+            .nav-links, .nav-cta { display: none; }
+            .mobile-toggle { display: block; }
+            .detail {
+                grid-template-columns: 1fr;
+                margin-top: 12px;
+            }
+            .detail-main { padding: 28px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+    <a href="/"><img src="https://primary.jwwb.nl/public/j/q/c/temp-bubpssuhqgoxqtzyfqhe/image-high-aunh7o.png?enable-io=true&enable=upscale&height=64" alt="Feen" class="nav-logo"></a>
+    <ul class="nav-links">
+        <li><a href="/vacature" class="active">Vacatures</a></li>
+        <li><a href="/opdrachtgever">Opdrachtgever</a></li>
+        <li><a href="/over-ons">Over Ons</a></li>
+        <li><a href="/contact">Contact</a></li>
+        <li><a href="/blogs">Insights</a></li>
+        <li><a href="/inloggen" class="auth-login">Inloggen</a></li>
+        <li><a href="/mijn-sollicitaties" class="auth-portal" style="display:none">Mijn Feen</a></li>
+    </ul>
+    <a href="/vacature" class="nav-cta">Alle vacatures</a>
+    <button class="mobile-toggle" onclick="document.getElementById('mobileNav').classList.add('open')" aria-label="Menu">&#9776;</button>
+</nav>
+<div class="mobile-nav" id="mobileNav">
+    <button class="mobile-nav-close" onclick="document.getElementById('mobileNav').classList.remove('open')" aria-label="Sluit menu">&times;</button>
+    <a href="/">Home</a><a href="/vacature">Vacatures</a><a href="/opdrachtgever">Opdrachtgever</a>
+    <a href="/over-ons">Over Ons</a><a href="/contact">Contact</a><a href="/blogs">Insights</a>
+    <a href="/inloggen" class="auth-login">Inloggen</a>
+    <a href="/mijn-sollicitaties" class="auth-portal" style="display:none">Mijn Feen</a>
+</div>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb">
+    <a href="/">Home</a> &rsaquo; <a href="/vacature">Vacatures</a> &rsaquo; <span id="breadcrumbTitle">Laden...</span>
+</div>
+
+<!-- DETAIL -->
+<div class="detail" id="detailContainer">
+    <div class="loading" id="loadingState">
+        <div class="spinner"></div>
+        <p>Vacature laden...</p>
+    </div>
+</div>
+
+<!-- FIREBASE SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script src="/firebase-config.js"></script>
+
+<script>
+// Haal vacature ID uit URL (?id=xxx)
+const params = new URLSearchParams(window.location.search);
+const vacId = params.get('id');
+
+if (!vacId) {
+    showNotFound();
+} else {
+    loadVacature(vacId);
+}
+
+async function loadVacature(id) {
+    try {
+        const doc = await db.collection('vacatures').doc(id).get();
+        if (!doc.exists) {
+            showNotFound();
+            return;
+        }
+
+        const v = doc.data();
+        document.title = v.functie + ' — Feen';
+        document.getElementById('breadcrumbTitle').textContent = v.functie;
+        document.getElementById('loadingState').style.display = 'none';
+
+        const container = document.getElementById('detailContainer');
+        container.innerHTML = buildMain(v, id) + buildSidebar(v, id);
+
+    } catch (err) {
+        showNotFound();
+    }
+}
+
+function buildMain(v, id) {
+    const badgeHtml = v.badge ? '<span class="detail-badge badge-' + escapeHtml(v.badge) + '">' + escapeHtml(v.badgeText || v.badge) + '</span>' : '';
+
+    return '<div class="detail-main">'
+        + badgeHtml
+        + '<h1 class="detail-title">' + escapeHtml(v.functie) + '</h1>'
+        + '<div class="detail-company">' + escapeHtml(v.bedrijf || 'Vertrouwelijk') + '</div>'
+        + '<div class="detail-meta">'
+        +   (v.locatie ? '<div class="meta-chip"><span class="icon">📍</span> ' + escapeHtml(v.locatie) + '</div>' : '')
+        +   (v.dienstverband ? '<div class="meta-chip"><span class="icon">📋</span> ' + escapeHtml(v.dienstverband) + '</div>' : '')
+        +   (v.uren ? '<div class="meta-chip"><span class="icon">⏰</span> ' + escapeHtml(v.uren) + '</div>' : '')
+        +   (v.ervaring ? '<div class="meta-chip"><span class="icon">🎓</span> ' + escapeHtml(v.ervaring) + '</div>' : '')
+        +   (v.duur ? '<div class="meta-chip"><span class="icon">📅</span> ' + escapeHtml(v.duur) + '</div>' : '')
+        + '</div>'
+        + buildSection('Over de opdracht', v.omschrijving)
+        + buildListSection('Werkzaamheden', v.werkzaamheden)
+        + buildListSection('Minimale vereisten', v.vereisten)
+        + buildListSection('Wensen (nice-to-have)', v.wensen, 'wishes')
+        + buildListSection('Wat biedt de werkgever?', v.aanbod)
+        + '</div>';
+}
+
+function buildSidebar(v, id) {
+    return '<div class="detail-sidebar">'
+        // Overzicht card
+        + '<div class="sidebar-card">'
+        + '<h4>Overzicht</h4>'
+        + sidebarItem('Locatie', v.locatie)
+        + sidebarItem('Duur', v.duur)
+        + sidebarItem('Dienstverband', v.dienstverband)
+        + sidebarItem('Uren', v.uren)
+        + sidebarItem('Ervaring', v.ervaring)
+        + sidebarItem('Salaris', v.salaris)
+        + sidebarItem('Geplaatst', v.geplaatst ? formatDate(v.geplaatst.toDate()) : '—')
+        + '</div>'
+        // Solliciteer card
+        + '<div class="sidebar-card">'
+        + '<div id="solliciteerForm">'
+        + '<button class="btn-solliciteer" onclick="solliciteer(\'' + id + '\')">Solliciteer direct →</button>'
+        + '<p style="text-align:center;color:var(--text-muted);font-size:0.8rem;margin-top:10px;">Je moet ingelogd zijn om te solliciteren</p>'
+        + '</div>'
+        + '<div class="solliciteer-success" id="solliciteerSuccess">'
+        + '<div class="icon">🎉</div>'
+        + '<p><strong>Sollicitatie verstuurd!</strong><br>Je kunt de status volgen via <a href="/mijn-sollicitaties">Mijn Feen</a>.</p>'
+        + '</div>'
+        + '</div>'
+        // Contact card
+        + '<div class="sidebar-card sidebar-contact">'
+        + '<h4>Vragen?</h4>'
+        + '<a href="tel:+31687848515">📞 +31 6 87848515</a>'
+        + '<a href="https://api.whatsapp.com/send?phone=31687848515" target="_blank" rel="noopener">💬 WhatsApp</a>'
+        + '<a href="mailto:info@feennl.nl">✉️ info@feennl.nl</a>'
+        + '</div>'
+        + '</div>';
+}
+
+function buildSection(title, content) {
+    if (!content) return '';
+    return '<div class="section"><h3>' + escapeHtml(title) + '</h3><p>' + escapeHtml(content) + '</p></div>';
+}
+
+function buildListSection(title, items, cls) {
+    if (!items || !items.length) return '';
+    var html = '<div class="section"><h3>' + escapeHtml(title) + '</h3><ul' + (cls ? ' class="' + cls + '"' : '') + '>';
+    items.forEach(function(item) {
+        html += '<li>' + escapeHtml(item) + '</li>';
+    });
+    return html + '</ul></div>';
+}
+
+function sidebarItem(label, value) {
+    if (!value) return '';
+    return '<div class="sidebar-item"><span class="label">' + escapeHtml(label) + '</span><span class="value">' + escapeHtml(value) + '</span></div>';
+}
+
+function showNotFound() {
+    var el = document.getElementById('loadingState');
+    if (el) el.style.display = 'none';
+    var container = document.getElementById('detailContainer');
+    container.innerHTML = '<div class="not-found"><h2>Vacature niet gevonden</h2><p>Deze vacature bestaat niet of is niet meer beschikbaar.</p><a href="/vacature">Alle vacatures bekijken →</a></div>';
+}
+
+async function solliciteer(vacatureId) {
+    const user = auth.currentUser;
+    if (!user || !user.emailVerified) {
+        window.location.href = '/inloggen';
+        return;
+    }
+
+    const btn = document.querySelector('.btn-solliciteer');
+    btn.disabled = true;
+    btn.textContent = 'Even geduld...';
+
+    try {
+        // Haal vacaturegegevens op
+        const vacDoc = await db.collection('vacatures').doc(vacatureId).get();
+        const vac = vacDoc.data();
+
+        // Sollicitatie opslaan bij gebruiker
+        await db.collection('gebruikers').doc(user.uid).collection('sollicitaties').add({
+            vacatureId: vacatureId,
+            functie: vac.functie || '',
+            bedrijf: vac.bedrijf || '',
+            locatie: vac.locatie || '',
+            fase: 1,
+            aangemaakt: firebase.firestore.FieldValue.serverTimestamp(),
+            bijgewerkt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+        // Reactie opslaan bij vacature (voor admin overzicht)
+        await db.collection('vacatures').doc(vacatureId).collection('reacties').add({
+            userId: user.uid,
+            naam: user.displayName || '',
+            email: user.email,
+            fase: 1,
+            aangemaakt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+        document.getElementById('solliciteerForm').style.display = 'none';
+        document.getElementById('solliciteerSuccess').classList.add('show');
+    } catch (err) {
+        btn.disabled = false;
+        btn.textContent = 'Solliciteer direct →';
+        alert('Er ging iets mis. Probeer het opnieuw.');
+    }
+}
+
+function formatDate(date) {
+    return date.toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' });
+}
+
+function escapeHtml(str) {
+    if (!str) return '';
+    var div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+}
+</script>
+
+</body>
+</html>

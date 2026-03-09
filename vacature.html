@@ -457,6 +457,7 @@
         }
 
         .btn-apply {
+            display: inline-block;
             padding: 10px 24px;
             background: #b8f470;
             color: #1a1a2e;
@@ -467,6 +468,8 @@
             border-radius: 6px;
             cursor: pointer;
             transition: background-color 0.2s;
+            text-decoration: none;
+            text-align: center;
         }
 
         .btn-apply:hover {
@@ -878,7 +881,7 @@
                 <div class="vacancy-card-bottom">
                     <span class="vacancy-salary">€5.500 - €6.800 /maand</span>
                     <span class="vacancy-date">Geplaatst: 5 maart 2026</span>
-                    <button class="btn-apply">Bekijk vacature →</button>
+                    <a class="btn-apply" href="/vacature-detail?id=demo-senior-accountant">Bekijk vacature →</a>
                 </div>
             </div>
 
@@ -903,7 +906,7 @@
                 <div class="vacancy-card-bottom">
                     <span class="vacancy-salary">€4.200 - €4.800 /maand</span>
                     <span class="vacancy-date">Geplaatst: 4 maart 2026</span>
-                    <button class="btn-apply">Bekijk vacature →</button>
+                    <a class="btn-apply" href="/vacature-detail?id=demo-financial-controller">Bekijk vacature →</a>
                 </div>
             </div>
 
@@ -927,7 +930,7 @@
                 <div class="vacancy-card-bottom">
                     <span class="vacancy-salary">€4.000 - €5.000 /maand</span>
                     <span class="vacancy-date">Geplaatst: 3 maart 2026</span>
-                    <button class="btn-apply">Bekijk vacature →</button>
+                    <a class="btn-apply" href="/vacature-detail?id=demo-belastingadviseur">Bekijk vacature →</a>
                 </div>
             </div>
 
@@ -952,7 +955,7 @@
                 <div class="vacancy-card-bottom">
                     <span class="vacancy-salary">€85 - €110 /uur</span>
                     <span class="vacancy-date">Geplaatst: 2 maart 2026</span>
-                    <button class="btn-apply">Bekijk vacature →</button>
+                    <a class="btn-apply" href="/vacature-detail?id=demo-audit-manager">Bekijk vacature →</a>
                 </div>
             </div>
 
@@ -976,7 +979,7 @@
                 <div class="vacancy-card-bottom">
                     <span class="vacancy-salary">€2.800 - €3.200 /maand</span>
                     <span class="vacancy-date">Geplaatst: 1 maart 2026</span>
-                    <button class="btn-apply">Bekijk vacature →</button>
+                    <a class="btn-apply" href="/vacature-detail?id=demo-junior-analyst">Bekijk vacature →</a>
                 </div>
             </div>
 
@@ -1000,7 +1003,7 @@
                 <div class="vacancy-card-bottom">
                     <span class="vacancy-salary">€5.000 - €6.500 /maand</span>
                     <span class="vacancy-date">Geplaatst: 28 feb 2026</span>
-                    <button class="btn-apply">Bekijk vacature →</button>
+                    <a class="btn-apply" href="/vacature-detail?id=demo-corporate-finance">Bekijk vacature →</a>
                 </div>
             </div>
 
@@ -1024,7 +1027,7 @@
                 <div class="vacancy-card-bottom">
                     <span class="vacancy-salary">€3.800 - €4.500 /maand</span>
                     <span class="vacancy-date">Geplaatst: 26 feb 2026</span>
-                    <button class="btn-apply">Bekijk vacature →</button>
+                    <a class="btn-apply" href="/vacature-detail?id=demo-accountant-samenstel">Bekijk vacature →</a>
                 </div>
             </div>
 
@@ -1048,7 +1051,7 @@
                 <div class="vacancy-card-bottom">
                     <span class="vacancy-salary">€65 - €85 /uur</span>
                     <span class="vacancy-date">Geplaatst: 24 feb 2026</span>
-                    <button class="btn-apply">Bekijk vacature →</button>
+                    <a class="btn-apply" href="/vacature-detail?id=demo-finance-consultant">Bekijk vacature →</a>
                 </div>
             </div>
 
@@ -1199,6 +1202,70 @@
             filterVacancies();
         }
     });
+</script>
+
+<!-- FIREBASE SDK + laad Firestore vacatures -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script src="/firebase-config.js"></script>
+<script>
+    // Laad extra vacatures uit Firestore en voeg toe aan de lijst
+    (async function loadFirestoreVacatures() {
+        try {
+            const snapshot = await db.collection('vacatures')
+                .where('actief', '==', true)
+                .orderBy('geplaatst', 'desc')
+                .get();
+
+            if (snapshot.empty) return;
+
+            const list = document.getElementById('vacancyList');
+            snapshot.forEach(doc => {
+                const v = doc.data();
+                const card = document.createElement('div');
+                card.className = 'vacancy-card';
+                card.dataset.locatie = v.locatie || '';
+                card.dataset.sector = v.sector || '';
+                card.dataset.dienstverband = v.dienstverband || '';
+                card.dataset.uren = v.uren || '';
+                card.dataset.ervaring = v.ervaring || '';
+
+                const badgeHtml = v.badge ? '<span class="vacancy-badge badge-' + v.badge + '">' + (v.badgeText || v.badge) + '</span>' : '';
+                const dateStr = v.geplaatst ? v.geplaatst.toDate().toLocaleDateString('nl-NL', {day:'numeric',month:'short',year:'numeric'}) : '';
+
+                card.innerHTML = '<div class="vacancy-card-top"><div>'
+                    + '<div class="vacancy-title">' + escHtml(v.functie) + '</div>'
+                    + '<div class="vacancy-company">' + escHtml(v.bedrijf || 'Vertrouwelijk') + '</div>'
+                    + '</div>' + badgeHtml + '</div>'
+                    + '<div class="vacancy-description">' + escHtml(v.omschrijving || '').substring(0, 200) + '...</div>'
+                    + '<div class="vacancy-meta">'
+                    + (v.locatie ? '<span class="vacancy-meta-item"><span class="icon">\uD83D\uDCCD</span> ' + escHtml(v.locatie) + '</span>' : '')
+                    + (v.dienstverband ? '<span class="vacancy-meta-item"><span class="icon">\uD83D\uDCCB</span> ' + escHtml(v.dienstverband) + '</span>' : '')
+                    + (v.uren ? '<span class="vacancy-meta-item"><span class="icon">\u23F0</span> ' + escHtml(v.uren) + '</span>' : '')
+                    + (v.ervaring ? '<span class="vacancy-meta-item"><span class="icon">\uD83C\uDF93</span> ' + escHtml(v.ervaring) + '</span>' : '')
+                    + '</div>'
+                    + '<div class="vacancy-card-bottom">'
+                    + (v.salaris ? '<span class="vacancy-salary">' + escHtml(v.salaris) + '</span>' : '<span></span>')
+                    + '<span class="vacancy-date">Geplaatst: ' + dateStr + '</span>'
+                    + '<a class="btn-apply" href="/vacature-detail?id=' + doc.id + '">Bekijk vacature \u2192</a>'
+                    + '</div>';
+
+                list.insertBefore(card, list.firstChild);
+            });
+
+            // Update count
+            var total = document.querySelectorAll('.vacancy-card').length;
+            document.getElementById('resultCount').textContent = total;
+        } catch(e) { /* Firestore niet beschikbaar, toon alleen hardcoded vacatures */ }
+    })();
+
+    function escHtml(s) {
+        if (!s) return '';
+        var d = document.createElement('div');
+        d.textContent = s;
+        return d.innerHTML;
+    }
 </script>
 
 </body>

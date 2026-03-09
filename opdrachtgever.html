@@ -331,6 +331,39 @@
         .vac-success h3 { color: var(--dark-bg); margin-bottom: 8px; }
         .vac-success p { color: #2a2a4e; }
 
+        /* FILE UPLOAD */
+        .file-upload-area {
+            border: 2px dashed var(--border);
+            border-radius: 12px;
+            padding: 28px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.25s, background 0.25s;
+            background: var(--light-bg);
+        }
+        .file-upload-area:hover, .file-upload-area.dragover {
+            border-color: var(--accent);
+            background: rgba(184,244,112,0.06);
+        }
+        .file-upload-area .upload-icon { font-size: 2rem; margin-bottom: 8px; }
+        .file-upload-area p { color: var(--text-light); font-size: 0.88rem; margin: 0; }
+        .file-upload-area .upload-hint { font-size: 0.78rem; color: #aaa; margin-top: 4px; }
+        .file-upload-area input[type="file"] { display: none; }
+        .file-name {
+            display: none;
+            margin-top: 10px;
+            padding: 8px 14px;
+            background: rgba(184,244,112,0.15);
+            border-radius: 8px;
+            font-size: 0.85rem;
+            color: var(--text);
+        }
+        .file-name.show { display: flex; align-items: center; justify-content: space-between; }
+        .file-name .remove-file {
+            background: none; border: none; color: #e74c3c;
+            font-size: 1.1rem; cursor: pointer; padding: 0 4px;
+        }
+
         /* ===== INTAKE PLANNEN (Panel 5) ===== */
         .intake-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; align-items: start; }
         .intake-info { padding: 20px 0; }
@@ -725,6 +758,19 @@
                         <textarea id="vac-toelichting" placeholder="Beschrijf kort de functie-eisen, gewenste startdatum, etc."></textarea>
                     </div>
                     <div class="form-group full">
+                        <label>Functieprofiel uploaden (optioneel)</label>
+                        <div class="file-upload-area" id="uploadArea" onclick="document.getElementById('vac-bestand').click()">
+                            <div class="upload-icon">📄</div>
+                            <p>Klik om een bestand te selecteren of sleep het hierheen</p>
+                            <p class="upload-hint">PDF, Word of afbeelding — max 10 MB</p>
+                            <input type="file" id="vac-bestand" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
+                        </div>
+                        <div class="file-name" id="fileNameDisplay">
+                            <span id="fileNameText"></span>
+                            <button class="remove-file" onclick="removeFile(event)" type="button">&times;</button>
+                        </div>
+                    </div>
+                    <div class="form-group full">
                         <button class="calc-button" onclick="submitVacature()">Vacature aanmelden →</button>
                     </div>
                 </div>
@@ -910,20 +956,105 @@
     }
 
     // ===== VACATURE FORM =====
-    function submitVacature() {
+    var uploadedFile = null;
+
+    // File upload area events
+    (function() {
+        var area = document.getElementById('uploadArea');
+        var input = document.getElementById('vac-bestand');
+
+        input.addEventListener('change', function() {
+            if (input.files.length > 0) setFile(input.files[0]);
+        });
+
+        area.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            area.classList.add('dragover');
+        });
+        area.addEventListener('dragleave', function() {
+            area.classList.remove('dragover');
+        });
+        area.addEventListener('drop', function(e) {
+            e.preventDefault();
+            area.classList.remove('dragover');
+            if (e.dataTransfer.files.length > 0) setFile(e.dataTransfer.files[0]);
+        });
+    })();
+
+    function setFile(file) {
+        if (file.size > 10 * 1024 * 1024) {
+            alert('Bestand is te groot. Maximaal 10 MB.');
+            return;
+        }
+        uploadedFile = file;
+        document.getElementById('fileNameText').textContent = file.name + ' (' + (file.size / 1024 / 1024).toFixed(1) + ' MB)';
+        document.getElementById('fileNameDisplay').classList.add('show');
+    }
+
+    function removeFile(e) {
+        e.stopPropagation();
+        uploadedFile = null;
+        document.getElementById('vac-bestand').value = '';
+        document.getElementById('fileNameDisplay').classList.remove('show');
+    }
+
+    async function submitVacature() {
         var bedrijf = document.getElementById('vac-bedrijf').value.trim();
         var contact = document.getElementById('vac-contact').value.trim();
         var email = document.getElementById('vac-email').value.trim();
         var telefoon = document.getElementById('vac-telefoon').value.trim();
+        var functie = document.getElementById('vac-functie').value;
+        var aantal = document.getElementById('vac-aantal').value;
+        var toelichting = document.getElementById('vac-toelichting').value.trim();
 
         if (!bedrijf || !contact || !email || !telefoon) {
             alert('Vul alle verplichte velden in (*)');
             return;
         }
 
-        document.getElementById('vacForm').style.display = 'none';
-        document.getElementById('vacSuccess').classList.add('visible');
-        document.getElementById('vacSuccess').scrollIntoView({behavior: 'smooth', block: 'center'});
+        // Disable button
+        var btn = document.querySelector('#vacForm .calc-button');
+        btn.disabled = true;
+        btn.textContent = 'Even geduld...';
+
+        try {
+            var bestandUrl = '';
+            var bestandNaam = '';
+
+            // Upload bestand naar Firebase Storage als er een is geselecteerd
+            if (uploadedFile) {
+                var storageRef = firebase.storage().ref();
+                var timestamp = Date.now();
+                var safeName = uploadedFile.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+                var fileRef = storageRef.child('vacature-aanvragen/' + timestamp + '_' + safeName);
+                var snapshot = await fileRef.put(uploadedFile);
+                bestandUrl = await snapshot.ref.getDownloadURL();
+                bestandNaam = uploadedFile.name;
+            }
+
+            // Opslaan in Firestore
+            await db.collection('vacature-aanvragen').add({
+                bedrijf: bedrijf,
+                contactpersoon: contact,
+                email: email,
+                telefoon: telefoon,
+                functie: functie,
+                aantal: aantal || '',
+                toelichting: toelichting,
+                bestandUrl: bestandUrl,
+                bestandNaam: bestandNaam,
+                status: 'nieuw',
+                aangemaakt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+
+            document.getElementById('vacForm').style.display = 'none';
+            document.getElementById('vacSuccess').classList.add('visible');
+            document.getElementById('vacSuccess').scrollIntoView({behavior: 'smooth', block: 'center'});
+        } catch(err) {
+            btn.disabled = false;
+            btn.textContent = 'Vacature aanmelden →';
+            alert('Er ging iets mis bij het versturen. Probeer het opnieuw.');
+        }
     }
 
     // ===== INTAKE PLANNER =====
@@ -960,6 +1091,13 @@
         document.getElementById('intakeSuccess').scrollIntoView({behavior: 'smooth', block: 'center'});
     }
 </script>
+
+<!-- FIREBASE SDK (incl. Storage voor bestandsupload) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
+<script src="/firebase-config.js"></script>
 
 </body>
 </html>

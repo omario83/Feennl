@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Backoffice — Feen Admin</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #1a1f3a;
+            --navy-deep: #12152a;
+            --accent: #b8f470;
+            --accent-dark: #9ad45a;
+            --white: #ffffff;
+            --off-white: #f8f9fb;
+            --text: #1a1f3a;
+            --text-muted: #6b7194;
+            --border: #e2e5f0;
+            --danger: #e74c3c;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --info: #3498db;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--text);
+            background: var(--off-white);
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+        }
+
+        /* NAV */
+        .nav {
+            background: var(--navy-deep);
+            padding: 0 32px; height: 64px;
+            display: flex; align-items: center; justify-content: space-between;
+            position: sticky; top: 0; z-index: 1000;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.2);
+        }
+        .nav-left { display: flex; align-items: center; gap: 16px; }
+        .nav-logo { height: 28px; opacity: 0.9; }
+        .nav-badge { background: var(--danger); color: white; font-size: 0.7rem; font-weight: 700; padding: 3px 10px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .nav-right { display: flex; align-items: center; gap: 16px; }
+        .nav-right span { color: rgba(255,255,255,0.7); font-size: 0.85rem; }
+        .nav-btn { background: none; border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.7); padding: 6px 16px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; font-family: inherit; transition: all 0.25s; }
+        .nav-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+        /* LAYOUT */
+        .admin-layout {
+            display: flex;
+            min-height: calc(100vh - 64px);
+        }
+        .sidebar {
+            width: 240px;
+            background: var(--white);
+            border-right: 1px solid var(--border);
+            padding: 24px 0;
+            flex-shrink: 0;
+        }
+        .sidebar-link {
+            display: flex; align-items: center; gap: 10px;
+            padding: 12px 24px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+            font-family: inherit;
+        }
+        .sidebar-link:hover { color: var(--navy); background: var(--off-white); }
+        .sidebar-link.active { color: var(--navy); background: rgba(184,244,112,0.12); font-weight: 600; border-right: 3px solid var(--accent); }
+        .sidebar-link .badge {
+            margin-left: auto;
+            background: var(--danger);
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 32px;
+            overflow-y: auto;
+        }
+
+        /* SECTION HEADER */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+        .section-header h2 {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--navy);
+        }
+        .section-header .count {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* PANELS */
+        .admin-panel { display: none; }
+        .admin-panel.active { display: block; }
+
+        /* STATS */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+        .stat-box {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(26,31,58,0.05);
+        }
+        .stat-box .stat-label { font-size: 0.78rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
+        .stat-box .stat-value { font-size: 2rem; font-weight: 800; color: var(--navy); margin-top: 4px; }
+
+        /* TABLE */
+        .table-card {
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(26,31,58,0.05);
+            overflow: hidden;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th {
+            background: var(--off-white);
+            padding: 12px 16px;
+            text-align: left;
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            font-weight: 700;
+            border-bottom: 1px solid var(--border);
+        }
+        td {
+            padding: 14px 16px;
+            font-size: 0.88rem;
+            border-bottom: 1px solid var(--border);
+            vertical-align: middle;
+        }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background: rgba(184,244,112,0.04); }
+
+        .status-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        .status-nieuw { background: #ebf5fb; color: var(--info); }
+        .status-bekeken { background: #fef9e7; color: #d4a017; }
+        .status-contact { background: #f4ecf7; color: #9b59b6; }
+        .status-actief { background: #eafaf1; color: var(--success); }
+        .status-afgewezen { background: #fef2f2; color: var(--danger); }
+
+        .btn-sm {
+            padding: 5px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.78rem;
+            cursor: pointer;
+            background: var(--white);
+            color: var(--navy);
+            font-family: inherit;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .btn-sm:hover { border-color: var(--accent); background: rgba(184,244,112,0.1); }
+        .btn-download {
+            color: var(--info);
+            text-decoration: none;
+            font-size: 0.82rem;
+            font-weight: 600;
+        }
+        .btn-download:hover { text-decoration: underline; }
+
+        /* DETAIL MODAL */
+        .modal-overlay {
+            display: none;
+            position: fixed; inset: 0;
+            background: rgba(18,21,42,0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-overlay.show { display: flex; }
+        .modal {
+            background: var(--white);
+            border-radius: 16px;
+            width: 90%;
+            max-width: 640px;
+            max-height: 80vh;
+            overflow-y: auto;
+            padding: 32px;
+            box-shadow: 0 16px 48px rgba(26,31,58,0.2);
+        }
+        .modal h3 { font-size: 1.2rem; font-weight: 800; margin-bottom: 20px; }
+        .modal-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+        .modal-row:last-child { border-bottom: none; }
+        .modal-row .label { color: var(--text-muted); flex-shrink: 0; width: 140px; }
+        .modal-row .value { font-weight: 500; }
+        .modal-close {
+            float: right;
+            background: none; border: none;
+            font-size: 1.5rem; cursor: pointer;
+            color: var(--text-muted);
+        }
+        .modal-close:hover { color: var(--navy); }
+
+        /* FASE SELECT */
+        .fase-select {
+            padding: 4px 8px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-family: inherit;
+            cursor: pointer;
+        }
+
+        /* LOADING */
+        .loading-text { text-align: center; padding: 40px; color: var(--text-muted); }
+
+        /* EMPTY STATE */
+        .empty { text-align: center; padding: 60px 24px; color: var(--text-muted); }
+        .empty .icon { font-size: 2.5rem; margin-bottom: 12px; }
+
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .main-content { padding: 20px 16px; }
+            table { font-size: 0.8rem; }
+            th, td { padding: 10px 8px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+    <div class="nav-left">
+        <a href="/"><img src="https://primary.jwwb.nl/public/j/q/c/temp-bubpssuhqgoxqtzyfqhe/image-high-aunh7o.png?enable-io=true&enable=upscale&height=64" alt="Feen" class="nav-logo"></a>
+        <span class="nav-badge">Admin</span>
+    </div>
+    <div class="nav-right">
+        <span id="adminEmail"></span>
+        <button class="nav-btn" onclick="feenLogout()">Uitloggen</button>
+    </div>
+</nav>
+
+<div class="admin-layout">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <button class="sidebar-link active" onclick="showAdminPanel('dashboard', this)">📊 Dashboard</button>
+        <button class="sidebar-link" onclick="showAdminPanel('aanvragen', this)">📋 Vacature-aanvragen <span class="badge" id="aanvragenBadge">0</span></button>
+        <button class="sidebar-link" onclick="showAdminPanel('vacatures', this)">📂 Vacatures beheren</button>
+        <button class="sidebar-link" onclick="showAdminPanel('reacties', this)">👥 Kandidaat-reacties <span class="badge" id="reactiesBadge">0</span></button>
+        <button class="sidebar-link" onclick="showAdminPanel('gebruikers', this)">🧑 Gebruikers</button>
+    </aside>
+
+    <!-- MAIN -->
+    <div class="main-content">
+
+        <!-- ===== DASHBOARD ===== -->
+        <div class="admin-panel active" id="panel-dashboard">
+            <div class="section-header">
+                <h2>Dashboard</h2>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-label">Vacature-aanvragen</div>
+                    <div class="stat-value" id="statAanvragen">—</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Actieve vacatures</div>
+                    <div class="stat-value" id="statVacatures">—</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Kandidaat-reacties</div>
+                    <div class="stat-value" id="statReacties">—</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Geregistreerde gebruikers</div>
+                    <div class="stat-value" id="statGebruikers">—</div>
+                </div>
+            </div>
+            <div class="table-card">
+                <table>
+                    <thead><tr><th>Laatste aanvragen</th><th>Bedrijf</th><th>Functie</th><th>Status</th></tr></thead>
+                    <tbody id="dashRecentAanvragen">
+                        <tr><td colspan="4" class="loading-text">Laden...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ===== VACATURE-AANVRAGEN ===== -->
+        <div class="admin-panel" id="panel-aanvragen">
+            <div class="section-header">
+                <h2>Vacature-aanvragen</h2>
+                <span class="count" id="aanvragenCount"></span>
+            </div>
+            <div class="table-card">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Datum</th>
+                            <th>Bedrijf</th>
+                            <th>Contact</th>
+                            <th>Functie</th>
+                            <th>Bijlage</th>
+                            <th>Status</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="aanvragenTbody">
+                        <tr><td colspan="7" class="loading-text">Laden...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ===== VACATURES BEHEREN ===== -->
+        <div class="admin-panel" id="panel-vacatures">
+            <div class="section-header">
+                <h2>Vacatures beheren</h2>
+                <button class="btn-sm" onclick="showNewVacatureModal()" style="background:var(--accent);color:var(--navy);font-weight:700;border:none;padding:10px 20px;border-radius:8px;">+ Nieuwe vacature</button>
+            </div>
+            <div class="table-card">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Functie</th>
+                            <th>Bedrijf</th>
+                            <th>Locatie</th>
+                            <th>Reacties</th>
+                            <th>Actief</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="vacaturesTbody">
+                        <tr><td colspan="6" class="loading-text">Laden...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ===== KANDIDAAT-REACTIES ===== -->
+        <div class="admin-panel" id="panel-reacties">
+            <div class="section-header">
+                <h2>Kandidaat-reacties</h2>
+                <span class="count" id="reactiesCount"></span>
+            </div>
+            <div class="table-card">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Datum</th>
+                            <th>Kandidaat</th>
+                            <th>E-mail</th>
+                            <th>Vacature</th>
+                            <th>Fase</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="reactiesTbody">
+                        <tr><td colspan="6" class="loading-text">Laden...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ===== GEBRUIKERS ===== -->
+        <div class="admin-panel" id="panel-gebruikers">
+            <div class="section-header">
+                <h2>Geregistreerde gebruikers</h2>
+                <span class="count" id="gebruikersCount"></span>
+            </div>
+            <div class="table-card">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Naam</th>
+                            <th>E-mail</th>
+                            <th>Telefoon</th>
+                            <th>Rol</th>
+                            <th>Geregistreerd</th>
+                        </tr>
+                    </thead>
+                    <tbody id="gebruikersTbody">
+                        <tr><td colspan="5" class="loading-text">Laden...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- DETAIL MODAL -->
+<div class="modal-overlay" id="detailModal">
+    <div class="modal">
+        <button class="modal-close" onclick="closeModal()">&times;</button>
+        <div id="modalContent"></div>
+    </div>
+</div>
+
+<!-- NEW VACATURE MODAL -->
+<div class="modal-overlay" id="newVacModal">
+    <div class="modal" style="max-width:720px;">
+        <button class="modal-close" onclick="document.getElementById('newVacModal').classList.remove('show')">&times;</button>
+        <h3>Nieuwe vacature aanmaken</h3>
+        <form id="newVacForm" onsubmit="createVacature(event)">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                <div><label style="font-size:0.82rem;font-weight:600;display:block;margin-bottom:4px;">Functietitel *</label><input id="nv-functie" required style="width:100%;padding:10px;border:1px solid var(--border);border-radius:6px;font-family:inherit;"></div>
+                <div><label style="font-size:0.82rem;font-weight:600;display:block;margin-bottom:4px;">Bedrijf</label><input id="nv-bedrijf" placeholder="Vertrouwelijk" style="width:100%;padding:10px;border:1px solid var(--border);border-radius:6px;font-family:inherit;"></div>
+                <div><label style="font-size:0.82rem;font-weight:600;display:block;margin-bottom:4px;">Locatie</label><input id="nv-locatie" style="width:100%;padding:10px;border:1px solid var(--border);border-radius:6px;font-family:inherit;"></div>
+                <div><label style="font-size:0.82rem;font-weight:600;display:block;margin-bottom:4px;">Dienstverband</label><select id="nv-dienstverband" style="width:100%;padding:10px;border:1px solid var(--border);border-radius:6px;font-family:inherit;"><option>Vast</option><option>Tijdelijk</option><option>ZZP / Freelance</option><option>Detachering</option><option>Interim</option></select></div>
+                <div><label style="font-size:0.82rem;font-weight:600;display:block;margin-bottom:4px;">Uren</label><select id="nv-uren" style="width:100%;padding:10px;border:1px solid var(--border);border-radius:6px;font-family:inherit;"><option>Fulltime</option><option>Parttime</option><option>Flexibel</option></select></div>
+                <div><label style="font-size:0.82rem;font-weight:600;display:block;margin-bottom:4px;">Ervaring</label><select id="nv-ervaring" style="width:100%;padding:10px;border:1px solid var(--border);border-radius:6px;font-family:inherit;"><option>Junior</option><option>Medior</option><option>Senior</option></select></div>
+                <div><label style="font-size:0.82rem;font-weight:600;display:block;margin-bottom:4px;">Duur</label><input id="nv-duur" placeholder="Bijv. 6 maanden" style="width:100%;padding:10px;border:1px solid var(--border);border-radius:6px;font-family:inherit;"></div>
+                <div><label style="font-size:0.82rem;font-weight:600;display:block;margin-bottom:4px;">Salaris</label><input id="nv-salaris" placeholder="Bijv. €4.000 - €5.000 /maand" style="width:100%;padding:10px;border:1px solid var(--border);border-radius:6px;font-family:inherit;"></div>
+            </div>
+            <div style="margin-top:12px;">
+                <label style="font-size:0.82rem;font-weight:600;display:block;margin-bottom:4px;">Omschrijving</label>
+                <textarea id="nv-omschrijving" rows="3" style="width:100%;padding:10px;border:1px solid var(--border);border-radius:6px;font-family:inherit;resize:vertical;"></textarea>
+            </div>
+            <div style="margin-top:12px;">
+                <label style="font-size:0.82rem;font-weight:600;display:block;margin-bottom:4px;">Werkzaamheden (één per regel)</label>
+                <textarea id="nv-werkzaamheden" rows="3" placeholder="Eerste werkzaamheid&#10;Tweede werkzaamheid" style="width:100%;padding:10px;border:1px solid var(--border);border-radius:6px;font-family:inherit;resize:vertical;"></textarea>
+            </div>
+            <div style="margin-top:12px;">
+                <label style="font-size:0.82rem;font-weight:600;display:block;margin-bottom:4px;">Minimale vereisten (één per regel)</label>
+                <textarea id="nv-vereisten" rows="3" placeholder="WO/HBO Accountancy&#10;RA-titel" style="width:100%;padding:10px;border:1px solid var(--border);border-radius:6px;font-family:inherit;resize:vertical;"></textarea>
+            </div>
+            <div style="margin-top:12px;">
+                <label style="font-size:0.82rem;font-weight:600;display:block;margin-bottom:4px;">Wensen / nice-to-have (één per regel)</label>
+                <textarea id="nv-wensen" rows="2" style="width:100%;padding:10px;border:1px solid var(--border);border-radius:6px;font-family:inherit;resize:vertical;"></textarea>
+            </div>
+            <div style="margin-top:12px;">
+                <label style="font-size:0.82rem;font-weight:600;display:block;margin-bottom:4px;">Wat biedt de werkgever? (één per regel)</label>
+                <textarea id="nv-aanbod" rows="3" placeholder="Marktconform salaris&#10;30 vakantiedagen&#10;Pensioenregeling" style="width:100%;padding:10px;border:1px solid var(--border);border-radius:6px;font-family:inherit;resize:vertical;"></textarea>
+            </div>
+            <button type="submit" id="nv-submit" style="margin-top:20px;width:100%;padding:14px;background:var(--accent);color:var(--navy);border:none;border-radius:8px;font-size:1rem;font-weight:700;font-family:inherit;cursor:pointer;">Vacature publiceren</button>
+        </form>
+    </div>
+</div>
+
+<!-- FIREBASE SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
+<script src="/firebase-config.js"></script>
+
+<script>
+// Admin e-mailadres
+const ADMIN_EMAIL = 'omarelazami@hotmail.nl';
+
+// Auth check
+auth.onAuthStateChanged(async (user) => {
+    if (!user) {
+        window.location.href = '/inloggen';
+        return;
+    }
+
+    if (user.email !== ADMIN_EMAIL) {
+        alert('Geen toegang. Dit is een admin-omgeving.');
+        window.location.href = '/';
+        return;
+    }
+
+    document.getElementById('adminEmail').textContent = user.email;
+    loadDashboard();
+});
+
+// ===== NAVIGATION =====
+function showAdminPanel(name, btn) {
+    document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('panel-' + name).classList.add('active');
+    document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+
+    if (name === 'aanvragen') loadAanvragen();
+    if (name === 'vacatures') loadVacatures();
+    if (name === 'reacties') loadReacties();
+    if (name === 'gebruikers') loadGebruikers();
+}
+
+// ===== DASHBOARD =====
+async function loadDashboard() {
+    try {
+        const [aanvragenSnap, vacSnap, gebruikersSnap] = await Promise.all([
+            db.collection('vacature-aanvragen').orderBy('aangemaakt', 'desc').get(),
+            db.collection('vacatures').get(),
+            db.collection('gebruikers').get()
+        ]);
+
+        document.getElementById('statAanvragen').textContent = aanvragenSnap.size;
+        document.getElementById('statVacatures').textContent = vacSnap.size;
+        document.getElementById('statGebruikers').textContent = gebruikersSnap.size;
+        document.getElementById('aanvragenBadge').textContent = aanvragenSnap.docs.filter(d => d.data().status === 'nieuw').length;
+
+        // Count all reactions across vacatures
+        let reactieCount = 0;
+        for (const vDoc of vacSnap.docs) {
+            const reSnap = await vDoc.ref.collection('reacties').get();
+            reactieCount += reSnap.size;
+        }
+        document.getElementById('statReacties').textContent = reactieCount;
+        document.getElementById('reactiesBadge').textContent = reactieCount;
+
+        // Recent aanvragen table
+        const tbody = document.getElementById('dashRecentAanvragen');
+        tbody.innerHTML = '';
+        aanvragenSnap.docs.slice(0, 5).forEach(doc => {
+            const d = doc.data();
+            const row = document.createElement('tr');
+            row.innerHTML = '<td>' + fmtDate(d.aangemaakt) + '</td>'
+                + '<td><strong>' + esc(d.bedrijf) + '</strong></td>'
+                + '<td>' + esc(d.functie || '—') + '</td>'
+                + '<td><span class="status-badge status-' + esc(d.status || 'nieuw') + '">' + esc(d.status || 'nieuw') + '</span></td>';
+            tbody.appendChild(row);
+        });
+
+        if (aanvragenSnap.empty) {
+            tbody.innerHTML = '<tr><td colspan="4" class="empty"><div class="icon">📋</div>Nog geen aanvragen</td></tr>';
+        }
+    } catch(e) {
+        console.error('Dashboard laden mislukt:', e);
+    }
+}
+
+// ===== VACATURE-AANVRAGEN =====
+async function loadAanvragen() {
+    const tbody = document.getElementById('aanvragenTbody');
+    tbody.innerHTML = '<tr><td colspan="7" class="loading-text">Laden...</td></tr>';
+
+    const snap = await db.collection('vacature-aanvragen').orderBy('aangemaakt', 'desc').get();
+    document.getElementById('aanvragenCount').textContent = snap.size + ' aanvragen';
+    tbody.innerHTML = '';
+
+    if (snap.empty) {
+        tbody.innerHTML = '<tr><td colspan="7" class="empty"><div class="icon">📋</div>Nog geen aanvragen</td></tr>';
+        return;
+    }
+
+    snap.forEach(doc => {
+        const d = doc.data();
+        const row = document.createElement('tr');
+        const bijlageHtml = d.bestandUrl
+            ? '<a class="btn-download" href="' + esc(d.bestandUrl) + '" target="_blank" rel="noopener">📎 ' + esc(d.bestandNaam || 'Downloaden') + '</a>'
+            : '<span style="color:var(--text-muted)">—</span>';
+
+        row.innerHTML = '<td>' + fmtDate(d.aangemaakt) + '</td>'
+            + '<td><strong>' + esc(d.bedrijf) + '</strong></td>'
+            + '<td>' + esc(d.contactpersoon) + '<br><span style="color:var(--text-muted);font-size:0.8rem">' + esc(d.email) + '</span></td>'
+            + '<td>' + esc(d.functie || '—') + '</td>'
+            + '<td>' + bijlageHtml + '</td>'
+            + '<td><select class="fase-select" onchange="updateAanvraagStatus(\'' + doc.id + '\', this.value)">'
+            + statusOptions(d.status || 'nieuw')
+            + '</select></td>'
+            + '<td><button class="btn-sm" onclick="showAanvraagDetail(\'' + doc.id + '\')">Details</button></td>';
+        tbody.appendChild(row);
+    });
+}
+
+async function updateAanvraagStatus(docId, status) {
+    await db.collection('vacature-aanvragen').doc(docId).update({ status: status });
+}
+
+async function showAanvraagDetail(docId) {
+    const doc = await db.collection('vacature-aanvragen').doc(docId).get();
+    const d = doc.data();
+    const modal = document.getElementById('modalContent');
+    modal.innerHTML = '<h3>Vacature-aanvraag details</h3>'
+        + modalRow('Bedrijf', d.bedrijf)
+        + modalRow('Contactpersoon', d.contactpersoon)
+        + modalRow('E-mail', d.email)
+        + modalRow('Telefoon', d.telefoon)
+        + modalRow('Functie', d.functie || '—')
+        + modalRow('Aantal professionals', d.aantal || '—')
+        + modalRow('Toelichting', d.toelichting || '—')
+        + modalRow('Bijlage', d.bestandUrl ? '<a href="' + esc(d.bestandUrl) + '" target="_blank" rel="noopener" class="btn-download">📎 ' + esc(d.bestandNaam) + '</a>' : '—')
+        + modalRow('Status', d.status || 'nieuw')
+        + modalRow('Aangemaakt', fmtDate(d.aangemaakt));
+    document.getElementById('detailModal').classList.add('show');
+}
+
+function statusOptions(current) {
+    const opts = ['nieuw', 'bekeken', 'contact', 'actief', 'afgewezen'];
+    return opts.map(s => '<option value="' + s + '"' + (s === current ? ' selected' : '') + '>' + s.charAt(0).toUpperCase() + s.slice(1) + '</option>').join('');
+}
+
+// ===== VACATURES BEHEREN =====
+async function loadVacatures() {
+    const tbody = document.getElementById('vacaturesTbody');
+    tbody.innerHTML = '<tr><td colspan="6" class="loading-text">Laden...</td></tr>';
+
+    const snap = await db.collection('vacatures').orderBy('geplaatst', 'desc').get();
+    tbody.innerHTML = '';
+
+    if (snap.empty) {
+        tbody.innerHTML = '<tr><td colspan="6" class="empty"><div class="icon">📂</div>Nog geen vacatures. Klik op "+ Nieuwe vacature" om te beginnen.</td></tr>';
+        return;
+    }
+
+    for (const doc of snap.docs) {
+        const v = doc.data();
+        const reSnap = await doc.ref.collection('reacties').get();
+        const row = document.createElement('tr');
+        row.innerHTML = '<td><strong>' + esc(v.functie) + '</strong></td>'
+            + '<td>' + esc(v.bedrijf || 'Vertrouwelijk') + '</td>'
+            + '<td>' + esc(v.locatie || '—') + '</td>'
+            + '<td>' + reSnap.size + ' reacties</td>'
+            + '<td><input type="checkbox"' + (v.actief ? ' checked' : '') + ' onchange="toggleVacature(\'' + doc.id + '\', this.checked)" style="cursor:pointer;width:18px;height:18px;"></td>'
+            + '<td><button class="btn-sm" onclick="deleteVacature(\'' + doc.id + '\')">Verwijderen</button></td>';
+        tbody.appendChild(row);
+    }
+}
+
+function showNewVacatureModal() {
+    document.getElementById('newVacModal').classList.add('show');
+}
+
+async function createVacature(e) {
+    e.preventDefault();
+    const btn = document.getElementById('nv-submit');
+    btn.disabled = true;
+    btn.textContent = 'Opslaan...';
+
+    const toLines = (id) => {
+        const val = document.getElementById(id).value.trim();
+        return val ? val.split('\n').map(l => l.trim()).filter(l => l) : [];
+    };
+
+    await db.collection('vacatures').add({
+        functie: document.getElementById('nv-functie').value.trim(),
+        bedrijf: document.getElementById('nv-bedrijf').value.trim() || 'Vertrouwelijk',
+        locatie: document.getElementById('nv-locatie').value.trim(),
+        dienstverband: document.getElementById('nv-dienstverband').value,
+        uren: document.getElementById('nv-uren').value,
+        ervaring: document.getElementById('nv-ervaring').value,
+        duur: document.getElementById('nv-duur').value.trim(),
+        salaris: document.getElementById('nv-salaris').value.trim(),
+        omschrijving: document.getElementById('nv-omschrijving').value.trim(),
+        werkzaamheden: toLines('nv-werkzaamheden'),
+        vereisten: toLines('nv-vereisten'),
+        wensen: toLines('nv-wensen'),
+        aanbod: toLines('nv-aanbod'),
+        actief: true,
+        geplaatst: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    document.getElementById('newVacModal').classList.remove('show');
+    document.getElementById('newVacForm').reset();
+    btn.disabled = false;
+    btn.textContent = 'Vacature publiceren';
+    loadVacatures();
+}
+
+async function toggleVacature(docId, active) {
+    await db.collection('vacatures').doc(docId).update({ actief: active });
+}
+
+async function deleteVacature(docId) {
+    if (!confirm('Weet je zeker dat je deze vacature wilt verwijderen?')) return;
+    await db.collection('vacatures').doc(docId).delete();
+    loadVacatures();
+}
+
+// ===== KANDIDAAT-REACTIES =====
+async function loadReacties() {
+    const tbody = document.getElementById('reactiesTbody');
+    tbody.innerHTML = '<tr><td colspan="6" class="loading-text">Laden...</td></tr>';
+
+    const vacSnap = await db.collection('vacatures').get();
+    const allReacties = [];
+
+    for (const vDoc of vacSnap.docs) {
+        const vData = vDoc.data();
+        const reSnap = await vDoc.ref.collection('reacties').orderBy('aangemaakt', 'desc').get();
+        reSnap.forEach(rDoc => {
+            allReacties.push({
+                ...rDoc.data(),
+                reactieId: rDoc.id,
+                vacatureId: vDoc.id,
+                vacatureFunctie: vData.functie
+            });
+        });
+    }
+
+    allReacties.sort((a, b) => {
+        const ta = a.aangemaakt ? a.aangemaakt.toMillis() : 0;
+        const tb = b.aangemaakt ? b.aangemaakt.toMillis() : 0;
+        return tb - ta;
+    });
+
+    document.getElementById('reactiesCount').textContent = allReacties.length + ' reacties';
+    tbody.innerHTML = '';
+
+    if (allReacties.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" class="empty"><div class="icon">👥</div>Nog geen reacties van kandidaten</td></tr>';
+        return;
+    }
+
+    const FASES = ['', 'Aangemeld', 'Screening', 'Interview', 'Aangeboden', 'Geplaatst'];
+
+    allReacties.forEach(r => {
+        const row = document.createElement('tr');
+        const faseOpts = [1,2,3,4,5].map(f =>
+            '<option value="' + f + '"' + (f === (r.fase || 1) ? ' selected' : '') + '>' + FASES[f] + '</option>'
+        ).join('');
+
+        row.innerHTML = '<td>' + fmtDate(r.aangemaakt) + '</td>'
+            + '<td><strong>' + esc(r.naam || '—') + '</strong></td>'
+            + '<td>' + esc(r.email || '—') + '</td>'
+            + '<td>' + esc(r.vacatureFunctie || '—') + '</td>'
+            + '<td><select class="fase-select" onchange="updateFase(\'' + r.vacatureId + '\', \'' + r.reactieId + '\', \'' + r.userId + '\', parseInt(this.value))">' + faseOpts + '</select></td>'
+            + '<td></td>';
+        tbody.appendChild(row);
+    });
+}
+
+async function updateFase(vacatureId, reactieId, userId, fase) {
+    // Update reactie bij vacature
+    await db.collection('vacatures').doc(vacatureId).collection('reacties').doc(reactieId).update({ fase: fase });
+
+    // Update ook bij de gebruiker (zodat ze het in hun dashboard zien)
+    if (userId) {
+        const userSolSnap = await db.collection('gebruikers').doc(userId)
+            .collection('sollicitaties')
+            .where('vacatureId', '==', vacatureId)
+            .get();
+
+        userSolSnap.forEach(async (solDoc) => {
+            await solDoc.ref.update({
+                fase: fase,
+                bijgewerkt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+        });
+    }
+}
+
+// ===== GEBRUIKERS =====
+async function loadGebruikers() {
+    const tbody = document.getElementById('gebruikersTbody');
+    tbody.innerHTML = '<tr><td colspan="5" class="loading-text">Laden...</td></tr>';
+
+    const snap = await db.collection('gebruikers').orderBy('aangemaakt', 'desc').get();
+    document.getElementById('gebruikersCount').textContent = snap.size + ' gebruikers';
+    tbody.innerHTML = '';
+
+    if (snap.empty) {
+        tbody.innerHTML = '<tr><td colspan="5" class="empty"><div class="icon">🧑</div>Nog geen geregistreerde gebruikers</td></tr>';
+        return;
+    }
+
+    snap.forEach(doc => {
+        const d = doc.data();
+        const row = document.createElement('tr');
+        row.innerHTML = '<td><strong>' + esc((d.voornaam || '') + ' ' + (d.achternaam || '')) + '</strong></td>'
+            + '<td>' + esc(d.email || '—') + '</td>'
+            + '<td>' + esc(d.telefoon || '—') + '</td>'
+            + '<td>' + esc(d.rol || '—') + '</td>'
+            + '<td>' + fmtDate(d.aangemaakt) + '</td>';
+        tbody.appendChild(row);
+    });
+}
+
+// ===== HELPERS =====
+function closeModal() {
+    document.getElementById('detailModal').classList.remove('show');
+}
+
+function modalRow(label, value) {
+    return '<div class="modal-row"><span class="label">' + label + '</span><span class="value">' + (value || '—') + '</span></div>';
+}
+
+function fmtDate(ts) {
+    if (!ts || !ts.toDate) return '—';
+    return ts.toDate().toLocaleDateString('nl-NL', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+
+function esc(s) {
+    if (!s) return '';
+    var d = document.createElement('div');
+    d.textContent = s;
+    return d.innerHTML;
+}
+</script>
+
+</body>
+</html>
