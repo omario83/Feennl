@@ -171,6 +171,8 @@
         <li><a href="/over-ons">Over Ons</a></li>
         <li><a href="/contact">Contact</a></li>
         <li><a href="/blogs" class="active">Insights</a></li>
+        <li><a href="/inloggen" class="auth-login">Inloggen</a></li>
+        <li><a href="/mijn-sollicitaties" class="auth-portal" style="display:none">Mijn Feen</a></li>
     </ul>
     <a href="/vacature" class="nav-cta">Bekijk vacatures</a>
     <button class="mobile-toggle" onclick="document.getElementById('mobileNav').classList.add('open')" aria-label="Menu">&#9776;</button>
@@ -179,6 +181,8 @@
     <button class="mobile-nav-close" onclick="document.getElementById('mobileNav').classList.remove('open')" aria-label="Sluit menu">&times;</button>
     <a href="/">Home</a><a href="/vacature">Vacatures</a><a href="/opdrachtgever">Opdrachtgever</a>
     <a href="/over-ons">Over Ons</a><a href="/contact">Contact</a><a href="/blogs">Insights</a>
+    <a href="/inloggen" class="auth-login">Inloggen</a>
+    <a href="/mijn-sollicitaties" class="auth-portal" style="display:none">Mijn Feen</a>
 </div>
 
 <!-- HERO -->
@@ -310,6 +314,12 @@
         btn.classList.add('active');
     }
 </script>
+
+<!-- FIREBASE (voor auth nav state) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script src="/firebase-config.js"></script>
 
 </body>
 </html>

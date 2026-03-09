@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inloggen — Feen</title>
+    <meta name="description" content="Log in op je Feen-account om je sollicitaties te volgen.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #1a1f3a;
+            --navy-deep: #12152a;
+            --accent: #b8f470;
+            --accent-dark: #9ad45a;
+            --white: #ffffff;
+            --off-white: #f8f9fb;
+            --text: #1a1f3a;
+            --text-muted: #6b7194;
+            --danger: #e74c3c;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--text);
+            background: var(--off-white);
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+        }
+
+        /* NAV */
+        .nav {
+            background: var(--navy-deep);
+            padding: 0 48px; height: 72px;
+            display: flex; align-items: center; justify-content: space-between;
+            position: sticky; top: 0; z-index: 1000;
+            box-shadow: 0 2px 24px rgba(0,0,0,0.15);
+        }
+        .nav-logo { height: 32px; opacity: 0.9; }
+        .nav-links { display: flex; gap: 32px; list-style: none; }
+        .nav-links a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.25s; }
+        .nav-links a:hover, .nav-links a.active { color: var(--accent); }
+        .nav-cta { background: var(--accent); color: var(--navy); padding: 10px 24px; border-radius: 6px; font-weight: 700; font-size: 13px; text-decoration: none; transition: all 0.25s; }
+        .nav-cta:hover { background: var(--accent-dark); }
+        .mobile-toggle { display: none; background: none; border: none; color: white; font-size: 24px; cursor: pointer; }
+        .mobile-nav { position: fixed; inset: 0; background: rgba(18,21,42,0.98); z-index: 999; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 28px; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+        .mobile-nav.open { opacity: 1; pointer-events: all; }
+        .mobile-nav a { color: var(--white); text-decoration: none; font-size: 1.4rem; font-weight: 600; transition: color 0.25s; }
+        .mobile-nav a:hover { color: var(--accent); }
+        .mobile-nav-close { position: absolute; top: 24px; right: 24px; background: none; border: none; color: white; font-size: 28px; cursor: pointer; }
+
+        /* AUTH FORM */
+        .auth-container {
+            max-width: 440px;
+            margin: 100px auto;
+            padding: 0 24px;
+        }
+        .auth-card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 48px 40px;
+            box-shadow: 0 4px 32px rgba(26,31,58,0.08);
+        }
+        .auth-card h1 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--navy);
+            margin-bottom: 8px;
+        }
+        .auth-card .subtitle {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 32px;
+            line-height: 1.5;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: 6px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e2e5f0;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-family: inherit;
+            transition: border-color 0.25s;
+        }
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        .form-group input.error {
+            border-color: var(--danger);
+        }
+        .btn-primary {
+            width: 100%;
+            padding: 14px;
+            background: var(--accent);
+            color: var(--navy);
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.25s;
+            margin-top: 8px;
+        }
+        .btn-primary:hover { background: var(--accent-dark); transform: translateY(-1px); }
+        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        .global-error {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: var(--danger);
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 0.88rem;
+            margin-bottom: 20px;
+            display: none;
+        }
+        .global-error.show { display: block; }
+        .verify-warning {
+            background: #fffbeb;
+            border: 1px solid #fde68a;
+            color: #92400e;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 0.88rem;
+            margin-bottom: 20px;
+            display: none;
+            line-height: 1.5;
+        }
+        .verify-warning.show { display: block; }
+        .verify-warning a {
+            color: var(--navy);
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+        .auth-footer {
+            text-align: center;
+            margin-top: 24px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+        .auth-footer a {
+            color: var(--navy);
+            font-weight: 600;
+            text-decoration: none;
+        }
+        .auth-footer a:hover { text-decoration: underline; }
+        .forgot-link {
+            display: block;
+            text-align: right;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-top: -12px;
+            margin-bottom: 24px;
+        }
+        .forgot-link:hover { color: var(--navy); }
+        .reset-success {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            color: #166534;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 0.88rem;
+            margin-bottom: 20px;
+            display: none;
+        }
+        .reset-success.show { display: block; }
+
+        @media (max-width: 768px) {
+            .nav { padding: 0 20px; }
+            .nav-links, .nav-cta { display: none; }
+            .mobile-toggle { display: block; }
+            .auth-container { margin: 40px auto; }
+            .auth-card { padding: 32px 24px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+    <a href="/"><img src="https://primary.jwwb.nl/public/j/q/c/temp-bubpssuhqgoxqtzyfqhe/image-high-aunh7o.png?enable-io=true&enable=upscale&height=64" alt="Feen" class="nav-logo"></a>
+    <ul class="nav-links">
+        <li><a href="/vacature">Vacatures</a></li>
+        <li><a href="/opdrachtgever">Opdrachtgever</a></li>
+        <li><a href="/over-ons">Over Ons</a></li>
+        <li><a href="/contact">Contact</a></li>
+        <li><a href="/blogs">Insights</a></li>
+        <li><a href="/inloggen" class="active auth-login">Inloggen</a></li>
+        <li><a href="/mijn-sollicitaties" class="auth-portal" style="display:none">Mijn Feen</a></li>
+    </ul>
+    <a href="/vacature" class="nav-cta">Bekijk vacatures</a>
+    <button class="mobile-toggle" onclick="document.getElementById('mobileNav').classList.add('open')" aria-label="Menu">&#9776;</button>
+</nav>
+<div class="mobile-nav" id="mobileNav">
+    <button class="mobile-nav-close" onclick="document.getElementById('mobileNav').classList.remove('open')" aria-label="Sluit menu">&times;</button>
+    <a href="/">Home</a><a href="/vacature">Vacatures</a><a href="/opdrachtgever">Opdrachtgever</a>
+    <a href="/over-ons">Over Ons</a><a href="/contact">Contact</a><a href="/blogs">Insights</a>
+    <a href="/inloggen" class="auth-login">Inloggen</a>
+    <a href="/mijn-sollicitaties" class="auth-portal" style="display:none">Mijn Feen</a>
+</div>
+
+<!-- LOGIN FORM -->
+<div class="auth-container">
+    <div class="auth-card">
+        <h1>Inloggen</h1>
+        <p class="subtitle">Welkom terug! Log in om je sollicitaties te bekijken.</p>
+
+        <div class="global-error" id="globalError"></div>
+        <div class="verify-warning" id="verifyWarning">
+            Je e-mailadres is nog niet geverifieerd. Controleer je inbox.
+            <a id="resendLink">Opnieuw versturen</a>
+        </div>
+        <div class="reset-success" id="resetSuccess">
+            Wachtwoord-reset e-mail verstuurd! Controleer je inbox.
+        </div>
+
+        <form id="loginForm" novalidate>
+            <div class="form-group">
+                <label for="email">E-mailadres</label>
+                <input type="email" id="email" placeholder="naam@voorbeeld.nl" required>
+            </div>
+
+            <div class="form-group">
+                <label for="wachtwoord">Wachtwoord</label>
+                <input type="password" id="wachtwoord" placeholder="••••••••" required>
+            </div>
+
+            <a href="#" class="forgot-link" id="forgotLink">Wachtwoord vergeten?</a>
+
+            <button type="submit" class="btn-primary" id="submitBtn">Inloggen</button>
+        </form>
+
+        <div class="auth-footer">
+            Nog geen account? <a href="/registreren">Registreren</a>
+        </div>
+    </div>
+</div>
+
+<!-- FIREBASE SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script src="/firebase-config.js"></script>
+
+<script>
+// Redirect als al ingelogd en geverifieerd
+auth.onAuthStateChanged(user => {
+    if (user && user.emailVerified) {
+        window.location.href = '/mijn-sollicitaties';
+    }
+});
+
+let currentUser = null;
+
+// Login form
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email     = document.getElementById('email').value.trim();
+    const wachtwoord = document.getElementById('wachtwoord').value;
+    const btn       = document.getElementById('submitBtn');
+    const errDiv    = document.getElementById('globalError');
+    const verifyDiv = document.getElementById('verifyWarning');
+
+    errDiv.classList.remove('show');
+    verifyDiv.classList.remove('show');
+
+    if (!email || !wachtwoord) {
+        errDiv.textContent = 'Vul alle velden in.';
+        errDiv.classList.add('show');
+        return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Even geduld...';
+
+    try {
+        const cred = await auth.signInWithEmailAndPassword(email, wachtwoord);
+
+        if (!cred.user.emailVerified) {
+            currentUser = cred.user;
+            verifyDiv.classList.add('show');
+            btn.disabled = false;
+            btn.textContent = 'Inloggen';
+            await auth.signOut();
+            return;
+        }
+
+        window.location.href = '/mijn-sollicitaties';
+
+    } catch (err) {
+        btn.disabled = false;
+        btn.textContent = 'Inloggen';
+
+        if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') {
+            errDiv.textContent = 'Onjuist e-mailadres of wachtwoord.';
+        } else if (err.code === 'auth/too-many-requests') {
+            errDiv.textContent = 'Te veel pogingen. Probeer het later opnieuw.';
+        } else {
+            errDiv.textContent = 'Er ging iets mis. Probeer het opnieuw.';
+        }
+        errDiv.classList.add('show');
+    }
+});
+
+// Resend verification
+document.getElementById('resendLink').addEventListener('click', async (e) => {
+    e.preventDefault();
+    if (currentUser) {
+        try {
+            await currentUser.sendEmailVerification();
+            document.getElementById('verifyWarning').innerHTML =
+                '✓ Verificatie-e-mail opnieuw verstuurd! Controleer je inbox.';
+        } catch (err) {
+            document.getElementById('verifyWarning').innerHTML =
+                'Kon e-mail niet opnieuw versturen. Probeer het later.';
+        }
+    }
+});
+
+// Forgot password
+document.getElementById('forgotLink').addEventListener('click', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('email').value.trim();
+    const errDiv = document.getElementById('globalError');
+    const resetDiv = document.getElementById('resetSuccess');
+
+    errDiv.classList.remove('show');
+    resetDiv.classList.remove('show');
+
+    if (!email) {
+        errDiv.textContent = 'Vul eerst je e-mailadres in, dan sturen we een reset-link.';
+        errDiv.classList.add('show');
+        return;
+    }
+
+    try {
+        await auth.sendPasswordResetEmail(email);
+        resetDiv.classList.add('show');
+    } catch (err) {
+        // Don't reveal whether email exists
+        resetDiv.classList.add('show');
+    }
+});
+</script>
+
+</body>
+</html>

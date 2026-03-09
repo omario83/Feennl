@@ -419,6 +419,8 @@
         <li><a href="/over-ons">Over Ons</a></li>
         <li><a href="/contact">Contact</a></li>
         <li><a href="/blogs">Insights</a></li>
+        <li><a href="/inloggen" class="auth-login">Inloggen</a></li>
+        <li><a href="/mijn-sollicitaties" class="auth-portal" style="display:none">Mijn Feen</a></li>
     </ul>
     <a href="/vacature" class="nav-cta desktop">Bekijk vacatures</a>
     <button class="mobile-toggle" onclick="document.getElementById('mobileNav').classList.add('open')" aria-label="Menu">&#9776;</button>
@@ -433,6 +435,8 @@
     <a href="/over-ons" onclick="document.getElementById('mobileNav').classList.remove('open')">Over Ons</a>
     <a href="/contact" onclick="document.getElementById('mobileNav').classList.remove('open')">Contact</a>
     <a href="/blogs" onclick="document.getElementById('mobileNav').classList.remove('open')">Insights</a>
+    <a href="/inloggen" class="auth-login" onclick="document.getElementById('mobileNav').classList.remove('open')">Inloggen</a>
+    <a href="/mijn-sollicitaties" class="auth-portal" style="display:none" onclick="document.getElementById('mobileNav').classList.remove('open')">Mijn Feen</a>
 </div>
 
 <!-- HERO -->
@@ -590,6 +594,12 @@
     }, { threshold: 0.3 });
     statsObserver.observe(document.getElementById('statsBar'));
 </script>
+
+<!-- FIREBASE (voor auth nav state) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script src="/firebase-config.js"></script>
 
 </body>
 </html>

@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mijn Sollicitaties — Feen</title>
+    <meta name="description" content="Volg je sollicitaties in real-time bij Feen.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #1a1f3a;
+            --navy-deep: #12152a;
+            --accent: #b8f470;
+            --accent-dark: #9ad45a;
+            --white: #ffffff;
+            --off-white: #f8f9fb;
+            --text: #1a1f3a;
+            --text-muted: #6b7194;
+            --border: #e2e5f0;
+            --danger: #e74c3c;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --info: #3498db;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--text);
+            background: var(--off-white);
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+        }
+
+        /* NAV */
+        .nav {
+            background: var(--navy-deep);
+            padding: 0 48px; height: 72px;
+            display: flex; align-items: center; justify-content: space-between;
+            position: sticky; top: 0; z-index: 1000;
+            box-shadow: 0 2px 24px rgba(0,0,0,0.15);
+        }
+        .nav-logo { height: 32px; opacity: 0.9; }
+        .nav-links { display: flex; gap: 32px; list-style: none; align-items: center; }
+        .nav-links a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.25s; }
+        .nav-links a:hover, .nav-links a.active { color: var(--accent); }
+        .nav-cta { background: var(--accent); color: var(--navy); padding: 10px 24px; border-radius: 6px; font-weight: 700; font-size: 13px; text-decoration: none; transition: all 0.25s; }
+        .nav-cta:hover { background: var(--accent-dark); }
+        .nav-user {
+            display: flex; align-items: center; gap: 10px;
+            color: rgba(255,255,255,0.85);
+            font-size: 13px; font-weight: 500;
+        }
+        .nav-user-avatar {
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: var(--navy);
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 13px;
+        }
+        .nav-logout {
+            color: rgba(255,255,255,0.5);
+            text-decoration: none;
+            font-size: 13px;
+            transition: color 0.25s;
+            cursor: pointer;
+            background: none; border: none;
+            font-family: inherit;
+        }
+        .nav-logout:hover { color: var(--accent); }
+        .mobile-toggle { display: none; background: none; border: none; color: white; font-size: 24px; cursor: pointer; }
+        .mobile-nav { position: fixed; inset: 0; background: rgba(18,21,42,0.98); z-index: 999; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 28px; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+        .mobile-nav.open { opacity: 1; pointer-events: all; }
+        .mobile-nav a { color: var(--white); text-decoration: none; font-size: 1.4rem; font-weight: 600; transition: color 0.25s; }
+        .mobile-nav a:hover { color: var(--accent); }
+        .mobile-nav-close { position: absolute; top: 24px; right: 24px; background: none; border: none; color: white; font-size: 28px; cursor: pointer; }
+
+        /* DASHBOARD */
+        .dashboard {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 24px 80px;
+        }
+        .dash-header {
+            margin-bottom: 40px;
+        }
+        .dash-header h1 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--navy);
+            margin-bottom: 4px;
+        }
+        .dash-header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* STATS ROW */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+        .stat-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 12px rgba(26,31,58,0.06);
+            border-left: 4px solid var(--border);
+        }
+        .stat-card.fase-1 { border-left-color: var(--info); }
+        .stat-card.fase-2 { border-left-color: var(--warning); }
+        .stat-card.fase-3 { border-left-color: #9b59b6; }
+        .stat-card.fase-4 { border-left-color: #e67e22; }
+        .stat-card.fase-5 { border-left-color: var(--success); }
+        .stat-card .stat-num {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--navy);
+        }
+        .stat-card .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 4px;
+            font-weight: 600;
+        }
+
+        /* PHASE LEGEND */
+        .phase-legend {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 24px 28px;
+            margin-bottom: 32px;
+            box-shadow: 0 2px 12px rgba(26,31,58,0.06);
+        }
+        .phase-legend h3 {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+            font-weight: 700;
+        }
+        .phase-steps {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            position: relative;
+        }
+        .phase-step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+        }
+        .phase-step::after {
+            content: '';
+            position: absolute;
+            top: 16px;
+            left: 50%;
+            width: 100%;
+            height: 2px;
+            background: var(--border);
+        }
+        .phase-step:last-child::after { display: none; }
+        .phase-dot {
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center; justify-content: center;
+            font-weight: 800;
+            font-size: 0.8rem;
+            color: var(--white);
+            position: relative;
+            z-index: 1;
+            margin-bottom: 8px;
+        }
+        .phase-step:nth-child(1) .phase-dot { background: var(--info); }
+        .phase-step:nth-child(2) .phase-dot { background: var(--warning); }
+        .phase-step:nth-child(3) .phase-dot { background: #9b59b6; }
+        .phase-step:nth-child(4) .phase-dot { background: #e67e22; }
+        .phase-step:nth-child(5) .phase-dot { background: var(--success); }
+        .phase-name {
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--navy);
+        }
+        .phase-desc {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        /* SOLLICITATIE CARDS */
+        .sol-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .sol-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 24px 28px;
+            box-shadow: 0 2px 12px rgba(26,31,58,0.06);
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .sol-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(26,31,58,0.1);
+        }
+        .sol-phase-badge {
+            min-width: 48px; height: 48px;
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 800; font-size: 1.1rem;
+            color: var(--white);
+            flex-shrink: 0;
+        }
+        .badge-1 { background: var(--info); }
+        .badge-2 { background: var(--warning); }
+        .badge-3 { background: #9b59b6; }
+        .badge-4 { background: #e67e22; }
+        .badge-5 { background: var(--success); }
+        .sol-info { flex: 1; min-width: 0; }
+        .sol-info h4 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 4px;
+        }
+        .sol-info .sol-company {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+        .sol-meta {
+            display: flex;
+            gap: 16px;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+        .sol-meta span { display: flex; align-items: center; gap: 4px; }
+        .sol-phase-track {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            flex-shrink: 0;
+        }
+        .track-dot {
+            width: 12px; height: 12px;
+            border-radius: 50%;
+            background: var(--border);
+            transition: background 0.3s;
+        }
+        .track-dot.active { background: var(--accent); }
+        .track-dot.done { background: var(--success); }
+        .track-line {
+            width: 20px; height: 2px;
+            background: var(--border);
+        }
+        .track-line.done { background: var(--success); }
+        .sol-status-label {
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            flex-shrink: 0;
+        }
+        .status-1 { background: #ebf5fb; color: var(--info); }
+        .status-2 { background: #fef9e7; color: #d4a017; }
+        .status-3 { background: #f4ecf7; color: #9b59b6; }
+        .status-4 { background: #fdf2e9; color: #e67e22; }
+        .status-5 { background: #eafaf1; color: var(--success); }
+
+        /* EMPTY STATE */
+        .empty-state {
+            text-align: center;
+            padding: 80px 24px;
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: 0 2px 12px rgba(26,31,58,0.06);
+        }
+        .empty-state .icon { font-size: 3rem; margin-bottom: 16px; }
+        .empty-state h3 {
+            font-size: 1.2rem;
+            color: var(--navy);
+            margin-bottom: 8px;
+        }
+        .empty-state p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 24px;
+        }
+        .btn-primary {
+            display: inline-block;
+            padding: 12px 28px;
+            background: var(--accent);
+            color: var(--navy);
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.25s;
+        }
+        .btn-primary:hover { background: var(--accent-dark); transform: translateY(-1px); }
+
+        /* LOADING */
+        .loading {
+            text-align: center;
+            padding: 60px;
+            color: var(--text-muted);
+        }
+        .loading .spinner {
+            width: 40px; height: 40px;
+            border: 3px solid var(--border);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 16px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* PHASE NAMES */
+        .fase-labels { display: none; }
+
+        @media (max-width: 900px) {
+            .stats-row { grid-template-columns: repeat(3, 1fr); }
+            .phase-steps { flex-wrap: wrap; gap: 12px; }
+            .phase-step::after { display: none; }
+            .sol-card { flex-wrap: wrap; gap: 16px; }
+            .sol-phase-track { display: none; }
+        }
+        @media (max-width: 768px) {
+            .nav { padding: 0 20px; }
+            .nav-links, .nav-cta { display: none; }
+            .mobile-toggle { display: block; }
+            .stats-row { grid-template-columns: repeat(2, 1fr); }
+            .dashboard { padding: 24px 16px 60px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+    <a href="/"><img src="https://primary.jwwb.nl/public/j/q/c/temp-bubpssuhqgoxqtzyfqhe/image-high-aunh7o.png?enable-io=true&enable=upscale&height=64" alt="Feen" class="nav-logo"></a>
+    <ul class="nav-links">
+        <li><a href="/vacature">Vacatures</a></li>
+        <li><a href="/mijn-sollicitaties" class="active">Mijn Feen</a></li>
+        <li><a href="/over-ons">Over Ons</a></li>
+        <li><a href="/blogs">Insights</a></li>
+    </ul>
+    <div class="nav-user" id="navUser" style="display:none">
+        <div class="nav-user-avatar" id="navAvatar"></div>
+        <span id="navName"></span>
+        <button class="nav-logout" onclick="feenLogout()">Uitloggen</button>
+    </div>
+    <button class="mobile-toggle" onclick="document.getElementById('mobileNav').classList.add('open')" aria-label="Menu">&#9776;</button>
+</nav>
+<div class="mobile-nav" id="mobileNav">
+    <button class="mobile-nav-close" onclick="document.getElementById('mobileNav').classList.remove('open')" aria-label="Sluit menu">&times;</button>
+    <a href="/">Home</a><a href="/vacature">Vacatures</a><a href="/mijn-sollicitaties">Mijn Feen</a>
+    <a href="/over-ons">Over Ons</a><a href="/blogs">Insights</a>
+    <a href="#" onclick="feenLogout(); return false;">Uitloggen</a>
+</div>
+
+<!-- DASHBOARD -->
+<div class="dashboard">
+    <!-- LOADING -->
+    <div class="loading" id="loadingState">
+        <div class="spinner"></div>
+        <p>Sollicitaties laden...</p>
+    </div>
+
+    <!-- MAIN CONTENT (hidden until loaded) -->
+    <div id="dashContent" style="display:none">
+        <div class="dash-header">
+            <h1>Welkom terug, <span id="userName"></span></h1>
+            <p>Hier vind je een overzicht van al je sollicitaties en hun voortgang.</p>
+        </div>
+
+        <!-- STATS -->
+        <div class="stats-row" id="statsRow">
+            <div class="stat-card fase-1">
+                <div class="stat-num" id="count1">0</div>
+                <div class="stat-label">Aangemeld</div>
+            </div>
+            <div class="stat-card fase-2">
+                <div class="stat-num" id="count2">0</div>
+                <div class="stat-label">Screening</div>
+            </div>
+            <div class="stat-card fase-3">
+                <div class="stat-num" id="count3">0</div>
+                <div class="stat-label">Interview</div>
+            </div>
+            <div class="stat-card fase-4">
+                <div class="stat-num" id="count4">0</div>
+                <div class="stat-label">Aangeboden</div>
+            </div>
+            <div class="stat-card fase-5">
+                <div class="stat-num" id="count5">0</div>
+                <div class="stat-label">Geplaatst</div>
+            </div>
+        </div>
+
+        <!-- PHASE LEGEND -->
+        <div class="phase-legend">
+            <h3>De 5 fases van je sollicitatie</h3>
+            <div class="phase-steps">
+                <div class="phase-step">
+                    <div class="phase-dot">1</div>
+                    <div class="phase-name">Aangemeld</div>
+                    <div class="phase-desc">Sollicitatie ontvangen</div>
+                </div>
+                <div class="phase-step">
+                    <div class="phase-dot">2</div>
+                    <div class="phase-name">Screening</div>
+                    <div class="phase-desc">CV & profiel beoordelen</div>
+                </div>
+                <div class="phase-step">
+                    <div class="phase-dot">3</div>
+                    <div class="phase-name">Interview</div>
+                    <div class="phase-desc">Gesprek met Feen of opdrachtgever</div>
+                </div>
+                <div class="phase-step">
+                    <div class="phase-dot">4</div>
+                    <div class="phase-name">Aangeboden</div>
+                    <div class="phase-desc">Voorgesteld aan opdrachtgever</div>
+                </div>
+                <div class="phase-step">
+                    <div class="phase-dot">5</div>
+                    <div class="phase-name">Geplaatst</div>
+                    <div class="phase-desc">Succesvol gestart!</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SOLLICITATIE LIST -->
+        <div id="solList" class="sol-list"></div>
+
+        <!-- EMPTY STATE -->
+        <div class="empty-state" id="emptyState" style="display:none">
+            <div class="icon">📋</div>
+            <h3>Nog geen sollicitaties</h3>
+            <p>Je hebt nog geen sollicitaties. Bekijk de vacatures en doe je eerste sollicitatie!</p>
+            <a href="/vacature" class="btn-primary">Bekijk vacatures →</a>
+        </div>
+    </div>
+</div>
+
+<!-- FIREBASE SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script src="/firebase-config.js"></script>
+
+<script>
+const FASES = ['Aangemeld', 'Screening', 'Interview', 'Aangeboden', 'Geplaatst'];
+
+// Auth guard — moet ingelogd + geverifieerd zijn
+auth.onAuthStateChanged(async (user) => {
+    if (!user || !user.emailVerified) {
+        window.location.href = '/inloggen';
+        return;
+    }
+
+    // Nav updaten
+    const navUser = document.getElementById('navUser');
+    const initials = (user.displayName || 'U').split(' ').map(n => n[0]).join('').toUpperCase();
+    document.getElementById('navAvatar').textContent = initials;
+    document.getElementById('navName').textContent = user.displayName || user.email;
+    navUser.style.display = 'flex';
+
+    // Dashboard laden
+    document.getElementById('userName').textContent = (user.displayName || 'gebruiker').split(' ')[0];
+    await loadSollicitaties(user.uid);
+});
+
+async function loadSollicitaties(uid) {
+    try {
+        const snapshot = await db.collection('gebruikers').doc(uid)
+            .collection('sollicitaties')
+            .orderBy('bijgewerkt', 'desc')
+            .get();
+
+        document.getElementById('loadingState').style.display = 'none';
+        document.getElementById('dashContent').style.display = 'block';
+
+        if (snapshot.empty) {
+            document.getElementById('emptyState').style.display = 'block';
+            return;
+        }
+
+        const counts = [0, 0, 0, 0, 0];
+        const list = document.getElementById('solList');
+
+        snapshot.forEach(doc => {
+            const d = doc.data();
+            const fase = d.fase || 1; // 1-5
+            counts[fase - 1]++;
+            list.appendChild(createSolCard(d, fase));
+        });
+
+        // Update stats
+        for (let i = 1; i <= 5; i++) {
+            document.getElementById('count' + i).textContent = counts[i - 1];
+        }
+
+    } catch (err) {
+        document.getElementById('loadingState').innerHTML =
+            '<p style="color:var(--danger)">Kon sollicitaties niet laden. Probeer de pagina te verversen.</p>';
+    }
+}
+
+function createSolCard(data, fase) {
+    const card = document.createElement('div');
+    card.className = 'sol-card';
+
+    const dateStr = data.bijgewerkt ? formatDate(data.bijgewerkt.toDate()) : '—';
+    const createdStr = data.aangemaakt ? formatDate(data.aangemaakt.toDate()) : '—';
+
+    card.innerHTML = `
+        <div class="sol-phase-badge badge-${fase}">${fase}</div>
+        <div class="sol-info">
+            <h4>${escapeHtml(data.functie || 'Onbekende functie')}</h4>
+            <div class="sol-company">${escapeHtml(data.bedrijf || 'Onbekend bedrijf')}</div>
+            <div class="sol-meta">
+                <span>📅 Aangemeld: ${createdStr}</span>
+                <span>🔄 Bijgewerkt: ${dateStr}</span>
+                ${data.locatie ? `<span>📍 ${escapeHtml(data.locatie)}</span>` : ''}
+            </div>
+        </div>
+        <div class="sol-phase-track">
+            ${buildTrackDots(fase)}
+        </div>
+        <div class="sol-status-label status-${fase}">${FASES[fase - 1]}</div>
+    `;
+    return card;
+}
+
+function buildTrackDots(currentFase) {
+    let html = '';
+    for (let i = 1; i <= 5; i++) {
+        const cls = i < currentFase ? 'done' : (i === currentFase ? 'active' : '');
+        html += `<div class="track-dot ${cls}"></div>`;
+        if (i < 5) {
+            html += `<div class="track-line ${i < currentFase ? 'done' : ''}"></div>`;
+        }
+    }
+    return html;
+}
+
+function formatDate(date) {
+    return date.toLocaleDateString('nl-NL', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+
+function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+}
+</script>
+
+</body>
+</html>

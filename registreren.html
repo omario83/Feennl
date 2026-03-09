@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registreren — Feen</title>
+    <meta name="description" content="Maak een gratis Feen-account aan en volg je sollicitaties in real-time.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #1a1f3a;
+            --navy-deep: #12152a;
+            --accent: #b8f470;
+            --accent-dark: #9ad45a;
+            --white: #ffffff;
+            --off-white: #f8f9fb;
+            --text: #1a1f3a;
+            --text-muted: #6b7194;
+            --danger: #e74c3c;
+            --success: #27ae60;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--text);
+            background: var(--off-white);
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+        }
+
+        /* NAV */
+        .nav {
+            background: var(--navy-deep);
+            padding: 0 48px; height: 72px;
+            display: flex; align-items: center; justify-content: space-between;
+            position: sticky; top: 0; z-index: 1000;
+            box-shadow: 0 2px 24px rgba(0,0,0,0.15);
+        }
+        .nav-logo { height: 32px; opacity: 0.9; }
+        .nav-links { display: flex; gap: 32px; list-style: none; }
+        .nav-links a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.25s; }
+        .nav-links a:hover, .nav-links a.active { color: var(--accent); }
+        .nav-cta { background: var(--accent); color: var(--navy); padding: 10px 24px; border-radius: 6px; font-weight: 700; font-size: 13px; text-decoration: none; transition: all 0.25s; }
+        .nav-cta:hover { background: var(--accent-dark); }
+        .mobile-toggle { display: none; background: none; border: none; color: white; font-size: 24px; cursor: pointer; }
+        .mobile-nav { position: fixed; inset: 0; background: rgba(18,21,42,0.98); z-index: 999; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 28px; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+        .mobile-nav.open { opacity: 1; pointer-events: all; }
+        .mobile-nav a { color: var(--white); text-decoration: none; font-size: 1.4rem; font-weight: 600; transition: color 0.25s; }
+        .mobile-nav a:hover { color: var(--accent); }
+        .mobile-nav-close { position: absolute; top: 24px; right: 24px; background: none; border: none; color: white; font-size: 28px; cursor: pointer; }
+
+        /* AUTH FORM */
+        .auth-container {
+            max-width: 480px;
+            margin: 80px auto;
+            padding: 0 24px;
+        }
+        .auth-card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 48px 40px;
+            box-shadow: 0 4px 32px rgba(26,31,58,0.08);
+        }
+        .auth-card h1 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--navy);
+            margin-bottom: 8px;
+        }
+        .auth-card .subtitle {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 32px;
+            line-height: 1.5;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: 6px;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e2e5f0;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-family: inherit;
+            transition: border-color 0.25s;
+            background: var(--white);
+        }
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        .form-group input.error {
+            border-color: var(--danger);
+        }
+        .form-group .field-error {
+            color: var(--danger);
+            font-size: 0.8rem;
+            margin-top: 4px;
+            display: none;
+        }
+        .form-group .field-error.show {
+            display: block;
+        }
+        .form-row {
+            display: flex;
+            gap: 16px;
+        }
+        .form-row .form-group {
+            flex: 1;
+        }
+        .password-rules {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-top: 6px;
+            line-height: 1.6;
+        }
+        .password-rules span {
+            display: block;
+            transition: color 0.2s;
+        }
+        .password-rules span.valid { color: var(--success); }
+        .password-rules span.valid::before { content: '✓ '; }
+        .password-rules span:not(.valid)::before { content: '○ '; }
+        .btn-primary {
+            width: 100%;
+            padding: 14px;
+            background: var(--accent);
+            color: var(--navy);
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.25s;
+            margin-top: 8px;
+        }
+        .btn-primary:hover { background: var(--accent-dark); transform: translateY(-1px); }
+        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        .auth-footer {
+            text-align: center;
+            margin-top: 24px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+        .auth-footer a {
+            color: var(--navy);
+            font-weight: 600;
+            text-decoration: none;
+        }
+        .auth-footer a:hover { text-decoration: underline; }
+        .global-error {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: var(--danger);
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 0.88rem;
+            margin-bottom: 20px;
+            display: none;
+        }
+        .global-error.show { display: block; }
+
+        /* SUCCESS STATE */
+        .verify-msg {
+            text-align: center;
+            display: none;
+        }
+        .verify-msg.show { display: block; }
+        .verify-msg .icon {
+            font-size: 3.5rem;
+            margin-bottom: 16px;
+        }
+        .verify-msg h2 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--navy);
+            margin-bottom: 12px;
+        }
+        .verify-msg p {
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+        .verify-msg .email-highlight {
+            color: var(--navy);
+            font-weight: 600;
+        }
+        .btn-outline {
+            display: inline-block;
+            padding: 12px 28px;
+            border: 2px solid var(--navy);
+            color: var(--navy);
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: all 0.25s;
+        }
+        .btn-outline:hover {
+            background: var(--navy);
+            color: var(--white);
+        }
+
+        @media (max-width: 768px) {
+            .nav { padding: 0 20px; }
+            .nav-links, .nav-cta { display: none; }
+            .mobile-toggle { display: block; }
+            .auth-container { margin: 40px auto; }
+            .auth-card { padding: 32px 24px; }
+            .form-row { flex-direction: column; gap: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+    <a href="/"><img src="https://primary.jwwb.nl/public/j/q/c/temp-bubpssuhqgoxqtzyfqhe/image-high-aunh7o.png?enable-io=true&enable=upscale&height=64" alt="Feen" class="nav-logo"></a>
+    <ul class="nav-links">
+        <li><a href="/vacature">Vacatures</a></li>
+        <li><a href="/opdrachtgever">Opdrachtgever</a></li>
+        <li><a href="/over-ons">Over Ons</a></li>
+        <li><a href="/contact">Contact</a></li>
+        <li><a href="/blogs">Insights</a></li>
+        <li><a href="/inloggen" class="auth-login">Inloggen</a></li>
+        <li><a href="/mijn-sollicitaties" class="auth-portal" style="display:none">Mijn Feen</a></li>
+    </ul>
+    <a href="/vacature" class="nav-cta">Bekijk vacatures</a>
+    <button class="mobile-toggle" onclick="document.getElementById('mobileNav').classList.add('open')" aria-label="Menu">&#9776;</button>
+</nav>
+<div class="mobile-nav" id="mobileNav">
+    <button class="mobile-nav-close" onclick="document.getElementById('mobileNav').classList.remove('open')" aria-label="Sluit menu">&times;</button>
+    <a href="/">Home</a><a href="/vacature">Vacatures</a><a href="/opdrachtgever">Opdrachtgever</a>
+    <a href="/over-ons">Over Ons</a><a href="/contact">Contact</a><a href="/blogs">Insights</a>
+    <a href="/inloggen" class="auth-login">Inloggen</a>
+    <a href="/mijn-sollicitaties" class="auth-portal" style="display:none">Mijn Feen</a>
+</div>
+
+<!-- REGISTRATION FORM -->
+<div class="auth-container">
+    <div class="auth-card">
+        <!-- FORM STATE -->
+        <div id="formState">
+            <h1>Account aanmaken</h1>
+            <p class="subtitle">Maak een gratis account aan en volg je sollicitaties in real-time.</p>
+
+            <div class="global-error" id="globalError"></div>
+
+            <form id="registerForm" novalidate>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="voornaam">Voornaam</label>
+                        <input type="text" id="voornaam" placeholder="Bijv. Omar" required>
+                        <div class="field-error" id="voornaamError">Voornaam is verplicht</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="achternaam">Achternaam</label>
+                        <input type="text" id="achternaam" placeholder="Bijv. El Azami" required>
+                        <div class="field-error" id="achternaamError">Achternaam is verplicht</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">E-mailadres</label>
+                    <input type="email" id="email" placeholder="naam@voorbeeld.nl" required>
+                    <div class="field-error" id="emailError">Vul een geldig e-mailadres in</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="telefoon">Telefoonnummer</label>
+                    <input type="tel" id="telefoon" placeholder="06 1234 5678" required>
+                    <div class="field-error" id="telefoonError">Vul een geldig telefoonnummer in</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="rol">Ik ben een</label>
+                    <select id="rol" required>
+                        <option value="">— Kies je rol —</option>
+                        <option value="professional">Professional (op zoek naar werk)</option>
+                        <option value="opdrachtgever">Opdrachtgever (op zoek naar talent)</option>
+                    </select>
+                    <div class="field-error" id="rolError">Kies je rol</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="wachtwoord">Wachtwoord</label>
+                    <input type="password" id="wachtwoord" placeholder="••••••••" required>
+                    <div class="password-rules">
+                        <span id="ruleLength">Minimaal 8 tekens</span>
+                        <span id="ruleUpper">Minimaal 1 hoofdletter</span>
+                        <span id="ruleLower">Minimaal 1 kleine letter</span>
+                        <span id="ruleNumber">Minimaal 1 cijfer</span>
+                    </div>
+                    <div class="field-error" id="wachtwoordError">Wachtwoord voldoet niet aan de eisen</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="wachtwoord2">Wachtwoord bevestigen</label>
+                    <input type="password" id="wachtwoord2" placeholder="••••••••" required>
+                    <div class="field-error" id="wachtwoord2Error">Wachtwoorden komen niet overeen</div>
+                </div>
+
+                <button type="submit" class="btn-primary" id="submitBtn">Account aanmaken</button>
+            </form>
+
+            <div class="auth-footer">
+                Al een account? <a href="/inloggen">Inloggen</a>
+            </div>
+        </div>
+
+        <!-- VERIFICATION STATE -->
+        <div class="verify-msg" id="verifyState">
+            <div class="icon">📧</div>
+            <h2>Bevestig je e-mailadres</h2>
+            <p>
+                We hebben een verificatie-e-mail gestuurd naar<br>
+                <span class="email-highlight" id="sentEmail"></span>.<br><br>
+                Klik op de link in de e-mail om je account te activeren.
+                Controleer ook je spam-map.
+            </p>
+            <a href="/inloggen" class="btn-outline">Naar inloggen →</a>
+        </div>
+    </div>
+</div>
+
+<!-- FIREBASE SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script src="/firebase-config.js"></script>
+
+<script>
+// Redirect als al ingelogd
+auth.onAuthStateChanged(user => {
+    if (user && user.emailVerified) {
+        window.location.href = '/mijn-sollicitaties';
+    }
+});
+
+// Password validatie live feedback
+const pw = document.getElementById('wachtwoord');
+pw.addEventListener('input', () => {
+    const v = pw.value;
+    toggle('ruleLength', v.length >= 8);
+    toggle('ruleUpper',  /[A-Z]/.test(v));
+    toggle('ruleLower',  /[a-z]/.test(v));
+    toggle('ruleNumber', /[0-9]/.test(v));
+});
+
+function toggle(id, valid) {
+    document.getElementById(id).classList.toggle('valid', valid);
+}
+
+// Form submit
+document.getElementById('registerForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    clearErrors();
+
+    const voornaam   = document.getElementById('voornaam').value.trim();
+    const achternaam = document.getElementById('achternaam').value.trim();
+    const email      = document.getElementById('email').value.trim();
+    const telefoon   = document.getElementById('telefoon').value.trim();
+    const rol        = document.getElementById('rol').value;
+    const wachtwoord = document.getElementById('wachtwoord').value;
+    const wachtwoord2= document.getElementById('wachtwoord2').value;
+
+    let valid = true;
+
+    if (!voornaam) { showFieldError('voornaam'); valid = false; }
+    if (!achternaam) { showFieldError('achternaam'); valid = false; }
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showFieldError('email'); valid = false; }
+    if (!telefoon || telefoon.replace(/\D/g,'').length < 8) { showFieldError('telefoon'); valid = false; }
+    if (!rol) { showFieldError('rol'); valid = false; }
+    if (wachtwoord.length < 8 || !/[A-Z]/.test(wachtwoord) || !/[a-z]/.test(wachtwoord) || !/[0-9]/.test(wachtwoord)) {
+        showFieldError('wachtwoord'); valid = false;
+    }
+    if (wachtwoord !== wachtwoord2) { showFieldError('wachtwoord2'); valid = false; }
+
+    if (!valid) return;
+
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.textContent = 'Even geduld...';
+
+    try {
+        // Account aanmaken
+        const cred = await auth.createUserWithEmailAndPassword(email, wachtwoord);
+
+        // Profiel opslaan in Firestore
+        await db.collection('gebruikers').doc(cred.user.uid).set({
+            voornaam,
+            achternaam,
+            email,
+            telefoon,
+            rol,
+            aangemaakt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+        // Weergavenaam instellen
+        await cred.user.updateProfile({
+            displayName: voornaam + ' ' + achternaam
+        });
+
+        // Verificatie-e-mail versturen
+        await cred.user.sendEmailVerification();
+
+        // Toon verificatiebericht
+        document.getElementById('sentEmail').textContent = email;
+        document.getElementById('formState').style.display = 'none';
+        document.getElementById('verifyState').classList.add('show');
+
+    } catch (err) {
+        btn.disabled = false;
+        btn.textContent = 'Account aanmaken';
+
+        const errDiv = document.getElementById('globalError');
+        if (err.code === 'auth/email-already-in-use') {
+            errDiv.textContent = 'Er bestaat al een account met dit e-mailadres.';
+        } else if (err.code === 'auth/invalid-email') {
+            errDiv.textContent = 'Ongeldig e-mailadres.';
+        } else if (err.code === 'auth/weak-password') {
+            errDiv.textContent = 'Wachtwoord is te zwak.';
+        } else {
+            errDiv.textContent = 'Er ging iets mis. Probeer het opnieuw.';
+        }
+        errDiv.classList.add('show');
+    }
+});
+
+function showFieldError(field) {
+    document.getElementById(field).classList.add('error');
+    document.getElementById(field + 'Error').classList.add('show');
+}
+
+function clearErrors() {
+    document.querySelectorAll('.field-error').forEach(el => el.classList.remove('show'));
+    document.querySelectorAll('input, select').forEach(el => el.classList.remove('error'));
+    document.getElementById('globalError').classList.remove('show');
+}
+</script>
+
+</body>
+</html>
