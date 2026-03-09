@@ -247,16 +247,85 @@
         .empty { text-align: center; padding: 60px 24px; color: var(--text-muted); }
         .empty .icon { font-size: 2.5rem; margin-bottom: 12px; }
 
+        /* ADMIN LOGIN SCREEN */
+        .admin-login-screen {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--navy-deep);
+        }
+        .admin-login-box {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 48px 40px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 16px 48px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+        .admin-login-box img { height: 36px; margin-bottom: 8px; }
+        .admin-login-box .admin-tag { display: inline-block; background: var(--danger); color: white; font-size: 0.65rem; font-weight: 700; padding: 2px 8px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 24px; }
+        .admin-login-box h2 { font-size: 1.3rem; font-weight: 800; margin-bottom: 6px; color: var(--navy); }
+        .admin-login-box p { font-size: 0.88rem; color: var(--text-muted); margin-bottom: 28px; }
+        .admin-login-box input {
+            width: 100%; padding: 14px 16px;
+            border: 1px solid var(--border); border-radius: 8px;
+            font-size: 0.95rem; font-family: inherit;
+            margin-bottom: 12px; transition: border-color 0.25s;
+        }
+        .admin-login-box input:focus { outline: none; border-color: var(--accent); }
+        .admin-login-box .login-btn {
+            width: 100%; padding: 14px;
+            background: var(--accent); color: var(--navy);
+            border: none; border-radius: 8px;
+            font-size: 1rem; font-weight: 700;
+            font-family: inherit; cursor: pointer;
+            transition: background 0.25s;
+            margin-top: 4px;
+        }
+        .admin-login-box .login-btn:hover { background: var(--accent-dark); }
+        .admin-login-box .login-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+        .admin-login-error {
+            background: #fef2f2; color: var(--danger);
+            padding: 10px 16px; border-radius: 8px;
+            font-size: 0.85rem; font-weight: 500;
+            margin-bottom: 16px; display: none;
+        }
+        .admin-login-error.show { display: block; }
+        .admin-app { display: none; }
+        .admin-app.visible { display: block; }
+
         @media (max-width: 768px) {
             .sidebar { display: none; }
             .stats-grid { grid-template-columns: repeat(2, 1fr); }
             .main-content { padding: 20px 16px; }
             table { font-size: 0.8rem; }
             th, td { padding: 10px 8px; }
+            .admin-login-box { margin: 16px; padding: 32px 24px; }
         }
     </style>
 </head>
 <body>
+
+<!-- ADMIN LOGIN SCREEN -->
+<div class="admin-login-screen" id="adminLoginScreen">
+    <div class="admin-login-box">
+        <img src="https://primary.jwwb.nl/public/j/q/c/temp-bubpssuhqgoxqtzyfqhe/image-high-aunh7o.png?enable-io=true&enable=upscale&height=64" alt="Feen">
+        <div><span class="admin-tag">Admin</span></div>
+        <h2>Backoffice</h2>
+        <p>Log in met je beheerdersaccount</p>
+        <div class="admin-login-error" id="adminLoginError"></div>
+        <form id="adminLoginForm">
+            <input type="email" id="adminEmailInput" placeholder="E-mailadres" required autocomplete="username">
+            <input type="password" id="adminPasswordInput" placeholder="Wachtwoord" required autocomplete="current-password">
+            <button type="submit" class="login-btn" id="adminLoginBtn">Inloggen</button>
+        </form>
+    </div>
+</div>
+
+<!-- ADMIN APP (hidden until authenticated) -->
+<div class="admin-app" id="adminApp">
 
 <!-- NAV -->
 <nav class="nav">
@@ -468,6 +537,8 @@
     </div>
 </div>
 
+</div><!-- /admin-app -->
+
 <!-- FIREBASE SDK -->
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
@@ -479,21 +550,68 @@
 // Admin e-mailadres
 const ADMIN_EMAIL = 'omarelazami@hotmail.nl';
 
-// Auth check
+// Auth state: toon login of dashboard
 auth.onAuthStateChanged(async (user) => {
-    if (!user) {
-        window.location.href = '/inloggen?redirect=/admin';
-        return;
+    if (user && user.email === ADMIN_EMAIL) {
+        // Admin ingelogd → toon backoffice
+        document.getElementById('adminLoginScreen').style.display = 'none';
+        document.getElementById('adminApp').classList.add('visible');
+        document.getElementById('adminEmail').textContent = user.email;
+        loadDashboard();
+    } else if (user) {
+        // Ander account → uitloggen en login tonen
+        await auth.signOut();
+        showAdminLogin('Geen toegang. Alleen het admin-account mag inloggen.');
+    } else {
+        // Niet ingelogd → login tonen
+        showAdminLogin();
     }
+});
 
-    if (user.email !== ADMIN_EMAIL) {
-        alert('Geen toegang. Dit is een admin-omgeving.');
-        window.location.href = '/';
-        return;
+function showAdminLogin(errorMsg) {
+    document.getElementById('adminLoginScreen').style.display = 'flex';
+    document.getElementById('adminApp').classList.remove('visible');
+    if (errorMsg) {
+        const errDiv = document.getElementById('adminLoginError');
+        errDiv.textContent = errorMsg;
+        errDiv.classList.add('show');
     }
+}
 
-    document.getElementById('adminEmail').textContent = user.email;
-    loadDashboard();
+// Admin login form
+document.getElementById('adminLoginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('adminEmailInput').value.trim();
+    const password = document.getElementById('adminPasswordInput').value;
+    const btn = document.getElementById('adminLoginBtn');
+    const errDiv = document.getElementById('adminLoginError');
+    errDiv.classList.remove('show');
+
+    btn.disabled = true;
+    btn.textContent = 'Even geduld...';
+
+    try {
+        const cred = await auth.signInWithEmailAndPassword(email, password);
+        if (cred.user.email !== ADMIN_EMAIL) {
+            await auth.signOut();
+            errDiv.textContent = 'Dit account heeft geen admin-toegang.';
+            errDiv.classList.add('show');
+            btn.disabled = false;
+            btn.textContent = 'Inloggen';
+        }
+        // onAuthStateChanged handelt de rest af
+    } catch (err) {
+        btn.disabled = false;
+        btn.textContent = 'Inloggen';
+        if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') {
+            errDiv.textContent = 'Onjuist e-mailadres of wachtwoord.';
+        } else if (err.code === 'auth/too-many-requests') {
+            errDiv.textContent = 'Te veel pogingen. Probeer het later opnieuw.';
+        } else {
+            errDiv.textContent = 'Er ging iets mis. Probeer het opnieuw.';
+        }
+        errDiv.classList.add('show');
+    }
 });
 
 // ===== NAVIGATION =====
