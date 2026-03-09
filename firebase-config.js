@@ -5,12 +5,13 @@
 // ============================================================
 
 const firebaseConfig = {
-    apiKey:            "VULL_HIER_IN",
-    authDomain:        "VULL_HIER_IN",
-    projectId:         "VULL_HIER_IN",
-    storageBucket:     "VULL_HIER_IN",
-    messagingSenderId: "VULL_HIER_IN",
-    appId:             "VULL_HIER_IN"
+    apiKey:            "AIzaSyB__Z7eXRzAJ92NpFiDb0XqcwRmAo33u5k",
+    authDomain:        "feen-3c09a.firebaseapp.com",
+    projectId:         "feen-3c09a",
+    storageBucket:     "feen-3c09a.firebasestorage.app",
+    messagingSenderId: "306526746390",
+    appId:             "1:306526746390:web:144b18992c6497c502c237",
+    measurementId:     "G-DVPJM8XPXK"
 };
 
 // Firebase initialiseren
