@@ -462,21 +462,21 @@
 </section>
 
 <!-- STATS BAR -->
-<div class="stats-bar">
+<div class="stats-bar" id="statsBar">
     <div class="stats-bar-item">
-        <h3>6<span>%</span></h3>
+        <h3><span class="count" data-target="6" data-suffix="%">0</span></h3>
         <p>Laagste fee van Nederland</p>
     </div>
     <div class="stats-bar-item">
-        <h3>100<span>+</span></h3>
+        <h3><span class="count" data-target="100" data-suffix="+">0</span></h3>
         <p>Professionals in ons netwerk</p>
     </div>
     <div class="stats-bar-item">
-        <h3>50<span>+</span></h3>
+        <h3><span class="count" data-target="50" data-suffix="+">0</span></h3>
         <p>Openstaande vacatures</p>
     </div>
     <div class="stats-bar-item">
-        <h3>48<span>u</span></h3>
+        <h3><span class="count" data-target="48" data-suffix="u">0</span></h3>
         <p>Eerste profielen geleverd</p>
     </div>
 </div>
@@ -546,6 +546,49 @@
     window.addEventListener('scroll', function() {
         nav.classList.toggle('scrolled', window.scrollY > 60);
     });
+
+    // Count-up animation
+    var counted = false;
+    function animateCounters() {
+        var counters = document.querySelectorAll('.count');
+        counters.forEach(function(counter) {
+            var target = parseInt(counter.getAttribute('data-target'));
+            var suffix = counter.getAttribute('data-suffix');
+            var duration = 1800;
+            var start = 0;
+            var startTime = null;
+
+            function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
+
+            function tick(timestamp) {
+                if (!startTime) startTime = timestamp;
+                var progress = Math.min((timestamp - startTime) / duration, 1);
+                var current = Math.round(easeOut(progress) * target);
+                counter.textContent = current;
+                if (progress < 1) {
+                    requestAnimationFrame(tick);
+                } else {
+                    counter.textContent = target;
+                    // Add suffix with slight delay for effect
+                    setTimeout(function() {
+                        counter.innerHTML = target + '<span style="color:var(--accent-dark)">' + suffix + '</span>';
+                    }, 150);
+                }
+            }
+            requestAnimationFrame(tick);
+        });
+    }
+
+    // Trigger when stats bar is visible
+    var statsObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+            if (entry.isIntersecting && !counted) {
+                counted = true;
+                animateCounters();
+            }
+        });
+    }, { threshold: 0.3 });
+    statsObserver.observe(document.getElementById('statsBar'));
 </script>
 
 </body>

@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insights &amp; Blogs — Feen</title>
+    <meta name="description" content="Lees de laatste inzichten over finance, accountancy, arbeidsmarkt en bemiddeling van Feen.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #1a1f3a;
+            --navy-deep: #12152a;
+            --accent: #b8f470;
+            --accent-dark: #9ad45a;
+            --white: #ffffff;
+            --off-white: #f8f9fb;
+            --text: #1a1f3a;
+            --text-muted: #6b7194;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--text); background: var(--off-white);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* NAV */
+        .nav {
+            background: var(--navy-deep); padding: 0 48px; height: 72px;
+            display: flex; align-items: center; justify-content: space-between;
+            position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 24px rgba(0,0,0,0.15);
+        }
+        .nav-logo { height: 32px; opacity: 0.9; }
+        .nav-links { display: flex; gap: 32px; list-style: none; }
+        .nav-links a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.25s; }
+        .nav-links a:hover, .nav-links a.active { color: var(--accent); }
+        .nav-cta { background: var(--accent); color: var(--navy); padding: 10px 24px; border-radius: 6px; font-weight: 700; font-size: 13px; text-decoration: none; transition: all 0.25s; }
+        .nav-cta:hover { background: var(--accent-dark); }
+        .mobile-toggle { display: none; background: none; border: none; color: white; font-size: 24px; cursor: pointer; }
+        .mobile-nav { position: fixed; inset: 0; background: rgba(18,21,42,0.98); z-index: 999; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 28px; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+        .mobile-nav.open { opacity: 1; pointer-events: all; }
+        .mobile-nav a { color: var(--white); text-decoration: none; font-size: 1.4rem; font-weight: 600; }
+        .mobile-nav a:hover { color: var(--accent); }
+        .mobile-nav-close { position: absolute; top: 24px; right: 24px; background: none; border: none; color: white; font-size: 28px; cursor: pointer; }
+
+        /* HERO */
+        .page-hero {
+            background: linear-gradient(135deg, var(--navy-deep), #16213e);
+            padding: 100px 48px 70px; color: var(--white);
+        }
+        .page-hero-inner { max-width: 800px; }
+        .page-hero-tag {
+            display: inline-block; background: rgba(184,244,112,0.12); color: var(--accent);
+            padding: 6px 16px; border-radius: 4px; font-size: 12px; font-weight: 700;
+            letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 20px;
+        }
+        .page-hero h1 { font-size: 3rem; font-weight: 800; line-height: 1.1; margin-bottom: 16px; letter-spacing: -1px; }
+        .page-hero h1 span { color: var(--accent); }
+        .page-hero p { font-size: 1.1rem; color: rgba(255,255,255,0.6); line-height: 1.7; max-width: 550px; }
+
+        /* FILTER TABS */
+        .filters {
+            max-width: 1100px; margin: -24px auto 0; padding: 0 48px;
+            position: relative; z-index: 10;
+            display: flex; gap: 8px; flex-wrap: wrap;
+        }
+        .filter-btn {
+            background: var(--white); border: 2px solid transparent; border-radius: 50px;
+            padding: 10px 22px; font-size: 13px; font-weight: 600; cursor: pointer;
+            color: var(--text-muted); transition: all 0.25s;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        }
+        .filter-btn:hover { border-color: var(--accent); color: var(--text); }
+        .filter-btn.active { background: var(--navy); color: var(--white); border-color: var(--navy); }
+
+        /* BLOG GRID */
+        .blog-grid {
+            max-width: 1100px; margin: 40px auto 60px; padding: 0 48px;
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px;
+        }
+        .blog-card {
+            background: var(--white); border-radius: 12px; overflow: hidden;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.05); transition: all 0.3s; cursor: pointer;
+        }
+        .blog-card:hover { transform: translateY(-4px); box-shadow: 0 8px 32px rgba(0,0,0,0.1); }
+        .blog-card-img {
+            width: 100%; height: 200px; object-fit: cover; display: block;
+        }
+        .blog-card-body { padding: 24px; }
+        .blog-tag {
+            display: inline-block; background: rgba(184,244,112,0.2); color: var(--accent-dark);
+            padding: 3px 10px; border-radius: 4px; font-size: 11px; font-weight: 700;
+            letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 10px;
+        }
+        .blog-card-body h3 {
+            font-size: 1.1rem; font-weight: 700; margin-bottom: 10px; line-height: 1.35;
+            color: var(--text);
+        }
+        .blog-card-body p { font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 14px; }
+        .blog-meta { font-size: 0.78rem; color: #aab0c6; font-weight: 500; }
+        .blog-read-more {
+            color: var(--accent-dark); font-weight: 700; font-size: 0.85rem;
+            text-decoration: none; display: inline-flex; align-items: center; gap: 4px;
+        }
+        .blog-read-more:hover { color: var(--navy); }
+
+        /* FEATURED */
+        .blog-featured {
+            grid-column: 1 / -1;
+            display: grid; grid-template-columns: 1fr 1fr; overflow: hidden;
+        }
+        .blog-featured .blog-card-img { height: 100%; min-height: 300px; }
+        .blog-featured .blog-card-body { padding: 36px; display: flex; flex-direction: column; justify-content: center; }
+        .blog-featured .blog-card-body h3 { font-size: 1.5rem; }
+        .blog-featured .blog-card-body p { font-size: 0.95rem; }
+
+        /* CTA */
+        .cta-strip {
+            background: var(--navy); padding: 56px 48px;
+            display: flex; align-items: center; justify-content: space-between;
+            gap: 20px; flex-wrap: wrap;
+        }
+        .cta-strip h2 { color: var(--white); font-size: 1.6rem; font-weight: 700; }
+        .cta-strip p { color: rgba(255,255,255,0.55); font-size: 0.95rem; }
+        .cta-btn {
+            display: inline-block; background: var(--accent); color: var(--navy);
+            padding: 13px 30px; border-radius: 6px; font-weight: 700; font-size: 14px;
+            text-decoration: none; transition: all 0.25s;
+        }
+        .cta-btn:hover { background: var(--accent-dark); transform: translateY(-2px); }
+
+        /* FOOTER */
+        .footer {
+            background: var(--navy-deep); padding: 40px 48px;
+            display: flex; justify-content: space-between; align-items: center;
+            flex-wrap: wrap; gap: 16px;
+        }
+        .footer-copy { color: rgba(255,255,255,0.35); font-size: 0.82rem; }
+        .footer-links { display: flex; gap: 24px; }
+        .footer-links a { color: rgba(255,255,255,0.45); text-decoration: none; font-size: 0.82rem; font-weight: 500; transition: color 0.25s; }
+        .footer-links a:hover { color: var(--accent); }
+
+        @media (max-width: 900px) {
+            .blog-grid { grid-template-columns: repeat(2, 1fr); }
+            .blog-featured { grid-template-columns: 1fr; }
+            .blog-featured .blog-card-img { height: 220px; }
+        }
+        @media (max-width: 640px) {
+            .nav { padding: 0 20px; }
+            .nav-links, .nav-cta { display: none; }
+            .mobile-toggle { display: block; }
+            .page-hero { padding: 80px 24px 56px; }
+            .page-hero h1 { font-size: 2.2rem; }
+            .filters { padding: 0 24px; }
+            .blog-grid { grid-template-columns: 1fr; padding: 0 24px; }
+            .cta-strip { padding: 40px 24px; flex-direction: column; text-align: center; }
+            .footer { padding: 30px 24px; flex-direction: column; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+    <a href="/"><img src="https://primary.jwwb.nl/public/j/q/c/temp-bubpssuhqgoxqtzyfqhe/image-high-aunh7o.png?enable-io=true&enable=upscale&height=64" alt="Feen" class="nav-logo"></a>
+    <ul class="nav-links">
+        <li><a href="/vacature">Vacatures</a></li>
+        <li><a href="/opdrachtgever">Opdrachtgever</a></li>
+        <li><a href="/over-ons">Over Ons</a></li>
+        <li><a href="/contact">Contact</a></li>
+        <li><a href="/blogs" class="active">Insights</a></li>
+    </ul>
+    <a href="/vacature" class="nav-cta">Bekijk vacatures</a>
+    <button class="mobile-toggle" onclick="document.getElementById('mobileNav').classList.add('open')" aria-label="Menu">&#9776;</button>
+</nav>
+<div class="mobile-nav" id="mobileNav">
+    <button class="mobile-nav-close" onclick="document.getElementById('mobileNav').classList.remove('open')" aria-label="Sluit menu">&times;</button>
+    <a href="/">Home</a><a href="/vacature">Vacatures</a><a href="/opdrachtgever">Opdrachtgever</a>
+    <a href="/over-ons">Over Ons</a><a href="/contact">Contact</a><a href="/blogs">Insights</a>
+</div>
+
+<!-- HERO -->
+<section class="page-hero">
+    <div class="page-hero-inner">
+        <div class="page-hero-tag">Insights</div>
+        <h1>Kennis &amp; <span>inzichten</span></h1>
+        <p>De laatste trends, tips en ontwikkelingen in finance, accountancy en de arbeidsmarkt.</p>
+    </div>
+</section>
+
+<!-- FILTERS -->
+<div class="filters">
+    <button class="filter-btn active" onclick="filterBlogs('all', this)">Alles</button>
+    <button class="filter-btn" onclick="filterBlogs('arbeidsmarkt', this)">Arbeidsmarkt</button>
+    <button class="filter-btn" onclick="filterBlogs('finance', this)">Finance</button>
+    <button class="filter-btn" onclick="filterBlogs('accountancy', this)">Accountancy</button>
+    <button class="filter-btn" onclick="filterBlogs('tips', this)">Tips</button>
+</div>
+
+<!-- BLOG GRID -->
+<div class="blog-grid" id="blogGrid">
+
+    <!-- FEATURED -->
+    <div class="blog-card blog-featured" data-cat="arbeidsmarkt">
+        <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80&fit=crop" alt="" class="blog-card-img">
+        <div class="blog-card-body">
+            <span class="blog-tag">Arbeidsmarkt</span>
+            <h3>Waarom de financiële arbeidsmarkt in 2026 krapper is dan ooit</h3>
+            <p>De vraag naar financiële professionals groeit sneller dan het aanbod. Wij analyseren de oorzaken en wat dit betekent voor uw organisatie. Van vergrijzing tot digitalisering — de uitdagingen stapelen zich op.</p>
+            <div class="blog-meta">5 maart 2026 · 6 min leestijd</div>
+        </div>
+    </div>
+
+    <!-- CARDS -->
+    <div class="blog-card" data-cat="finance">
+        <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=600&q=80&fit=crop" alt="" class="blog-card-img">
+        <div class="blog-card-body">
+            <span class="blog-tag">Finance</span>
+            <h3>5 manieren om uw finance-afdeling efficiënter te maken</h3>
+            <p>Van automatisering tot het juiste team — ontdek hoe u meer haalt uit uw financiële processen.</p>
+            <div class="blog-meta">28 feb 2026 · 4 min leestijd</div>
+        </div>
+    </div>
+
+    <div class="blog-card" data-cat="accountancy">
+        <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600&q=80&fit=crop" alt="" class="blog-card-img">
+        <div class="blog-card-body">
+            <span class="blog-tag">Accountancy</span>
+            <h3>Het tekort aan accountants: hoe los je het op?</h3>
+            <p>Nederland kampt met een structureel tekort aan registeraccountants. Wij delen drie strategieën die nu al werken.</p>
+            <div class="blog-meta">20 feb 2026 · 5 min leestijd</div>
+        </div>
+    </div>
+
+    <div class="blog-card" data-cat="tips">
+        <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=600&q=80&fit=crop" alt="" class="blog-card-img">
+        <div class="blog-card-body">
+            <span class="blog-tag">Tips</span>
+            <h3>Zo kiest u de juiste bemiddelaar voor uw organisatie</h3>
+            <p>Niet elke bemiddelaar is gelijk. Leer waar u op moet letten en hoe u duizenden euro's kunt besparen.</p>
+            <div class="blog-meta">14 feb 2026 · 3 min leestijd</div>
+        </div>
+    </div>
+
+    <div class="blog-card" data-cat="arbeidsmarkt">
+        <img src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=600&q=80&fit=crop" alt="" class="blog-card-img">
+        <div class="blog-card-body">
+            <span class="blog-tag">Arbeidsmarkt</span>
+            <h3>Flexibel werken in finance: de nieuwe standaard</h3>
+            <p>Steeds meer financiële professionals kiezen voor flexibiliteit. Wat betekent dit voor opdrachtgevers?</p>
+            <div class="blog-meta">7 feb 2026 · 4 min leestijd</div>
+        </div>
+    </div>
+
+    <div class="blog-card" data-cat="finance">
+        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=80&fit=crop" alt="" class="blog-card-img">
+        <div class="blog-card-body">
+            <span class="blog-tag">Finance</span>
+            <h3>De opkomst van interim financial controllers</h3>
+            <p>Waarom steeds meer bedrijven kiezen voor interim controllers en hoe Feen hierin het verschil maakt.</p>
+            <div class="blog-meta">1 feb 2026 · 5 min leestijd</div>
+        </div>
+    </div>
+
+    <div class="blog-card" data-cat="tips">
+        <img src="https://images.unsplash.com/photo-1553028826-f4804a6dba3b?w=600&q=80&fit=crop" alt="" class="blog-card-img">
+        <div class="blog-card-body">
+            <span class="blog-tag">Tips</span>
+            <h3>Bespaar tot 60% op bemiddelingskosten: de Feen-methode</h3>
+            <p>Een concreet rekenvoorbeeld dat laat zien hoeveel u bespaart met een fee van 6% versus het marktgemidderde.</p>
+            <div class="blog-meta">25 jan 2026 · 3 min leestijd</div>
+        </div>
+    </div>
+</div>
+
+<!-- CTA -->
+<section class="cta-strip">
+    <div>
+        <h2>Wilt u meer weten?</h2>
+        <p>Neem contact op of bekijk direct onze vacatures.</p>
+    </div>
+    <a href="/vacature" class="cta-btn">Bekijk vacatures &rarr;</a>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+    <div class="footer-copy">&copy; 2023 – 2026 Feen. Alle rechten voorbehouden.</div>
+    <div class="footer-links">
+        <a href="/">Home</a>
+        <a href="/contact">Contact</a>
+        <a href="https://linkedin.com/company/feennl/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://api.whatsapp.com/send?phone=31687848515" target="_blank" rel="noopener">WhatsApp</a>
+    </div>
+</footer>
+
+<script>
+    function filterBlogs(cat, btn) {
+        var cards = document.querySelectorAll('.blog-card');
+        cards.forEach(function(card) {
+            if (cat === 'all' || card.getAttribute('data-cat') === cat) {
+                card.style.display = '';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+        var btns = document.querySelectorAll('.filter-btn');
+        btns.forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Over Ons — Feen</title>
+    <meta name="description" content="Feen verbindt expertise in finance & accountancy. Ontdek wie we zijn, waar we voor staan en waarom wij de eerlijkste bemiddelaar van Nederland zijn.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #1a1f3a;
+            --navy-deep: #12152a;
+            --accent: #b8f470;
+            --accent-dark: #9ad45a;
+            --white: #ffffff;
+            --off-white: #f8f9fb;
+            --text: #1a1f3a;
+            --text-muted: #6b7194;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--text);
+            background: var(--white);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* NAV */
+        .nav {
+            background: var(--navy-deep);
+            padding: 0 48px; height: 72px;
+            display: flex; align-items: center; justify-content: space-between;
+            position: sticky; top: 0; z-index: 1000;
+            box-shadow: 0 2px 24px rgba(0,0,0,0.15);
+        }
+        .nav-logo { height: 32px; opacity: 0.9; }
+        .nav-links { display: flex; gap: 32px; list-style: none; }
+        .nav-links a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.25s; }
+        .nav-links a:hover, .nav-links a.active { color: var(--accent); }
+        .nav-cta { background: var(--accent); color: var(--navy); padding: 10px 24px; border-radius: 6px; font-weight: 700; font-size: 13px; text-decoration: none; transition: all 0.25s; }
+        .nav-cta:hover { background: var(--accent-dark); }
+        .mobile-toggle { display: none; background: none; border: none; color: white; font-size: 24px; cursor: pointer; }
+        .mobile-nav { position: fixed; inset: 0; background: rgba(18,21,42,0.98); z-index: 999; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 28px; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+        .mobile-nav.open { opacity: 1; pointer-events: all; }
+        .mobile-nav a { color: var(--white); text-decoration: none; font-size: 1.4rem; font-weight: 600; transition: color 0.25s; }
+        .mobile-nav a:hover { color: var(--accent); }
+        .mobile-nav-close { position: absolute; top: 24px; right: 24px; background: none; border: none; color: white; font-size: 28px; cursor: pointer; }
+
+        /* PAGE HERO */
+        .page-hero {
+            background: linear-gradient(135deg, var(--navy-deep) 0%, #16213e 100%);
+            padding: 100px 48px 80px;
+            color: var(--white);
+        }
+        .page-hero-inner { max-width: 800px; }
+        .page-hero-tag {
+            display: inline-block; background: rgba(184,244,112,0.12); color: var(--accent);
+            padding: 6px 16px; border-radius: 4px; font-size: 12px; font-weight: 700;
+            letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 20px;
+        }
+        .page-hero h1 { font-size: 3rem; font-weight: 800; line-height: 1.1; margin-bottom: 16px; letter-spacing: -1px; }
+        .page-hero h1 span { color: var(--accent); }
+        .page-hero p { font-size: 1.1rem; color: rgba(255,255,255,0.65); line-height: 1.7; max-width: 600px; }
+
+        /* CONTENT */
+        .content { max-width: 900px; margin: 0 auto; padding: 80px 48px; }
+        .content h2 { font-size: 1.8rem; font-weight: 800; margin-bottom: 16px; letter-spacing: -0.3px; }
+        .content h2 span { color: var(--accent-dark); }
+        .content p { font-size: 1.02rem; color: var(--text-muted); line-height: 1.85; margin-bottom: 20px; }
+        .content-divider { width: 60px; height: 3px; background: var(--accent); margin: 48px 0; border-radius: 2px; }
+
+        /* VALUES GRID */
+        .values-section { background: var(--off-white); padding: 80px 48px; }
+        .values-inner { max-width: 1100px; margin: 0 auto; }
+        .values-inner h2 { font-size: 1.8rem; font-weight: 800; margin-bottom: 48px; text-align: center; }
+        .values-inner h2 span { color: var(--accent-dark); }
+        .values-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+        .value-card {
+            background: var(--white); border-radius: 12px; padding: 36px 28px;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.04); transition: transform 0.3s;
+            border-top: 3px solid transparent;
+        }
+        .value-card:hover { transform: translateY(-4px); border-top-color: var(--accent); }
+        .value-icon { font-size: 2rem; margin-bottom: 14px; display: block; }
+        .value-card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 10px; }
+        .value-card p { font-size: 0.92rem; color: var(--text-muted); line-height: 1.7; margin: 0; }
+
+        /* MISSION STRIP */
+        .mission-strip {
+            background: var(--navy); padding: 64px 48px; text-align: center; color: var(--white);
+        }
+        .mission-strip blockquote {
+            font-size: 1.6rem; font-weight: 300; line-height: 1.5;
+            max-width: 700px; margin: 0 auto 20px; font-style: italic;
+            color: rgba(255,255,255,0.85);
+        }
+        .mission-strip blockquote span { color: var(--accent); font-weight: 600; font-style: normal; }
+        .mission-strip cite { font-size: 0.9rem; color: rgba(255,255,255,0.4); font-style: normal; }
+
+        /* CTA */
+        .cta-section {
+            background: linear-gradient(135deg, var(--accent), #a0e060);
+            padding: 56px 48px; text-align: center;
+        }
+        .cta-section h2 { color: var(--navy); font-size: 1.8rem; font-weight: 800; margin-bottom: 10px; }
+        .cta-section p { color: #2a2a4e; font-size: 1rem; margin-bottom: 24px; }
+        .cta-btn-dark {
+            display: inline-block; background: var(--navy); color: var(--white);
+            padding: 14px 36px; border-radius: 6px; font-weight: 700; font-size: 14px;
+            text-decoration: none; transition: all 0.25s;
+        }
+        .cta-btn-dark:hover { background: #2a2a4e; transform: translateY(-2px); }
+
+        /* FOOTER */
+        .footer {
+            background: var(--navy-deep); padding: 40px 48px;
+            display: flex; justify-content: space-between; align-items: center;
+            flex-wrap: wrap; gap: 16px; border-top: 1px solid rgba(255,255,255,0.06);
+        }
+        .footer-copy { color: rgba(255,255,255,0.35); font-size: 0.82rem; }
+        .footer-links { display: flex; gap: 24px; }
+        .footer-links a { color: rgba(255,255,255,0.45); text-decoration: none; font-size: 0.82rem; font-weight: 500; transition: color 0.25s; }
+        .footer-links a:hover { color: var(--accent); }
+
+        @media (max-width: 768px) {
+            .nav { padding: 0 20px; }
+            .nav-links, .nav-cta { display: none; }
+            .mobile-toggle { display: block; }
+            .page-hero { padding: 80px 24px 60px; }
+            .page-hero h1 { font-size: 2.2rem; }
+            .content { padding: 50px 24px; }
+            .values-section { padding: 50px 24px; }
+            .values-grid { grid-template-columns: 1fr; }
+            .mission-strip { padding: 48px 24px; }
+            .mission-strip blockquote { font-size: 1.2rem; }
+            .cta-section { padding: 40px 24px; }
+            .footer { padding: 30px 24px; flex-direction: column; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+    <a href="/"><img src="https://primary.jwwb.nl/public/j/q/c/temp-bubpssuhqgoxqtzyfqhe/image-high-aunh7o.png?enable-io=true&enable=upscale&height=64" alt="Feen" class="nav-logo"></a>
+    <ul class="nav-links">
+        <li><a href="/vacature">Vacatures</a></li>
+        <li><a href="/opdrachtgever">Opdrachtgever</a></li>
+        <li><a href="/over-ons" class="active">Over Ons</a></li>
+        <li><a href="/contact">Contact</a></li>
+        <li><a href="/blogs">Insights</a></li>
+    </ul>
+    <a href="/vacature" class="nav-cta">Bekijk vacatures</a>
+    <button class="mobile-toggle" onclick="document.getElementById('mobileNav').classList.add('open')" aria-label="Menu">&#9776;</button>
+</nav>
+<div class="mobile-nav" id="mobileNav">
+    <button class="mobile-nav-close" onclick="document.getElementById('mobileNav').classList.remove('open')" aria-label="Sluit menu">&times;</button>
+    <a href="/">Home</a><a href="/vacature">Vacatures</a><a href="/opdrachtgever">Opdrachtgever</a>
+    <a href="/over-ons">Over Ons</a><a href="/contact">Contact</a><a href="/blogs">Insights</a>
+</div>
+
+<!-- HERO -->
+<section class="page-hero">
+    <div class="page-hero-inner">
+        <div class="page-hero-tag">Over Feen</div>
+        <h1>Wij geloven in <span>eerlijke</span> bemiddeling</h1>
+        <p>Feen is opgericht met één doel: het verbinden van organisaties met de beste professionals in finance en accountancy — tegen een eerlijke prijs.</p>
+    </div>
+</section>
+
+<!-- CONTENT: WIE WE ZIJN -->
+<section class="content">
+    <h2>Wie <span>wij</span> zijn</h2>
+    <p>Feen is een bemiddelingsbureau gespecialiseerd in finance en accountancy. Waar de markt gewend is aan bemiddelingskosten van 15 tot 20 procent, doorbreken wij die norm met een fee van slechts 6 procent. Dit is geen marketingtruc — het is waar we voor staan.</p>
+    <p>Wij geloven dat kwaliteit en betaalbaarheid hand in hand kunnen gaan. Ons netwerk van meer dan 100 professionals in de financiële dienstverlening is zorgvuldig opgebouwd. Elke professional wordt geselecteerd op vakbekwaamheid, betrouwbaarheid en ervaring. Zo waarborgen wij de kwaliteit die uw organisatie nodig heeft.</p>
+
+    <div class="content-divider"></div>
+
+    <h2>Waar Feen <span>voor staat</span></h2>
+    <p>De naam Feen is niet toevallig gekozen. In een sector waar hoge fees de standaard zijn, willen wij het verschil maken. Feen staat voor lage fees, eerlijke bemiddeling en transparante communicatie. Geen verborgen kosten, geen kleine lettertjes — gewoon een eerlijke samenwerking.</p>
+    <p>Wij richten ons uitsluitend op de financiële dienstverlening: accountancy, controlling, fiscaal advies, salarisadministratie en finance. Door deze focus kennen wij de markt als geen ander en kunnen wij snel en gericht de juiste match maken.</p>
+
+    <div class="content-divider"></div>
+
+    <h2>Onze <span>aanpak</span></h2>
+    <p>Bij Feen draait alles om snelheid, kwaliteit en persoonlijk contact. Wij nemen de tijd om uw organisatie te begrijpen — uw cultuur, uw behoeften en uw doelen. Vervolgens doorzoeken wij ons netwerk en presenteren wij binnen 48 uur de eerste geschikte profielen.</p>
+    <p>Voor professionals bieden wij meer dan alleen vacatures. Wij begeleiden hen van de eerste kennismaking tot een succesvolle plaatsing, met oog voor hun ambities en ontwikkeling.</p>
+</section>
+
+<!-- MISSION STRIP -->
+<section class="mission-strip">
+    <blockquote>"Wij geloven dat de beste professionals niet tegen de <span>hoogste prijs</span> gevonden hoeven te worden, maar met de <span>juiste aanpak.</span>"</blockquote>
+    <cite>— Team Feen</cite>
+</section>
+
+<!-- WAARDEN -->
+<section class="values-section">
+    <div class="values-inner">
+        <h2>Onze <span>kernwaarden</span></h2>
+        <div class="values-grid">
+            <div class="value-card">
+                <span class="value-icon">💎</span>
+                <h3>Transparantie</h3>
+                <p>Geen verborgen kosten of onduidelijke voorwaarden. Wij communiceren altijd open en eerlijk over onze werkwijze en tarieven.</p>
+            </div>
+            <div class="value-card">
+                <span class="value-icon">⚡</span>
+                <h3>Snelheid</h3>
+                <p>Tijd is geld. Daarom presenteren wij binnen 48 uur de eerste profielen en schakelen wij snel op iedere vraag.</p>
+            </div>
+            <div class="value-card">
+                <span class="value-icon">🎯</span>
+                <h3>Kwaliteit</h3>
+                <p>Wij selecteren professionals op vakbekwaamheid, betrouwbaarheid en ervaring. Liever een perfecte match dan een snelle plaatsing.</p>
+            </div>
+            <div class="value-card">
+                <span class="value-icon">🤝</span>
+                <h3>Partnership</h3>
+                <p>Wij zien onze opdrachtgevers als partners. Uw succes is ons succes, en wij denken proactief mee over uw personeelsstrategie.</p>
+            </div>
+            <div class="value-card">
+                <span class="value-icon">💰</span>
+                <h3>Eerlijke prijzen</h3>
+                <p>Met 6% hanteren wij de laagste bemiddelingsfee van Nederland. Wij bewijzen dat eerlijk zakendoen loont.</p>
+            </div>
+            <div class="value-card">
+                <span class="value-icon">🌱</span>
+                <h3>Groei</h3>
+                <p>Wij investeren in de ontwikkeling van onze professionals en ondersteunen hen bij het bouwen van een succesvolle carrière.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+    <h2>Zullen wij kennismaken?</h2>
+    <p>Ontdek wat Feen voor uw organisatie kan betekenen, of vind uw volgende uitdaging.</p>
+    <a href="/contact" class="cta-btn-dark">Neem contact op</a>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+    <div class="footer-copy">&copy; 2023 – 2026 Feen. Alle rechten voorbehouden.</div>
+    <div class="footer-links">
+        <a href="/">Home</a>
+        <a href="/contact">Contact</a>
+        <a href="https://linkedin.com/company/feennl/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://api.whatsapp.com/send?phone=31687848515" target="_blank" rel="noopener">WhatsApp</a>
+    </div>
+</footer>
+
+</body>
+</html>
