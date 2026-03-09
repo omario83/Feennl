@@ -258,9 +258,12 @@
 
 <script>
 // Redirect als al ingelogd en geverifieerd
+const _redirectParam = new URLSearchParams(window.location.search).get('redirect');
+const _redirectUrl = (_redirectParam && _redirectParam.startsWith('/')) ? _redirectParam : '/mijn-sollicitaties';
+
 auth.onAuthStateChanged(user => {
     if (user && user.emailVerified) {
-        window.location.href = '/mijn-sollicitaties';
+        window.location.href = _redirectUrl;
     }
 });
 
@@ -299,7 +302,7 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
             return;
         }
 
-        window.location.href = '/mijn-sollicitaties';
+        window.location.href = _redirectUrl;
 
     } catch (err) {
         btn.disabled = false;
