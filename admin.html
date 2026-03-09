@@ -1130,6 +1130,11 @@ async function seedDemoVacatures() {
         loadDashboard();
     } catch(e) {
         console.error('Seed mislukt:', e);
+        if (e.code === 'permission-denied') {
+            alert('Firestore security rules blokkeren schrijven. Ga naar Firebase Console → Firestore → Rules en zet de juiste regels neer (zie uitleg hieronder de knop).');
+        } else {
+            alert('Seed mislukt: ' + e.message);
+        }
         btn.textContent = 'Fout — probeer opnieuw';
         btn.disabled = false;
     }
