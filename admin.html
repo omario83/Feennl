@@ -296,6 +296,131 @@
         .admin-app { display: none; }
         .admin-app.visible { display: block; }
 
+        /* CONTACT BUTTONS */
+        .contact-btns { display: flex; gap: 6px; }
+        .contact-btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 30px; height: 30px; border-radius: 6px;
+            border: 1px solid var(--border); background: var(--white);
+            text-decoration: none; font-size: 0.85rem;
+            cursor: pointer; transition: all 0.2s;
+        }
+        .contact-btn:hover { border-color: var(--accent); background: rgba(184,244,112,0.1); }
+        .contact-btn.email-btn { color: var(--info); }
+        .contact-btn.phone-btn { color: var(--success); }
+        .contact-btn.wa-btn { color: #25d366; }
+
+        /* CLICKABLE NAME */
+        .clickable-name { color: var(--navy); cursor: pointer; text-decoration: none; font-weight: 600; transition: color 0.2s; }
+        .clickable-name:hover { color: var(--accent-dark); text-decoration: underline; }
+
+        /* KLANTENKAART MODAL */
+        .kk-overlay {
+            display: none; position: fixed; inset: 0;
+            background: rgba(18,21,42,0.5); z-index: 3000;
+            align-items: flex-start; justify-content: center;
+            padding-top: 40px; overflow-y: auto;
+        }
+        .kk-overlay.show { display: flex; }
+        .kk-modal {
+            background: var(--white); border-radius: 16px;
+            width: 90%; max-width: 780px; margin-bottom: 40px;
+            box-shadow: 0 16px 48px rgba(26,31,58,0.25);
+            overflow: hidden;
+        }
+        .kk-header {
+            background: var(--navy-deep); color: white;
+            padding: 28px 32px; display: flex; align-items: center; gap: 20px;
+        }
+        .kk-avatar {
+            width: 56px; height: 56px; border-radius: 50%;
+            background: var(--accent); color: var(--navy);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.3rem; font-weight: 800; flex-shrink: 0;
+        }
+        .kk-info h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: 4px; }
+        .kk-info p { font-size: 0.85rem; color: rgba(255,255,255,0.6); }
+        .kk-close { position: absolute; top: 20px; right: 24px; background: none; border: none; color: rgba(255,255,255,0.5); font-size: 1.5rem; cursor: pointer; }
+        .kk-close:hover { color: white; }
+        .kk-contact-bar {
+            display: flex; gap: 8px; padding: 16px 32px;
+            border-bottom: 1px solid var(--border); background: var(--off-white);
+        }
+        .kk-contact-btn {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 8px 16px; border-radius: 8px; font-size: 0.82rem;
+            font-weight: 600; font-family: inherit; border: 1px solid var(--border);
+            background: var(--white); color: var(--navy); cursor: pointer;
+            text-decoration: none; transition: all 0.2s;
+        }
+        .kk-contact-btn:hover { border-color: var(--accent); background: rgba(184,244,112,0.1); }
+
+        /* TABS */
+        .kk-tabs {
+            display: flex; border-bottom: 1px solid var(--border);
+            padding: 0 32px; background: var(--white);
+        }
+        .kk-tab {
+            padding: 14px 20px; font-size: 0.85rem; font-weight: 600;
+            color: var(--text-muted); cursor: pointer; border: none;
+            background: none; font-family: inherit; position: relative;
+            transition: color 0.2s;
+        }
+        .kk-tab:hover { color: var(--navy); }
+        .kk-tab.active { color: var(--navy); }
+        .kk-tab.active::after {
+            content: ''; position: absolute; bottom: -1px; left: 0; right: 0;
+            height: 3px; background: var(--accent); border-radius: 3px 3px 0 0;
+        }
+        .kk-tab-content { display: none; padding: 24px 32px; }
+        .kk-tab-content.active { display: block; }
+
+        /* INFO GRID */
+        .kk-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .kk-field label { display: block; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); font-weight: 700; margin-bottom: 4px; }
+        .kk-field span { font-size: 0.92rem; font-weight: 500; }
+
+        /* NOTITIES */
+        .kk-notities { max-height: 300px; overflow-y: auto; }
+        .kk-notitie {
+            padding: 14px 0; border-bottom: 1px solid var(--border);
+        }
+        .kk-notitie:last-child { border-bottom: none; }
+        .kk-notitie .notitie-date { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 4px; }
+        .kk-notitie .notitie-text { font-size: 0.88rem; line-height: 1.5; white-space: pre-wrap; }
+        .kk-notitie-form { display: flex; gap: 8px; margin-top: 16px; }
+        .kk-notitie-form textarea {
+            flex: 1; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px;
+            font-family: inherit; font-size: 0.88rem; resize: vertical; min-height: 60px;
+        }
+        .kk-notitie-form button {
+            padding: 10px 20px; background: var(--accent); color: var(--navy);
+            border: none; border-radius: 8px; font-weight: 700; font-family: inherit;
+            cursor: pointer; align-self: flex-end; white-space: nowrap;
+        }
+
+        /* ACTIVITEIT */
+        .kk-timeline { position: relative; padding-left: 24px; }
+        .kk-timeline::before { content: ''; position: absolute; left: 8px; top: 0; bottom: 0; width: 2px; background: var(--border); }
+        .kk-event { position: relative; padding: 12px 0; }
+        .kk-event::before {
+            content: ''; position: absolute; left: -20px; top: 16px;
+            width: 10px; height: 10px; border-radius: 50%;
+            background: var(--accent); border: 2px solid var(--white);
+        }
+        .kk-event .event-date { font-size: 0.75rem; color: var(--text-muted); }
+        .kk-event .event-text { font-size: 0.88rem; font-weight: 500; }
+
+        /* SEED BUTTON */
+        .btn-seed {
+            padding: 8px 16px; background: var(--navy); color: white;
+            border: none; border-radius: 6px; font-size: 0.8rem;
+            font-weight: 600; font-family: inherit; cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-seed:hover { background: var(--navy-deep); }
+        .btn-seed:disabled { opacity: 0.5; cursor: not-allowed; }
+
         @media (max-width: 768px) {
             .sidebar { display: none; }
             .stats-grid { grid-template-columns: repeat(2, 1fr); }
@@ -303,6 +428,11 @@
             table { font-size: 0.8rem; }
             th, td { padding: 10px 8px; }
             .admin-login-box { margin: 16px; padding: 32px 24px; }
+            .kk-modal { width: 95%; }
+            .kk-grid { grid-template-columns: 1fr; }
+            .kk-header { padding: 20px; }
+            .kk-tabs { padding: 0 16px; overflow-x: auto; }
+            .kk-tab-content { padding: 20px 16px; }
         }
     </style>
 </head>
@@ -356,6 +486,7 @@
         <div class="admin-panel active" id="panel-dashboard">
             <div class="section-header">
                 <h2>Dashboard</h2>
+                <button class="btn-seed" id="seedBtn" onclick="seedDemoVacatures()">🌱 Demo vacatures laden</button>
             </div>
             <div class="stats-grid">
                 <div class="stat-box">
@@ -537,6 +668,31 @@
     </div>
 </div>
 
+<!-- KLANTENKAART MODAL -->
+<div class="kk-overlay" id="kkOverlay">
+    <div class="kk-modal" style="position:relative;">
+        <div class="kk-header">
+            <div class="kk-avatar" id="kkAvatar">?</div>
+            <div class="kk-info">
+                <h3 id="kkNaam">—</h3>
+                <p id="kkSubtitle">—</p>
+            </div>
+            <button class="kk-close" onclick="closeKlantenkaart()">&times;</button>
+        </div>
+        <div class="kk-contact-bar" id="kkContactBar"></div>
+        <div class="kk-tabs" id="kkTabs">
+            <button class="kk-tab active" onclick="switchKkTab('overzicht', this)">Overzicht</button>
+            <button class="kk-tab" onclick="switchKkTab('activiteit', this)">Activiteit</button>
+            <button class="kk-tab" onclick="switchKkTab('notities', this)">Notities</button>
+            <button class="kk-tab" onclick="switchKkTab('sollicitaties', this)">Sollicitaties</button>
+        </div>
+        <div class="kk-tab-content active" id="kkTab-overzicht"></div>
+        <div class="kk-tab-content" id="kkTab-activiteit"></div>
+        <div class="kk-tab-content" id="kkTab-notities"></div>
+        <div class="kk-tab-content" id="kkTab-sollicitaties"></div>
+    </div>
+</div>
+
 </div><!-- /admin-app -->
 
 <!-- FIREBASE SDK -->
@@ -553,17 +709,14 @@ const ADMIN_EMAIL = 'omarelazami@hotmail.nl';
 // Auth state: toon login of dashboard
 auth.onAuthStateChanged(async (user) => {
     if (user && user.email === ADMIN_EMAIL) {
-        // Admin ingelogd → toon backoffice
         document.getElementById('adminLoginScreen').style.display = 'none';
         document.getElementById('adminApp').classList.add('visible');
         document.getElementById('adminEmail').textContent = user.email;
         loadDashboard();
     } else if (user) {
-        // Ander account → uitloggen en login tonen
         await auth.signOut();
         showAdminLogin('Geen toegang. Alleen het admin-account mag inloggen.');
     } else {
-        // Niet ingelogd → login tonen
         showAdminLogin();
     }
 });
@@ -578,7 +731,6 @@ function showAdminLogin(errorMsg) {
     }
 }
 
-// Admin login form
 document.getElementById('adminLoginForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     const email = document.getElementById('adminEmailInput').value.trim();
@@ -586,7 +738,6 @@ document.getElementById('adminLoginForm').addEventListener('submit', async (e) =
     const btn = document.getElementById('adminLoginBtn');
     const errDiv = document.getElementById('adminLoginError');
     errDiv.classList.remove('show');
-
     btn.disabled = true;
     btn.textContent = 'Even geduld...';
 
@@ -599,7 +750,6 @@ document.getElementById('adminLoginForm').addEventListener('submit', async (e) =
             btn.disabled = false;
             btn.textContent = 'Inloggen';
         }
-        // onAuthStateChanged handelt de rest af
     } catch (err) {
         btn.disabled = false;
         btn.textContent = 'Inloggen';
@@ -620,11 +770,369 @@ function showAdminPanel(name, btn) {
     document.getElementById('panel-' + name).classList.add('active');
     document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
     if (btn) btn.classList.add('active');
-
     if (name === 'aanvragen') loadAanvragen();
     if (name === 'vacatures') loadVacatures();
     if (name === 'reacties') loadReacties();
     if (name === 'gebruikers') loadGebruikers();
+}
+
+// ===== SEED DEMO VACATURES =====
+async function seedDemoVacatures() {
+    const btn = document.getElementById('seedBtn');
+    if (!confirm('Dit laadt 8 demo-vacatures in Firestore. Doorgaan?')) return;
+    btn.disabled = true;
+    btn.textContent = 'Laden...';
+
+    const demoVacs = [
+        {
+            id: 'demo-senior-accountant',
+            functie: 'Senior Accountant',
+            bedrijf: 'Vertrouwelijk - Big 4 kantoor',
+            locatie: 'Amsterdam',
+            dienstverband: 'Vast',
+            uren: 'Fulltime',
+            ervaring: 'Senior',
+            duur: 'Onbepaalde tijd',
+            salaris: '€5.500 - €6.800 /maand',
+            badge: 'new', badgeText: 'Nieuw',
+            omschrijving: 'Wij zoeken een ervaren Senior Accountant die verantwoordelijk wordt voor het leiden van auditteams en het opbouwen van klantrelaties. Je werkt aan diverse opdrachten voor middelgrote en grote ondernemingen binnen uiteenlopende sectoren. Je krijgt de ruimte om je verder te ontwikkelen richting managerniveau.',
+            werkzaamheden: [
+                'Leiden van auditteams van 3-5 personen',
+                'Opstellen en reviewen van jaarrekeningen',
+                'Onderhouden van klantrelaties en signaleren van adviesbehoeften',
+                'Begeleiden en coachen van junior medewerkers',
+                'Samenwerken met belastingadviseurs en corporate finance specialisten',
+                'Rapporteren aan de vennoot over voortgang en bevindingen'
+            ],
+            vereisten: [
+                'WO Accountancy afgerond',
+                'RA-titel (of in afrondende fase)',
+                'Minimaal 4 jaar ervaring in de controlepraktijk',
+                'Ervaring met IFRS en Dutch GAAP',
+                'Uitstekende beheersing Nederlands en Engels',
+                'Sterke analytische en communicatieve vaardigheden'
+            ],
+            wensen: [
+                'Ervaring met internationale klanten',
+                'Kennis van IT-audit',
+                'Affiniteit met ESG-rapportage'
+            ],
+            aanbod: [
+                'Marktconform salaris €5.500 - €6.800 bruto per maand',
+                '30 vakantiedagen',
+                'Uitstekende pensioenregeling',
+                'Opleidingsbudget van €3.000 per jaar',
+                'Flexibel werken (hybride model)',
+                'Lease-auto regeling',
+                'Jaarlijkse winstdeling'
+            ]
+        },
+        {
+            id: 'demo-financial-controller',
+            functie: 'Financial Controller',
+            bedrijf: 'TechGrowth B.V.',
+            locatie: 'Rotterdam',
+            dienstverband: 'Vast',
+            uren: 'Fulltime',
+            ervaring: 'Medior',
+            duur: 'Onbepaalde tijd',
+            salaris: '€4.200 - €4.800 /maand',
+            badge: 'new', badgeText: 'Nieuw',
+            omschrijving: 'Als Financial Controller ben je de rechterhand van de CFO bij dit snelgroeiende techbedrijf. Je bent verantwoordelijk voor de maandafsluitingen, budgettering en financiële analyses die het management helpen bij strategische beslissingen. Een dynamische rol in een ambitieuze omgeving.',
+            werkzaamheden: [
+                'Verantwoordelijk voor maand-, kwartaal- en jaarafsluitingen',
+                'Opstellen van managementrapportages en dashboards',
+                'Budgettering, forecasting en variance analyses',
+                'Verbeteren van financiële processen en interne controls',
+                'Samenwerken met de externe accountant',
+                'Adviseren van het managementteam op basis van financiële data'
+            ],
+            vereisten: [
+                'HBO/WO Finance, Accounting of Bedrijfseconomie',
+                'Minimaal 3 jaar ervaring als financial controller',
+                'Sterke Excel/Google Sheets vaardigheden',
+                'Ervaring met ERP-systemen (SAP, Exact of vergelijkbaar)',
+                'Goede beheersing van Nederlands en Engels'
+            ],
+            wensen: [
+                'Ervaring in de tech-sector',
+                'Kennis van Power BI of Tableau',
+                'RC-titel of in opleiding'
+            ],
+            aanbod: [
+                'Salaris €4.200 - €4.800 bruto per maand',
+                '27 vakantiedagen + 5 ADV-dagen',
+                'Pensioenregeling',
+                'Thuiswerkvergoeding',
+                'Sportabonnement vergoeding',
+                'Persoonlijk opleidingsbudget',
+                'Vrijdagmiddagborrels en teamevents'
+            ]
+        },
+        {
+            id: 'demo-belastingadviseur',
+            functie: 'Belastingadviseur',
+            bedrijf: 'FiscaalPro Partners',
+            locatie: 'Utrecht',
+            dienstverband: 'Vast',
+            uren: 'Fulltime',
+            ervaring: 'Medior',
+            duur: 'Onbepaalde tijd',
+            salaris: '€4.000 - €5.000 /maand',
+            omschrijving: 'Voor ons groeiende team in Utrecht zoeken wij een gedreven Belastingadviseur. Je adviseert MKB-ondernemers op het gebied van vennootschapsbelasting, inkomstenbelasting en btw. Je werkt in een hecht team met veel ruimte voor eigen initiatief en ontwikkeling.',
+            werkzaamheden: [
+                'Adviseren van MKB-ondernemers over fiscale vraagstukken',
+                'Opstellen van aangiften vennootschapsbelasting en inkomstenbelasting',
+                'Beoordelen van fiscale gevolgen bij herstructureringen',
+                'Bijwonen van klantgesprekken en opbouwen van relaties',
+                'Bijhouden van actuele fiscale wet- en regelgeving',
+                'Verzorgen van btw-aangiften en -advies'
+            ],
+            vereisten: [
+                'WO Fiscaal Recht of Fiscale Economie',
+                'Minimaal 2 jaar ervaring in de belastingadviespraktijk',
+                'Goede kennis van de Wet VPB en IB',
+                'Analytisch sterk en nauwkeurig',
+                'Uitstekende communicatieve vaardigheden in het Nederlands'
+            ],
+            wensen: [
+                'Ervaring met internationale belastingstructuren',
+                'Kennis van estate planning',
+                'Lid van het Register Belastingadviseurs (RB) of NOB'
+            ],
+            aanbod: [
+                'Salaris €4.000 - €5.000 bruto per maand',
+                '28 vakantiedagen',
+                'Studiekostenregeling (volledige vergoeding)',
+                'Pensioenregeling',
+                'NS Business Card',
+                'Flexibele werktijden',
+                'Gezellig kantoor in hartje Utrecht'
+            ]
+        },
+        {
+            id: 'demo-audit-manager',
+            functie: 'Interim Audit Manager',
+            bedrijf: 'Vertrouwelijk',
+            locatie: 'Amsterdam',
+            dienstverband: 'ZZP / Freelance',
+            uren: 'Flexibel',
+            ervaring: 'Senior',
+            duur: '6 maanden',
+            salaris: '€85 - €110 /uur',
+            badge: 'urgent', badgeText: 'Urgent',
+            omschrijving: 'Voor een gerenommeerde opdrachtgever zoeken wij een ervaren Audit Manager op interim basis. Je neemt de leiding over lopende controle-opdrachten en stuurt een team van 4-6 medewerkers aan. Directe start mogelijk, aanvankelijk 6 maanden met optie tot verlenging.',
+            werkzaamheden: [
+                'Aansturen van lopende wettelijke controles',
+                'Reviewen van werkprogramma\'s en dossiers',
+                'Direct contact onderhouden met klantdirecties',
+                'Begeleiden en ontwikkelen van teamleden',
+                'Signaleren van risico\'s en bijzondere bevindingen',
+                'Rapporteren aan de verantwoordelijke partner'
+            ],
+            vereisten: [
+                'RA-titel',
+                'Minimaal 8 jaar ervaring in de auditpraktijk, waarvan 3 jaar als manager',
+                'Ervaring met controle van middelgrote en grote ondernemingen',
+                'Bewezen leiderschapskwaliteiten',
+                'Flexibel en direct inzetbaar'
+            ],
+            wensen: [
+                'Ervaring met financiële instellingen',
+                'Bekend met CaseWare of Datev',
+                'Ervaring met SOC-rapportages'
+            ],
+            aanbod: [
+                'Uurtarief €85 - €110 (afhankelijk van ervaring)',
+                'Flexibele inzet (32-40 uur per week)',
+                'Directe start mogelijk',
+                'Mogelijkheid tot verlenging',
+                'Werkplek in hartje Amsterdam',
+                'Professioneel en collegiaal team'
+            ]
+        },
+        {
+            id: 'demo-junior-analyst',
+            functie: 'Junior Financial Analyst',
+            bedrijf: 'GovFinance Consultancy',
+            locatie: 'Den Haag',
+            dienstverband: 'Tijdelijk',
+            uren: 'Parttime',
+            ervaring: 'Junior',
+            duur: '12 maanden',
+            salaris: '€2.800 - €3.200 /maand',
+            omschrijving: 'Een mooie startersfunctie voor pas afgestudeerden in finance. Je ondersteunt bij het opstellen van financiële rapportages en draagt bij aan projecten voor overheidsorganisaties. Ideaal als je wilt groeien in een professionele omgeving met maatschappelijke impact.',
+            werkzaamheden: [
+                'Ondersteunen bij financiële analyses en rapportages',
+                'Verzamelen en verwerken van financiële data',
+                'Meewerken aan begrotingsstudies voor overheidsklanten',
+                'Opstellen van presentaties en managementsamenvattingen',
+                'Uitvoeren van benchmark-analyses',
+                'Ondersteunen bij het verbeteren van financiële processen'
+            ],
+            vereisten: [
+                'HBO/WO Finance, Economie of Bedrijfskunde',
+                'Affiniteit met de publieke sector',
+                'Goede Excel-vaardigheden',
+                'Analytisch en nauwkeurig',
+                'Goede schriftelijke communicatie in het Nederlands'
+            ],
+            wensen: [
+                'Stage-ervaring in een financiële omgeving',
+                'Kennis van Power BI',
+                'Interesse in beleidsanalyse'
+            ],
+            aanbod: [
+                'Salaris €2.800 - €3.200 bruto per maand (o.b.v. 32 uur)',
+                '25 vakantiedagen (naar rato)',
+                'Reiskostenvergoeding',
+                'Laptop en telefoon van de zaak',
+                'Persoonlijke begeleiding en mentorschap',
+                'Mogelijkheid tot verlenging of vast contract',
+                'Kantoor naast Den Haag Centraal'
+            ]
+        },
+        {
+            id: 'demo-corporate-finance',
+            functie: 'Corporate Finance Adviseur',
+            bedrijf: 'Brabant M&A Group',
+            locatie: 'Eindhoven',
+            dienstverband: 'Vast',
+            uren: 'Fulltime',
+            ervaring: 'Senior',
+            duur: 'Onbepaalde tijd',
+            salaris: '€5.000 - €6.500 /maand',
+            omschrijving: 'Begeleid fusies, overnames en herstructureringen voor middelgrote bedrijven in de Brainport-regio. Je maakt waarderingen, begeleidt due diligence-trajecten en onderhoudt klantrelaties. Een uitdagende rol voor een ambitieuze corporate finance professional.',
+            werkzaamheden: [
+                'Begeleiden van M&A-transacties van begin tot eind',
+                'Uitvoeren van bedrijfswaarderingen (DCF, multiples)',
+                'Coördineren van due diligence-trajecten',
+                'Opstellen van informatiememoranda en teasers',
+                'Onderhandelen namens kopers en verkopers',
+                'Opbouwen en onderhouden van klantrelaties'
+            ],
+            vereisten: [
+                'WO Bedrijfseconomie, Finance of Accountancy',
+                'Minimaal 5 jaar ervaring in corporate finance of M&A',
+                'Sterke financiële modelleringsvaardigheden',
+                'Uitstekend in Nederlands en Engels (schriftelijk en mondeling)',
+                'Zelfstandig, proactief en commercieel ingesteld'
+            ],
+            wensen: [
+                'CFA of RC-titel',
+                'Netwerk in de Brabantse ondernemerswereld',
+                'Ervaring met tech- of maakindustrie deals'
+            ],
+            aanbod: [
+                'Salaris €5.000 - €6.500 bruto per maand',
+                'Succes-fee bonus bij geslaagde transacties',
+                '28 vakantiedagen',
+                'Lease-auto',
+                'Pensioenregeling',
+                'Opleidingsbudget',
+                'Moderne werkplek op de High Tech Campus'
+            ]
+        },
+        {
+            id: 'demo-accountant-samenstel',
+            functie: 'Accountant Samenstelpraktijk',
+            bedrijf: 'Feen Detachering',
+            locatie: 'Rotterdam',
+            dienstverband: 'Detachering',
+            uren: 'Fulltime',
+            ervaring: 'Medior',
+            duur: '6-12 maanden',
+            salaris: '€3.800 - €4.500 /maand',
+            omschrijving: 'Op detacheringsbasis aan de slag bij diverse MKB-kantoren in de regio Rotterdam. Je stelt jaarrekeningen samen, verzorgt aangiften en bent het aanspreekpunt voor een eigen klantenportefeuille. Afwisselend werk met veel zelfstandigheid.',
+            werkzaamheden: [
+                'Samenstellen van jaarrekeningen voor MKB-ondernemingen',
+                'Verzorgen van aangiften IB en VPB',
+                'Beoordelen van financiële administraties',
+                'Adviseren van ondernemers over bedrijfseconomische vraagstukken',
+                'Contact onderhouden met een eigen klantenportefeuille',
+                'Signaleren van fiscale aandachtspunten'
+            ],
+            vereisten: [
+                'HBO Accountancy of vergelijkbaar',
+                'Minimaal 2 jaar ervaring in de samenstelpraktijk',
+                'Ervaring met Exact Online, Twinfield of Unit4',
+                'Zelfstandig en klantgericht',
+                'Goede kennis van Nederlands boekhoudrecht'
+            ],
+            wensen: [
+                'AA-titel of in opleiding',
+                'Ervaring met meerdere branches',
+                'Kennis van salarisadministratie'
+            ],
+            aanbod: [
+                'Salaris €3.800 - €4.500 bruto per maand',
+                'Detacheringsvergoeding bovenop salaris',
+                '25 vakantiedagen',
+                'Reiskostenvergoeding of OV-kaart',
+                'Persoonlijke begeleiding vanuit Feen',
+                'Afwisselende opdrachten bij diverse kantoren',
+                'Doorgroeimogelijkheden naar vaste plaatsing'
+            ]
+        },
+        {
+            id: 'demo-finance-consultant',
+            functie: 'Finance Consultant',
+            bedrijf: 'NorthVenture Advisory',
+            locatie: 'Groningen',
+            dienstverband: 'Interim',
+            uren: 'Parttime',
+            ervaring: 'Medior',
+            duur: '3-6 maanden',
+            salaris: '€65 - €85 /uur',
+            omschrijving: 'Adviseer organisaties in Noord-Nederland op het gebied van financiële processen, digitalisering en rapportagestructuren. Ideaal voor consultants die impact willen maken buiten de Randstad. Parttime inzet mogelijk, locatie Groningen met mogelijkheid om deels remote te werken.',
+            werkzaamheden: [
+                'Analyseren en optimaliseren van financiële processen',
+                'Implementeren van digitale rapportagetools',
+                'Adviseren over inrichting van de financiële functie',
+                'Begeleiden van verandertrajecten binnen finance-afdelingen',
+                'Opstellen van business cases en procesbeschrijvingen',
+                'Trainen van gebruikers bij nieuwe systemen'
+            ],
+            vereisten: [
+                'WO Finance, Bedrijfseconomie of vergelijkbaar',
+                'Minimaal 3 jaar consultancy-ervaring',
+                'Ervaring met ERP-implementaties of procesoptimalisatie',
+                'Uitstekende advies- en presentatievaardigheden',
+                'Bereid om in Noord-Nederland te werken'
+            ],
+            wensen: [
+                'Ervaring met Power BI of Qlik',
+                'Kennis van Lean/Six Sigma',
+                'Netwerk in Noord-Nederland'
+            ],
+            aanbod: [
+                'Uurtarief €65 - €85 (afhankelijk van ervaring)',
+                'Flexibele inzet (16-32 uur per week)',
+                'Deels remote werken mogelijk',
+                'Directe projectstart',
+                'Mogelijkheid tot verlenging',
+                'Inspirerende opdrachten in diverse sectoren'
+            ]
+        }
+    ];
+
+    try {
+        const batch = db.batch();
+        for (const v of demoVacs) {
+            const ref = db.collection('vacatures').doc(v.id);
+            const { id, ...data } = v;
+            batch.set(ref, { ...data, actief: true, geplaatst: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true });
+        }
+        await batch.commit();
+        btn.textContent = '✓ 8 vacatures geladen!';
+        btn.style.background = 'var(--success)';
+        btn.style.color = 'white';
+        loadDashboard();
+    } catch(e) {
+        console.error('Seed mislukt:', e);
+        btn.textContent = 'Fout — probeer opnieuw';
+        btn.disabled = false;
+    }
 }
 
 // ===== DASHBOARD =====
@@ -641,7 +1149,6 @@ async function loadDashboard() {
         document.getElementById('statGebruikers').textContent = gebruikersSnap.size;
         document.getElementById('aanvragenBadge').textContent = aanvragenSnap.docs.filter(d => d.data().status === 'nieuw').length;
 
-        // Count all reactions across vacatures
         let reactieCount = 0;
         for (const vDoc of vacSnap.docs) {
             const reSnap = await vDoc.ref.collection('reacties').get();
@@ -650,7 +1157,6 @@ async function loadDashboard() {
         document.getElementById('statReacties').textContent = reactieCount;
         document.getElementById('reactiesBadge').textContent = reactieCount;
 
-        // Recent aanvragen table
         const tbody = document.getElementById('dashRecentAanvragen');
         tbody.innerHTML = '';
         aanvragenSnap.docs.slice(0, 5).forEach(doc => {
@@ -662,7 +1168,6 @@ async function loadDashboard() {
                 + '<td><span class="status-badge status-' + esc(d.status || 'nieuw') + '">' + esc(d.status || 'nieuw') + '</span></td>';
             tbody.appendChild(row);
         });
-
         if (aanvragenSnap.empty) {
             tbody.innerHTML = '<tr><td colspan="4" class="empty"><div class="icon">📋</div>Nog geen aanvragen</td></tr>';
         }
@@ -689,12 +1194,14 @@ async function loadAanvragen() {
         const d = doc.data();
         const row = document.createElement('tr');
         const bijlageHtml = d.bestandUrl
-            ? '<a class="btn-download" href="' + esc(d.bestandUrl) + '" target="_blank" rel="noopener">📎 ' + esc(d.bestandNaam || 'Downloaden') + '</a>'
+            ? '<a class="btn-download" href="' + esc(d.bestandUrl) + '" target="_blank" rel="noopener">📎 ' + esc(d.bestandNaam || 'Download') + '</a>'
             : '<span style="color:var(--text-muted)">—</span>';
 
+        const contactHtml = buildContactBtns(d.email, d.telefoon);
+
         row.innerHTML = '<td>' + fmtDate(d.aangemaakt) + '</td>'
-            + '<td><strong>' + esc(d.bedrijf) + '</strong></td>'
-            + '<td>' + esc(d.contactpersoon) + '<br><span style="color:var(--text-muted);font-size:0.8rem">' + esc(d.email) + '</span></td>'
+            + '<td><a class="clickable-name" onclick="openKlantenkaartAanvrager(\'' + doc.id + '\')">' + esc(d.contactpersoon || d.bedrijf) + '</a><br><span style="color:var(--text-muted);font-size:0.78rem">' + esc(d.bedrijf) + '</span></td>'
+            + '<td>' + contactHtml + '</td>'
             + '<td>' + esc(d.functie || '—') + '</td>'
             + '<td>' + bijlageHtml + '</td>'
             + '<td><select class="fase-select" onchange="updateAanvraagStatus(\'' + doc.id + '\', this.value)">'
@@ -741,7 +1248,7 @@ async function loadVacatures() {
     tbody.innerHTML = '';
 
     if (snap.empty) {
-        tbody.innerHTML = '<tr><td colspan="6" class="empty"><div class="icon">📂</div>Nog geen vacatures. Klik op "+ Nieuwe vacature" om te beginnen.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="6" class="empty"><div class="icon">📂</div>Nog geen vacatures.</td></tr>';
         return;
     }
 
@@ -768,12 +1275,10 @@ async function createVacature(e) {
     const btn = document.getElementById('nv-submit');
     btn.disabled = true;
     btn.textContent = 'Opslaan...';
-
     const toLines = (id) => {
         const val = document.getElementById(id).value.trim();
         return val ? val.split('\n').map(l => l.trim()).filter(l => l) : [];
     };
-
     await db.collection('vacatures').add({
         functie: document.getElementById('nv-functie').value.trim(),
         bedrijf: document.getElementById('nv-bedrijf').value.trim() || 'Vertrouwelijk',
@@ -791,7 +1296,6 @@ async function createVacature(e) {
         actief: true,
         geplaatst: firebase.firestore.FieldValue.serverTimestamp()
     });
-
     document.getElementById('newVacModal').classList.remove('show');
     document.getElementById('newVacForm').reset();
     btn.disabled = false;
@@ -852,9 +1356,14 @@ async function loadReacties() {
             '<option value="' + f + '"' + (f === (r.fase || 1) ? ' selected' : '') + '>' + FASES[f] + '</option>'
         ).join('');
 
+        const contactHtml = buildContactBtns(r.email);
+        const nameLink = r.userId
+            ? '<a class="clickable-name" onclick="openKlantenkaart(\'' + esc(r.userId) + '\')">' + esc(r.naam || '—') + '</a>'
+            : '<strong>' + esc(r.naam || '—') + '</strong>';
+
         row.innerHTML = '<td>' + fmtDate(r.aangemaakt) + '</td>'
-            + '<td><strong>' + esc(r.naam || '—') + '</strong></td>'
-            + '<td>' + esc(r.email || '—') + '</td>'
+            + '<td>' + nameLink + '</td>'
+            + '<td>' + contactHtml + '</td>'
             + '<td>' + esc(r.vacatureFunctie || '—') + '</td>'
             + '<td><select class="fase-select" onchange="updateFase(\'' + r.vacatureId + '\', \'' + r.reactieId + '\', \'' + r.userId + '\', parseInt(this.value))">' + faseOpts + '</select></td>'
             + '<td></td>';
@@ -863,16 +1372,12 @@ async function loadReacties() {
 }
 
 async function updateFase(vacatureId, reactieId, userId, fase) {
-    // Update reactie bij vacature
     await db.collection('vacatures').doc(vacatureId).collection('reacties').doc(reactieId).update({ fase: fase });
-
-    // Update ook bij de gebruiker (zodat ze het in hun dashboard zien)
     if (userId) {
         const userSolSnap = await db.collection('gebruikers').doc(userId)
             .collection('sollicitaties')
             .where('vacatureId', '==', vacatureId)
             .get();
-
         userSolSnap.forEach(async (solDoc) => {
             await solDoc.ref.update({
                 fase: fase,
@@ -898,14 +1403,237 @@ async function loadGebruikers() {
 
     snap.forEach(doc => {
         const d = doc.data();
+        const naam = (d.voornaam || '') + ' ' + (d.achternaam || '');
+        const contactHtml = buildContactBtns(d.email, d.telefoon);
         const row = document.createElement('tr');
-        row.innerHTML = '<td><strong>' + esc((d.voornaam || '') + ' ' + (d.achternaam || '')) + '</strong></td>'
-            + '<td>' + esc(d.email || '—') + '</td>'
+        row.innerHTML = '<td><a class="clickable-name" onclick="openKlantenkaart(\'' + doc.id + '\')">' + esc(naam.trim()) + '</a></td>'
+            + '<td>' + contactHtml + '</td>'
             + '<td>' + esc(d.telefoon || '—') + '</td>'
             + '<td>' + esc(d.rol || '—') + '</td>'
             + '<td>' + fmtDate(d.aangemaakt) + '</td>';
         tbody.appendChild(row);
     });
+}
+
+// ===== CONTACT BUTTONS =====
+function buildContactBtns(email, telefoon) {
+    let html = '<div class="contact-btns">';
+    if (email) {
+        html += '<a class="contact-btn email-btn" href="mailto:' + esc(email) + '" title="E-mail sturen">✉</a>';
+    }
+    if (telefoon) {
+        const tel = telefoon.replace(/\s/g, '');
+        html += '<a class="contact-btn phone-btn" href="tel:' + esc(tel) + '" title="Bellen">📞</a>';
+        html += '<a class="contact-btn wa-btn" href="https://api.whatsapp.com/send?phone=' + esc(tel.replace('+','').replace(/^0/,'31')) + '" target="_blank" rel="noopener" title="WhatsApp">💬</a>';
+    }
+    html += '</div>';
+    return html;
+}
+
+// ===== KLANTENKAART =====
+let currentKkUserId = null;
+let currentKkType = null; // 'gebruiker' of 'aanvrager'
+let currentKkDocId = null;
+
+async function openKlantenkaart(userId) {
+    currentKkUserId = userId;
+    currentKkType = 'gebruiker';
+    currentKkDocId = userId;
+
+    const userDoc = await db.collection('gebruikers').doc(userId).get();
+    if (!userDoc.exists) { alert('Gebruiker niet gevonden.'); return; }
+    const u = userDoc.data();
+    const naam = (u.voornaam || '') + ' ' + (u.achternaam || '');
+
+    // Header
+    document.getElementById('kkAvatar').textContent = getInitials(u.voornaam, u.achternaam);
+    document.getElementById('kkNaam').textContent = naam.trim();
+    document.getElementById('kkSubtitle').textContent = (u.rol || 'Gebruiker') + ' • lid sinds ' + fmtDate(u.aangemaakt);
+
+    // Contact bar
+    document.getElementById('kkContactBar').innerHTML =
+        (u.email ? '<a class="kk-contact-btn" href="mailto:' + esc(u.email) + '">✉️ E-mail sturen</a>' : '')
+        + (u.telefoon ? '<a class="kk-contact-btn" href="tel:' + esc(u.telefoon) + '">📞 Bellen</a>' : '')
+        + (u.telefoon ? '<a class="kk-contact-btn" href="https://api.whatsapp.com/send?phone=' + esc(u.telefoon.replace(/\s/g,'').replace('+','').replace(/^0/,'31')) + '" target="_blank" rel="noopener">💬 WhatsApp</a>' : '');
+
+    // Tab: Overzicht
+    document.getElementById('kkTab-overzicht').innerHTML =
+        '<div class="kk-grid">'
+        + kkField('Voornaam', u.voornaam)
+        + kkField('Achternaam', u.achternaam)
+        + kkField('E-mail', u.email)
+        + kkField('Telefoon', u.telefoon)
+        + kkField('Rol', u.rol)
+        + kkField('Geregistreerd', fmtDate(u.aangemaakt))
+        + '</div>';
+
+    // Tab: Activiteit
+    await loadKkActiviteit(userId);
+
+    // Tab: Notities
+    await loadKkNotities('gebruikers', userId);
+
+    // Tab: Sollicitaties
+    await loadKkSollicitaties(userId);
+
+    // Show
+    switchKkTab('overzicht', document.querySelector('.kk-tab'));
+    document.getElementById('kkOverlay').classList.add('show');
+}
+
+async function openKlantenkaartAanvrager(docId) {
+    currentKkType = 'aanvrager';
+    currentKkDocId = docId;
+    currentKkUserId = null;
+
+    const doc = await db.collection('vacature-aanvragen').doc(docId).get();
+    if (!doc.exists) { alert('Aanvraag niet gevonden.'); return; }
+    const d = doc.data();
+
+    document.getElementById('kkAvatar').textContent = getInitials(d.contactpersoon || d.bedrijf);
+    document.getElementById('kkNaam').textContent = d.contactpersoon || d.bedrijf;
+    document.getElementById('kkSubtitle').textContent = 'Opdrachtgever • ' + esc(d.bedrijf);
+
+    document.getElementById('kkContactBar').innerHTML =
+        (d.email ? '<a class="kk-contact-btn" href="mailto:' + esc(d.email) + '">✉️ E-mail sturen</a>' : '')
+        + (d.telefoon ? '<a class="kk-contact-btn" href="tel:' + esc(d.telefoon) + '">📞 Bellen</a>' : '')
+        + (d.telefoon ? '<a class="kk-contact-btn" href="https://api.whatsapp.com/send?phone=' + esc(d.telefoon.replace(/\s/g,'').replace('+','').replace(/^0/,'31')) + '" target="_blank" rel="noopener">💬 WhatsApp</a>' : '');
+
+    document.getElementById('kkTab-overzicht').innerHTML =
+        '<div class="kk-grid">'
+        + kkField('Bedrijf', d.bedrijf)
+        + kkField('Contactpersoon', d.contactpersoon)
+        + kkField('E-mail', d.email)
+        + kkField('Telefoon', d.telefoon)
+        + kkField('Functie gezocht', d.functie)
+        + kkField('Aantal professionals', d.aantal)
+        + kkField('Status', d.status)
+        + kkField('Aangemaakt', fmtDate(d.aangemaakt))
+        + '</div>'
+        + (d.toelichting ? '<div style="margin-top:20px;"><label style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-muted);font-weight:700;">Toelichting</label><p style="font-size:0.9rem;line-height:1.6;margin-top:6px;">' + esc(d.toelichting) + '</p></div>' : '')
+        + (d.bestandUrl ? '<div style="margin-top:16px;"><a class="kk-contact-btn" href="' + esc(d.bestandUrl) + '" target="_blank" rel="noopener">📎 ' + esc(d.bestandNaam || 'Bijlage downloaden') + '</a></div>' : '');
+
+    document.getElementById('kkTab-activiteit').innerHTML = '<div class="kk-timeline"><div class="kk-event"><div class="event-date">' + fmtDate(d.aangemaakt) + '</div><div class="event-text">Vacature-aanvraag ingediend voor "' + esc(d.functie || '—') + '"</div></div></div>';
+
+    await loadKkNotities('vacature-aanvragen', docId);
+
+    document.getElementById('kkTab-sollicitaties').innerHTML = '<p style="color:var(--text-muted);">Niet van toepassing voor opdrachtgevers.</p>';
+
+    switchKkTab('overzicht', document.querySelector('.kk-tab'));
+    document.getElementById('kkOverlay').classList.add('show');
+}
+
+async function loadKkActiviteit(userId) {
+    const el = document.getElementById('kkTab-activiteit');
+    el.innerHTML = '<p style="color:var(--text-muted);">Laden...</p>';
+
+    const events = [];
+
+    // Registratie
+    const userDoc = await db.collection('gebruikers').doc(userId).get();
+    if (userDoc.exists) {
+        const u = userDoc.data();
+        if (u.aangemaakt) events.push({ date: u.aangemaakt, text: 'Account aangemaakt' });
+    }
+
+    // Sollicitaties
+    const solSnap = await db.collection('gebruikers').doc(userId).collection('sollicitaties').orderBy('aangemaakt', 'desc').get();
+    solSnap.forEach(doc => {
+        const s = doc.data();
+        events.push({ date: s.aangemaakt, text: 'Gesolliciteerd op "' + (s.functie || '—') + '" bij ' + (s.bedrijf || 'Vertrouwelijk') });
+        if (s.bijgewerkt && s.fase > 1) {
+            const FASES = ['','Aangemeld','Screening','Interview','Aangeboden','Geplaatst'];
+            events.push({ date: s.bijgewerkt, text: 'Fase bijgewerkt naar "' + FASES[s.fase] + '" voor "' + (s.functie || '—') + '"' });
+        }
+    });
+
+    events.sort((a, b) => {
+        const ta = a.date ? a.date.toMillis() : 0;
+        const tb = b.date ? b.date.toMillis() : 0;
+        return tb - ta;
+    });
+
+    if (events.length === 0) {
+        el.innerHTML = '<p style="color:var(--text-muted);">Nog geen activiteit.</p>';
+        return;
+    }
+
+    el.innerHTML = '<div class="kk-timeline">' + events.map(e =>
+        '<div class="kk-event"><div class="event-date">' + fmtDate(e.date) + '</div><div class="event-text">' + esc(e.text) + '</div></div>'
+    ).join('') + '</div>';
+}
+
+async function loadKkSollicitaties(userId) {
+    const el = document.getElementById('kkTab-sollicitaties');
+    el.innerHTML = '<p style="color:var(--text-muted);">Laden...</p>';
+
+    const solSnap = await db.collection('gebruikers').doc(userId).collection('sollicitaties').orderBy('aangemaakt', 'desc').get();
+
+    if (solSnap.empty) {
+        el.innerHTML = '<p style="color:var(--text-muted);">Nog geen sollicitaties.</p>';
+        return;
+    }
+
+    const FASES = ['','Aangemeld','Screening','Interview','Aangeboden','Geplaatst'];
+    let html = '<table style="width:100%;"><thead><tr><th>Functie</th><th>Bedrijf</th><th>Fase</th><th>Datum</th></tr></thead><tbody>';
+    solSnap.forEach(doc => {
+        const s = doc.data();
+        html += '<tr><td>' + esc(s.functie || '—') + '</td><td>' + esc(s.bedrijf || '—') + '</td><td><span class="status-badge status-actief">' + FASES[s.fase || 1] + '</span></td><td>' + fmtDate(s.aangemaakt) + '</td></tr>';
+    });
+    html += '</tbody></table>';
+    el.innerHTML = html;
+}
+
+// ===== NOTITIES =====
+async function loadKkNotities(collection, docId) {
+    const el = document.getElementById('kkTab-notities');
+    el.innerHTML = '<p style="color:var(--text-muted);">Laden...</p>';
+
+    const snap = await db.collection(collection).doc(docId).collection('notities').orderBy('aangemaakt', 'desc').get();
+
+    let html = '<div class="kk-notities">';
+    if (snap.empty) {
+        html += '<p style="color:var(--text-muted);margin-bottom:16px;">Nog geen notities.</p>';
+    } else {
+        snap.forEach(doc => {
+            const n = doc.data();
+            html += '<div class="kk-notitie"><div class="notitie-date">' + fmtDateTime(n.aangemaakt) + '</div><div class="notitie-text">' + esc(n.tekst) + '</div></div>';
+        });
+    }
+    html += '</div>';
+    html += '<div class="kk-notitie-form">'
+        + '<textarea id="kkNotitieInput" placeholder="Schrijf een notitie..."></textarea>'
+        + '<button onclick="saveNotitie()">Opslaan</button>'
+        + '</div>';
+    el.innerHTML = html;
+}
+
+async function saveNotitie() {
+    const input = document.getElementById('kkNotitieInput');
+    const tekst = input.value.trim();
+    if (!tekst) return;
+
+    const collection = currentKkType === 'gebruiker' ? 'gebruikers' : 'vacature-aanvragen';
+    const docId = currentKkDocId;
+
+    await db.collection(collection).doc(docId).collection('notities').add({
+        tekst: tekst,
+        auteur: ADMIN_EMAIL,
+        aangemaakt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    await loadKkNotities(collection, docId);
+}
+
+function switchKkTab(name, tabBtn) {
+    document.querySelectorAll('.kk-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.kk-tab-content').forEach(c => c.classList.remove('active'));
+    if (tabBtn) tabBtn.classList.add('active');
+    document.getElementById('kkTab-' + name).classList.add('active');
+}
+
+function closeKlantenkaart() {
+    document.getElementById('kkOverlay').classList.remove('show');
 }
 
 // ===== HELPERS =====
@@ -917,9 +1645,29 @@ function modalRow(label, value) {
     return '<div class="modal-row"><span class="label">' + label + '</span><span class="value">' + (value || '—') + '</span></div>';
 }
 
+function kkField(label, value) {
+    return '<div class="kk-field"><label>' + label + '</label><span>' + esc(value || '—') + '</span></div>';
+}
+
+function getInitials(voornaam, achternaam) {
+    if (!voornaam && !achternaam) {
+        // Treat first arg as full name/company
+        const parts = (arguments[0] || '?').split(' ');
+        return (parts[0] ? parts[0][0] : '?').toUpperCase() + (parts[1] ? parts[1][0] : '').toUpperCase();
+    }
+    return ((voornaam || '?')[0] + (achternaam || '')[0]).toUpperCase();
+}
+
 function fmtDate(ts) {
     if (!ts || !ts.toDate) return '—';
     return ts.toDate().toLocaleDateString('nl-NL', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+
+function fmtDateTime(ts) {
+    if (!ts || !ts.toDate) return '—';
+    const d = ts.toDate();
+    return d.toLocaleDateString('nl-NL', { day: 'numeric', month: 'short', year: 'numeric' })
+        + ' ' + d.toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' });
 }
 
 function esc(s) {

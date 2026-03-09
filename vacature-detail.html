@@ -431,8 +431,8 @@ function showNotFound() {
 
 async function solliciteer(vacatureId) {
     const user = auth.currentUser;
-    if (!user || !user.emailVerified) {
-        window.location.href = '/inloggen';
+    if (!user) {
+        window.location.href = '/inloggen?redirect=' + encodeURIComponent(window.location.pathname + window.location.search);
         return;
     }
 
@@ -444,6 +444,11 @@ async function solliciteer(vacatureId) {
         // Haal vacaturegegevens op
         const vacDoc = await db.collection('vacatures').doc(vacatureId).get();
         const vac = vacDoc.data();
+
+        // Haal gebruikersprofiel op voor naam
+        const userDoc = await db.collection('gebruikers').doc(user.uid).get();
+        const userData = userDoc.exists ? userDoc.data() : {};
+        const naam = ((userData.voornaam || '') + ' ' + (userData.achternaam || '')).trim() || user.displayName || user.email;
 
         // Sollicitatie opslaan bij gebruiker
         await db.collection('gebruikers').doc(user.uid).collection('sollicitaties').add({
@@ -459,7 +464,7 @@ async function solliciteer(vacatureId) {
         // Reactie opslaan bij vacature (voor admin overzicht)
         await db.collection('vacatures').doc(vacatureId).collection('reacties').add({
             userId: user.uid,
-            naam: user.displayName || '',
+            naam: naam,
             email: user.email,
             fase: 1,
             aangemaakt: firebase.firestore.FieldValue.serverTimestamp()
