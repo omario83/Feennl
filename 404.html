@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagina niet gevonden — Feen</title>
+    <meta name="description" content="Deze pagina bestaat niet. Ga terug naar de homepage van Feen.">
+    <meta name="robots" content="noindex, follow">
+    <link rel="canonical" href="https://feennl.nl/404">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #1a1f3a;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .nav {
+            background: rgba(18,21,42,0.97);
+            padding: 0 48px;
+            height: 72px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+        .nav-logo { height: 32px; }
+        .content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 40px 24px;
+        }
+        .error-code {
+            font-size: 8rem;
+            font-weight: 900;
+            color: #b8f470;
+            line-height: 1;
+            margin-bottom: 16px;
+        }
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+        p {
+            color: rgba(255,255,255,0.6);
+            font-size: 1.05rem;
+            max-width: 480px;
+            margin-bottom: 32px;
+            line-height: 1.7;
+        }
+        .actions { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 28px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 14px;
+            text-decoration: none;
+            transition: all 0.25s;
+        }
+        .btn-primary { background: #b8f470; color: #1a1f3a; }
+        .btn-primary:hover { background: #9ad45a; transform: translateY(-2px); }
+        .btn-outline {
+            background: transparent;
+            color: #ffffff;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+        .btn-outline:hover { border-color: #b8f470; color: #b8f470; }
+        .footer {
+            background: #12152a;
+            padding: 24px 48px;
+            text-align: center;
+            color: rgba(255,255,255,0.35);
+            font-size: 0.82rem;
+            border-top: 1px solid rgba(255,255,255,0.06);
+        }
+        @media (max-width: 640px) {
+            .nav { padding: 0 20px; }
+            .error-code { font-size: 5rem; }
+            h1 { font-size: 1.4rem; }
+            .actions { flex-direction: column; }
+            .btn { width: 100%; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <a href="/"><img src="https://primary.jwwb.nl/public/j/q/c/temp-bubpssuhqgoxqtzyfqhe/image-high-aunh7o.png?enable-io=true&enable=upscale&height=64" alt="Feen - Terug naar homepage" class="nav-logo"></a>
+    </nav>
+    <main class="content">
+        <div class="error-code">404</div>
+        <h1>Pagina niet gevonden</h1>
+        <p>De pagina die u zoekt bestaat niet of is verplaatst. Geen zorgen, hieronder vindt u de juiste weg terug.</p>
+        <div class="actions">
+            <a href="/" class="btn btn-primary">Naar de homepage &rarr;</a>
+            <a href="/vacature" class="btn btn-outline">Bekijk vacatures</a>
+            <a href="/contact" class="btn btn-outline">Contact opnemen</a>
+        </div>
+    </main>
+    <footer class="footer">&copy; 2023 – 2026 Feen. Alle rechten voorbehouden.</footer>
+</body>
+</html>
