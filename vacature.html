@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ï»¿<!DOCTYPE html>
 <html lang="nl">
 <head>
     <!-- Google tag (gtag.js) -->
@@ -37,6 +37,7 @@
             background-color: #1a1a2e;
             color: #ffffff;
             line-height: 1.6;
+            overflow-x: hidden;
         }
 
         a { text-decoration: none; color: inherit; }
@@ -657,7 +658,7 @@
     <a href="/" class="header-logo">
         <img src="https://primary.jwwb.nl/public/j/q/c/temp-bubpssuhqgoxqtzyfqhe/image-high-aunh7o.png?enable-io=true&enable=upscale&height=70" alt="Feen" title="Feen">
     </a>
-    <button class="mobile-menu-btn" aria-label="Menu openen" onclick="document.querySelector('.header-nav').classList.toggle('open')">?</button>
+    <button class="mobile-menu-btn" aria-label="Menu openen" onclick="document.getElementById('mobileNav').classList.add('open')">â˜°</button>
     <nav class="header-nav">
         <ul>
             <li><a href="/">Home</a></li>
@@ -665,10 +666,26 @@
             <li><a href="/opdrachtgever">Opdrachtgever</a></li>
             <li><a href="/over-ons">Over Ons</a></li>
             <li><a href="/contact">Contact</a></li>
-            <li><a href="/blogs">Blogs</a></li>
+            <li><a href="/blogs">Inzichten</a></li>
+            <li><a href="/inloggen" class="auth-login">Inloggen</a></li>
+            <li><a href="/mijn-sollicitaties" class="auth-portal" style="display:none">Mijn Feen</a></li>
         </ul>
     </nav>
 </header>
+<div class="mobile-nav" id="mobileNav" style="position:fixed;inset:0;background:rgba(18,21,42,0.98);z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;opacity:0;pointer-events:none;transition:opacity 0.3s">
+    <button onclick="document.getElementById('mobileNav').classList.remove('open')" style="position:absolute;top:24px;right:24px;background:none;border:none;color:white;font-size:28px;cursor:pointer" aria-label="Sluit menu">&times;</button>
+    <a href="/" style="color:#fff;text-decoration:none;font-size:1.4rem;font-weight:600">Home</a>
+    <a href="/vacature" style="color:#b8f470;text-decoration:none;font-size:1.4rem;font-weight:600">Vacatures</a>
+    <a href="/opdrachtgever" style="color:#fff;text-decoration:none;font-size:1.4rem;font-weight:600">Opdrachtgever</a>
+    <a href="/over-ons" style="color:#fff;text-decoration:none;font-size:1.4rem;font-weight:600">Over Ons</a>
+    <a href="/contact" style="color:#fff;text-decoration:none;font-size:1.4rem;font-weight:600">Contact</a>
+    <a href="/blogs" style="color:#fff;text-decoration:none;font-size:1.4rem;font-weight:600">Inzichten</a>
+    <a href="/inloggen" class="auth-login" style="color:#fff;text-decoration:none;font-size:1.4rem;font-weight:600">Inloggen</a>
+    <a href="/mijn-sollicitaties" class="auth-portal" style="display:none;color:#fff;text-decoration:none;font-size:1.4rem;font-weight:600">Mijn Feen</a>
+</div>
+<style>
+    .mobile-nav.open { opacity: 1 !important; pointer-events: all !important; }
+</style>
 
 <!-- Hero Section -->
 <section class="hero">
@@ -845,19 +862,19 @@
             </h3>
             <div class="filter-options" data-filter="salaris">
                 <label class="filter-option">
-                    <input type="checkbox" value="2500-3500"> €2.500 - €3.500
+                    <input type="checkbox" value="2500-3500"> ï¿½2.500 - ï¿½3.500
                     <span class="count">4</span>
                 </label>
                 <label class="filter-option">
-                    <input type="checkbox" value="3500-5000"> €3.500 - €5.000
+                    <input type="checkbox" value="3500-5000"> ï¿½3.500 - ï¿½5.000
                     <span class="count">8</span>
                 </label>
                 <label class="filter-option">
-                    <input type="checkbox" value="5000-7000"> €5.000 - €7.000
+                    <input type="checkbox" value="5000-7000"> ï¿½5.000 - ï¿½7.000
                     <span class="count">7</span>
                 </label>
                 <label class="filter-option">
-                    <input type="checkbox" value="7000+"> €7.000+
+                    <input type="checkbox" value="7000+"> ï¿½7.000+
                     <span class="count">3</span>
                 </label>
             </div>
@@ -899,7 +916,7 @@
                     <span class="vacancy-meta-item"><span class="icon">??</span> Senior</span>
                 </div>
                 <div class="vacancy-card-bottom">
-                    <span class="vacancy-salary">€5.500 - €6.800 /maand</span>
+                    <span class="vacancy-salary">ï¿½5.500 - ï¿½6.800 /maand</span>
                     <span class="vacancy-date">Geplaatst: 5 maart 2026</span>
                     <a class="btn-apply" href="/vacature-detail?id=demo-senior-accountant">Bekijk vacature ?</a>
                 </div>
@@ -915,7 +932,7 @@
                     <span class="vacancy-badge badge-new">Nieuw</span>
                 </div>
                 <div class="vacancy-description">
-                    Als Financial Controller ben je verantwoordelijk voor de maandelijkse rapportages, budgettering en financiële analyses. Je rapporteert direct aan de CFO en speelt een sleutelrol in het financiële team.
+                    Als Financial Controller ben je verantwoordelijk voor de maandelijkse rapportages, budgettering en financiï¿½le analyses. Je rapporteert direct aan de CFO en speelt een sleutelrol in het financiï¿½le team.
                 </div>
                 <div class="vacancy-meta">
                     <span class="vacancy-meta-item"><span class="icon">??</span> Rotterdam</span>
@@ -924,7 +941,7 @@
                     <span class="vacancy-meta-item"><span class="icon">??</span> Medior</span>
                 </div>
                 <div class="vacancy-card-bottom">
-                    <span class="vacancy-salary">€4.200 - €4.800 /maand</span>
+                    <span class="vacancy-salary">ï¿½4.200 - ï¿½4.800 /maand</span>
                     <span class="vacancy-date">Geplaatst: 4 maart 2026</span>
                     <a class="btn-apply" href="/vacature-detail?id=demo-financial-controller">Bekijk vacature ?</a>
                 </div>
@@ -948,7 +965,7 @@
                     <span class="vacancy-meta-item"><span class="icon">??</span> Medior</span>
                 </div>
                 <div class="vacancy-card-bottom">
-                    <span class="vacancy-salary">€4.000 - €5.000 /maand</span>
+                    <span class="vacancy-salary">ï¿½4.000 - ï¿½5.000 /maand</span>
                     <span class="vacancy-date">Geplaatst: 3 maart 2026</span>
                     <a class="btn-apply" href="/vacature-detail?id=demo-belastingadviseur">Bekijk vacature ?</a>
                 </div>
@@ -973,7 +990,7 @@
                     <span class="vacancy-meta-item"><span class="icon">??</span> Senior</span>
                 </div>
                 <div class="vacancy-card-bottom">
-                    <span class="vacancy-salary">€85 - €110 /uur</span>
+                    <span class="vacancy-salary">ï¿½85 - ï¿½110 /uur</span>
                     <span class="vacancy-date">Geplaatst: 2 maart 2026</span>
                     <a class="btn-apply" href="/vacature-detail?id=demo-audit-manager">Bekijk vacature ?</a>
                 </div>
@@ -988,7 +1005,7 @@
                     </div>
                 </div>
                 <div class="vacancy-description">
-                    Een mooie startersfunctie voor pas afgestudeerden in finance. Je ondersteunt bij het opstellen van financiële rapportages en draagt bij aan projecten voor overheidsorganisaties.
+                    Een mooie startersfunctie voor pas afgestudeerden in finance. Je ondersteunt bij het opstellen van financiï¿½le rapportages en draagt bij aan projecten voor overheidsorganisaties.
                 </div>
                 <div class="vacancy-meta">
                     <span class="vacancy-meta-item"><span class="icon">??</span> Den Haag</span>
@@ -997,7 +1014,7 @@
                     <span class="vacancy-meta-item"><span class="icon">??</span> Junior</span>
                 </div>
                 <div class="vacancy-card-bottom">
-                    <span class="vacancy-salary">€2.800 - €3.200 /maand</span>
+                    <span class="vacancy-salary">ï¿½2.800 - ï¿½3.200 /maand</span>
                     <span class="vacancy-date">Geplaatst: 1 maart 2026</span>
                     <a class="btn-apply" href="/vacature-detail?id=demo-junior-analyst">Bekijk vacature ?</a>
                 </div>
@@ -1021,7 +1038,7 @@
                     <span class="vacancy-meta-item"><span class="icon">??</span> Senior</span>
                 </div>
                 <div class="vacancy-card-bottom">
-                    <span class="vacancy-salary">€5.000 - €6.500 /maand</span>
+                    <span class="vacancy-salary">ï¿½5.000 - ï¿½6.500 /maand</span>
                     <span class="vacancy-date">Geplaatst: 28 feb 2026</span>
                     <a class="btn-apply" href="/vacature-detail?id=demo-corporate-finance">Bekijk vacature ?</a>
                 </div>
@@ -1045,7 +1062,7 @@
                     <span class="vacancy-meta-item"><span class="icon">??</span> Medior</span>
                 </div>
                 <div class="vacancy-card-bottom">
-                    <span class="vacancy-salary">€3.800 - €4.500 /maand</span>
+                    <span class="vacancy-salary">ï¿½3.800 - ï¿½4.500 /maand</span>
                     <span class="vacancy-date">Geplaatst: 26 feb 2026</span>
                     <a class="btn-apply" href="/vacature-detail?id=demo-accountant-samenstel">Bekijk vacature ?</a>
                 </div>
@@ -1060,7 +1077,7 @@
                     </div>
                 </div>
                 <div class="vacancy-description">
-                    Adviseer organisaties in Noord-Nederland op het gebied van financiële processen, digitalisering en rapportagestructuren. Ideaal voor consultants die impact willen maken buiten de Randstad.
+                    Adviseer organisaties in Noord-Nederland op het gebied van financiï¿½le processen, digitalisering en rapportagestructuren. Ideaal voor consultants die impact willen maken buiten de Randstad.
                 </div>
                 <div class="vacancy-meta">
                     <span class="vacancy-meta-item"><span class="icon">??</span> Groningen</span>
@@ -1069,7 +1086,7 @@
                     <span class="vacancy-meta-item"><span class="icon">??</span> Medior</span>
                 </div>
                 <div class="vacancy-card-bottom">
-                    <span class="vacancy-salary">€65 - €85 /uur</span>
+                    <span class="vacancy-salary">ï¿½65 - ï¿½85 /uur</span>
                     <span class="vacancy-date">Geplaatst: 24 feb 2026</span>
                     <a class="btn-apply" href="/vacature-detail?id=demo-finance-consultant">Bekijk vacature ?</a>
                 </div>
@@ -1166,7 +1183,7 @@
             values.forEach(val => {
                 const chip = document.createElement('span');
                 chip.className = 'filter-chip';
-                chip.innerHTML = val + ' <span class="remove">×</span>';
+                chip.innerHTML = val + ' <span class="remove">ï¿½</span>';
                 chip.addEventListener('click', () => {
                     // Uncheck the corresponding checkbox
                     const checkbox = document.querySelector(

@@ -41,7 +41,8 @@
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
-        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; color: var(--text); background: var(--off-white); -webkit-font-smoothing: antialiased; }
+        body {
+            overflow-x: hidden; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; color: var(--text); background: var(--off-white); -webkit-font-smoothing: antialiased; }
 
         /* NAV */
         .nav { background: var(--navy-deep); padding: 0 48px; height: 72px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 24px rgba(0,0,0,0.15); }
