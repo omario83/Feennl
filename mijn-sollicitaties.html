@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="nl">
 <head>
     <!-- Google tag (gtag.js) -->
@@ -84,6 +84,79 @@
         .mobile-nav a { color: var(--white); text-decoration: none; font-size: 1.4rem; font-weight: 600; transition: color 0.25s; }
         .mobile-nav a:hover { color: var(--accent); }
         .mobile-nav-close { position: absolute; top: 24px; right: 24px; background: none; border: none; color: white; font-size: 28px; cursor: pointer; }
+
+        /* TABS */
+        .dash-tabs {
+            display: flex; gap: 0; border-bottom: 2px solid var(--border);
+            margin-bottom: 32px;
+        }
+        .dash-tab {
+            padding: 14px 28px; font-size: 14px; font-weight: 600;
+            color: var(--text-muted); cursor: pointer; border: none; background: none;
+            font-family: inherit; position: relative; transition: color 0.2s;
+        }
+        .dash-tab:hover { color: var(--navy); }
+        .dash-tab.active {
+            color: var(--navy);
+        }
+        .dash-tab.active::after {
+            content: ''; position: absolute; bottom: -2px; left: 0; right: 0;
+            height: 2px; background: var(--accent);
+        }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        /* PROFILE */
+        .profile-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+        }
+        .profile-card {
+            background: var(--white); border-radius: 12px; padding: 32px;
+            box-shadow: 0 2px 12px rgba(26,31,58,0.06);
+        }
+        .profile-card.full-width { grid-column: 1 / -1; }
+        .profile-card h3 {
+            font-size: 1.1rem; font-weight: 700; margin-bottom: 20px;
+            color: var(--navy); display: flex; align-items: center; gap: 10px;
+        }
+        .profile-card h3 svg { flex-shrink: 0; }
+        .form-row { margin-bottom: 16px; }
+        .form-row label {
+            display: block; font-size: 0.82rem; font-weight: 600;
+            color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .form-row input, .form-row select, .form-row textarea {
+            width: 100%; padding: 11px 14px; border: 1.5px solid var(--border);
+            border-radius: 8px; font-size: 0.92rem; font-family: inherit;
+            color: var(--text); background: var(--white); transition: border-color 0.2s;
+        }
+        .form-row input:focus, .form-row select:focus, .form-row textarea:focus {
+            outline: none; border-color: var(--accent);
+        }
+        .form-row textarea { resize: vertical; min-height: 80px; }
+        .form-row-inline { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .cv-upload-zone {
+            border: 2px dashed var(--border); border-radius: 12px;
+            padding: 32px; text-align: center; cursor: pointer;
+            transition: all 0.25s; background: var(--off-white);
+        }
+        .cv-upload-zone:hover { border-color: var(--accent); background: #f4ffe4; }
+        .cv-upload-zone.has-file { border-color: var(--accent); background: #f4ffe4; }
+        .cv-upload-zone svg { margin-bottom: 12px; }
+        .cv-upload-zone p { font-size: 0.9rem; color: var(--text-muted); }
+        .cv-upload-zone .cv-filename {
+            font-weight: 700; color: var(--navy); font-size: 0.95rem;
+            margin-top: 8px;
+        }
+        .btn-save {
+            background: var(--accent); color: var(--navy); padding: 13px 32px;
+            border-radius: 8px; font-weight: 700; font-size: 14px; border: none;
+            cursor: pointer; font-family: inherit; transition: all 0.25s;
+        }
+        .btn-save:hover { background: var(--accent-dark); transform: translateY(-1px); }
+        .btn-save:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        .save-msg { font-size: 0.85rem; color: var(--success); margin-left: 16px; font-weight: 600; display: none; }
 
         /* DASHBOARD */
         .dashboard {
@@ -350,6 +423,8 @@
             .phase-step::after { display: none; }
             .sol-card { flex-wrap: wrap; gap: 16px; }
             .sol-phase-track { display: none; }
+            .profile-grid { grid-template-columns: 1fr; }
+            .form-row-inline { grid-template-columns: 1fr; }
         }
         @media (max-width: 768px) {
             .nav { padding: 0 20px; }
@@ -365,24 +440,24 @@
 <!-- NAV -->
 <nav class="nav">
     <a href="/"><img src="https://primary.jwwb.nl/public/j/q/c/temp-bubpssuhqgoxqtzyfqhe/image-high-aunh7o.png?enable-io=true&enable=upscale&height=64" alt="Feen" class="nav-logo"></a>
-    <ul class="nav-links">
+    <ul class="nav-links" id="navLinks" style="display:none">
         <li><a href="/vacature">Vacatures</a></li>
         <li><a href="/mijn-sollicitaties" class="active">Mijn Feen</a></li>
         <li><a href="/over-ons">Over Ons</a></li>
-        <li><a href="/blogs">Insights</a></li>
+        <li><a href="/blogs">Inzichten</a></li>
     </ul>
     <div class="nav-user" id="navUser" style="display:none">
         <div class="nav-user-avatar" id="navAvatar"></div>
         <span id="navName"></span>
         <button class="nav-logout" onclick="feenLogout()">Uitloggen</button>
     </div>
-    <button class="mobile-toggle" onclick="document.getElementById('mobileNav').classList.add('open')" aria-label="Menu">&#9776;</button>
+    <button class="mobile-toggle" id="mobileToggle" style="display:none" onclick="document.getElementById('mobileNav').classList.add('open')" aria-label="Menu">&#9776;</button>
 </nav>
 <div class="mobile-nav" id="mobileNav">
     <button class="mobile-nav-close" onclick="document.getElementById('mobileNav').classList.remove('open')" aria-label="Sluit menu">&times;</button>
-    <a href="/">Home</a><a href="/vacature">Vacatures</a><a href="/mijn-sollicitaties">Mijn Feen</a>
-    <a href="/over-ons">Over Ons</a><a href="/blogs">Insights</a>
-    <a href="#" onclick="feenLogout(); return false;">Uitloggen</a>
+    <a href="/">Home</a><a href="/vacature" class="auth-nav-link" style="display:none">Vacatures</a><a href="/mijn-sollicitaties" class="auth-nav-link" style="display:none">Mijn Feen</a>
+    <a href="/over-ons" class="auth-nav-link" style="display:none">Over Ons</a><a href="/blogs" class="auth-nav-link" style="display:none">Inzichten</a>
+    <a href="#" class="auth-nav-link" style="display:none" onclick="feenLogout(); return false;">Uitloggen</a>
 </div>
 
 <!-- DASHBOARD -->
@@ -397,8 +472,17 @@
     <div id="dashContent" style="display:none">
         <div class="dash-header">
             <h1>Welkom terug, <span id="userName"></span></h1>
-            <p>Hier vind je een overzicht van al je sollicitaties en hun voortgang.</p>
+            <p>Hier vind je een overzicht van al je sollicitaties en je profiel.</p>
         </div>
+
+        <!-- TABS -->
+        <div class="dash-tabs">
+            <button class="dash-tab active" onclick="switchTab('sollicitaties', this)">Mijn Sollicitaties</button>
+            <button class="dash-tab" onclick="switchTab('profiel', this)">Mijn Profiel</button>
+        </div>
+
+        <!-- TAB: SOLLICITATIES -->
+        <div class="tab-content active" id="tab-sollicitaties">
 
         <!-- STATS -->
         <div class="stats-row" id="statsRow">
@@ -466,6 +550,103 @@
             <p>Je hebt nog geen sollicitaties. Bekijk de vacatures en doe je eerste sollicitatie!</p>
             <a href="/vacature" class="btn-primary">Bekijk vacatures →</a>
         </div>
+        </div><!-- end tab-sollicitaties -->
+
+        <!-- TAB: PROFIEL -->
+        <div class="tab-content" id="tab-profiel">
+            <div class="profile-grid">
+                <!-- PERSOONLIJKE GEGEVENS -->
+                <div class="profile-card">
+                    <h3>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        Persoonlijke gegevens
+                    </h3>
+                    <div class="form-row-inline">
+                        <div class="form-row">
+                            <label>Voornaam</label>
+                            <input type="text" id="profVoornaam" placeholder="Bijv. Jan">
+                        </div>
+                        <div class="form-row">
+                            <label>Achternaam</label>
+                            <input type="text" id="profAchternaam" placeholder="Bijv. de Vries">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <label>E-mailadres</label>
+                        <input type="email" id="profEmail" readonly style="background:#f0f1f5;cursor:not-allowed">
+                    </div>
+                    <div class="form-row-inline">
+                        <div class="form-row">
+                            <label>Telefoonnummer</label>
+                            <input type="tel" id="profTelefoon" placeholder="06 12345678">
+                        </div>
+                        <div class="form-row">
+                            <label>Woonplaats</label>
+                            <input type="text" id="profWoonplaats" placeholder="Bijv. Amsterdam">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PROFESSIONEEL -->
+                <div class="profile-card">
+                    <h3>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                        Professioneel profiel
+                    </h3>
+                    <div class="form-row">
+                        <label>Huidige functie</label>
+                        <input type="text" id="profFunctie" placeholder="Bijv. Senior Accountant">
+                    </div>
+                    <div class="form-row-inline">
+                        <div class="form-row">
+                            <label>Jaren ervaring</label>
+                            <select id="profErvaring">
+                                <option value="">Selecteer</option>
+                                <option value="0-2">0 – 2 jaar</option>
+                                <option value="3-5">3 – 5 jaar</option>
+                                <option value="6-10">6 – 10 jaar</option>
+                                <option value="10+">10+ jaar</option>
+                            </select>
+                        </div>
+                        <div class="form-row">
+                            <label>Beschikbaarheid</label>
+                            <select id="profBeschikbaarheid">
+                                <option value="">Selecteer</option>
+                                <option value="direct">Direct beschikbaar</option>
+                                <option value="1-maand">Binnen 1 maand</option>
+                                <option value="1-3-maanden">1 – 3 maanden</option>
+                                <option value="overleg">In overleg</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <label>Korte omschrijving</label>
+                        <textarea id="profOmschrijving" rows="3" placeholder="Beschrijf kort je expertise en wat je zoekt..."></textarea>
+                    </div>
+                </div>
+
+                <!-- CV UPLOAD -->
+                <div class="profile-card full-width">
+                    <h3>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 12 15 15"/></svg>
+                        CV uploaden
+                    </h3>
+                    <div class="cv-upload-zone" id="cvUploadZone" onclick="document.getElementById('cvFileInput').click()">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#6b7194" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                        <p>Sleep je CV hierheen of <strong>klik om te uploaden</strong></p>
+                        <p style="font-size:0.78rem;color:#aab0c6;margin-top:4px">PDF, DOC of DOCX · Max 10 MB</p>
+                        <div class="cv-filename" id="cvFileName" style="display:none"></div>
+                    </div>
+                    <input type="file" id="cvFileInput" accept=".pdf,.doc,.docx" style="display:none" onchange="handleCvSelect(this)">
+                </div>
+
+                <!-- SAVE -->
+                <div class="profile-card full-width" style="display:flex;align-items:center;gap:16px;padding:24px 32px">
+                    <button class="btn-save" id="btnSaveProfile" onclick="saveProfile()">Profiel opslaan</button>
+                    <span class="save-msg" id="saveMsg">✓ Profiel opgeslagen!</span>
+                </div>
+            </div>
+        </div><!-- end tab-profiel -->
     </div>
 </div>
 
@@ -473,6 +654,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
 <script src="/firebase-config.js"></script>
 
 <script>
@@ -492,8 +674,30 @@ auth.onAuthStateChanged(async (user) => {
     document.getElementById('navName').textContent = user.displayName || user.email;
     navUser.style.display = 'flex';
 
+    // Show nav links now that user is authenticated
+    document.getElementById('navLinks').style.display = 'flex';
+    // Show mobile toggle on small screens
+    if (window.innerWidth <= 768) {
+        document.getElementById('mobileToggle').style.display = 'block';
+    }
+    // Show mobile nav links
+    document.querySelectorAll('.auth-nav-link').forEach(function(el) { el.style.display = ''; });
+
     // Dashboard laden
     document.getElementById('userName').textContent = (user.displayName || 'gebruiker').split(' ')[0];
+    currentUser = user;
+    document.getElementById('profEmail').value = user.email || '';
+    // Pre-fill name from auth if available
+    if (user.displayName) {
+        const parts = user.displayName.split(' ');
+        if (!document.getElementById('profVoornaam').value) {
+            document.getElementById('profVoornaam').value = parts[0] || '';
+        }
+        if (!document.getElementById('profAchternaam').value && parts.length > 1) {
+            document.getElementById('profAchternaam').value = parts.slice(1).join(' ');
+        }
+    }
+    await loadProfile(user.uid);
     await loadSollicitaties(user.uid);
 });
 
@@ -579,6 +783,131 @@ function escapeHtml(str) {
     const div = document.createElement('div');
     div.textContent = str;
     return div.innerHTML;
+}
+
+// ===== TAB SWITCHING =====
+function switchTab(tabId, btn) {
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.dash-tab').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + tabId).classList.add('active');
+    btn.classList.add('active');
+}
+
+// ===== PROFILE =====
+let selectedCvFile = null;
+let currentUser = null;
+
+function handleCvSelect(input) {
+    const file = input.files[0];
+    if (!file) return;
+
+    const maxSize = 10 * 1024 * 1024; // 10 MB
+    const allowed = ['application/pdf', 'application/msword',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+
+    if (!allowed.includes(file.type)) {
+        alert('Alleen PDF, DOC of DOCX bestanden zijn toegestaan.');
+        input.value = '';
+        return;
+    }
+    if (file.size > maxSize) {
+        alert('Bestand is te groot. Maximaal 10 MB.');
+        input.value = '';
+        return;
+    }
+
+    selectedCvFile = file;
+    const zone = document.getElementById('cvUploadZone');
+    zone.classList.add('has-file');
+    const nameEl = document.getElementById('cvFileName');
+    nameEl.textContent = '📄 ' + file.name;
+    nameEl.style.display = 'block';
+}
+
+// Drag & drop support
+document.addEventListener('DOMContentLoaded', function() {
+    const zone = document.getElementById('cvUploadZone');
+    if (!zone) return;
+    zone.addEventListener('dragover', function(e) { e.preventDefault(); zone.style.borderColor = 'var(--accent)'; });
+    zone.addEventListener('dragleave', function() { zone.style.borderColor = ''; });
+    zone.addEventListener('drop', function(e) {
+        e.preventDefault();
+        zone.style.borderColor = '';
+        if (e.dataTransfer.files.length) {
+            document.getElementById('cvFileInput').files = e.dataTransfer.files;
+            handleCvSelect(document.getElementById('cvFileInput'));
+        }
+    });
+});
+
+async function loadProfile(uid) {
+    try {
+        const doc = await db.collection('gebruikers').doc(uid).get();
+        if (doc.exists) {
+            const d = doc.data();
+            if (d.voornaam) document.getElementById('profVoornaam').value = d.voornaam;
+            if (d.achternaam) document.getElementById('profAchternaam').value = d.achternaam;
+            if (d.telefoon) document.getElementById('profTelefoon').value = d.telefoon;
+            if (d.woonplaats) document.getElementById('profWoonplaats').value = d.woonplaats;
+            if (d.functie) document.getElementById('profFunctie').value = d.functie;
+            if (d.ervaring) document.getElementById('profErvaring').value = d.ervaring;
+            if (d.beschikbaarheid) document.getElementById('profBeschikbaarheid').value = d.beschikbaarheid;
+            if (d.omschrijving) document.getElementById('profOmschrijving').value = d.omschrijving;
+            if (d.cvNaam) {
+                document.getElementById('cvFileName').textContent = '📄 ' + d.cvNaam;
+                document.getElementById('cvFileName').style.display = 'block';
+                document.getElementById('cvUploadZone').classList.add('has-file');
+            }
+        }
+    } catch (e) {
+        console.error('Profiel laden mislukt:', e);
+    }
+}
+
+async function saveProfile() {
+    if (!currentUser) return;
+    const btn = document.getElementById('btnSaveProfile');
+    const msg = document.getElementById('saveMsg');
+    btn.disabled = true;
+    btn.textContent = 'Opslaan...';
+    msg.style.display = 'none';
+
+    try {
+        const profileData = {
+            voornaam: document.getElementById('profVoornaam').value.trim(),
+            achternaam: document.getElementById('profAchternaam').value.trim(),
+            email: currentUser.email,
+            telefoon: document.getElementById('profTelefoon').value.trim(),
+            woonplaats: document.getElementById('profWoonplaats').value.trim(),
+            functie: document.getElementById('profFunctie').value.trim(),
+            ervaring: document.getElementById('profErvaring').value,
+            beschikbaarheid: document.getElementById('profBeschikbaarheid').value,
+            omschrijving: document.getElementById('profOmschrijving').value.trim(),
+            bijgewerkt: firebase.firestore.FieldValue.serverTimestamp()
+        };
+
+        // Upload CV if selected
+        if (selectedCvFile && storage) {
+            const ext = selectedCvFile.name.split('.').pop();
+            const safeFilename = currentUser.uid + '_cv.' + ext;
+            const ref = storage.ref('cv/' + safeFilename);
+            await ref.put(selectedCvFile);
+            profileData.cvUrl = await ref.getDownloadURL();
+            profileData.cvNaam = selectedCvFile.name;
+            selectedCvFile = null;
+        }
+
+        await db.collection('gebruikers').doc(currentUser.uid).set(profileData, { merge: true });
+
+        msg.style.display = 'inline';
+        setTimeout(function() { msg.style.display = 'none'; }, 4000);
+    } catch (e) {
+        alert('Opslaan mislukt: ' + e.message);
+        console.error(e);
+    }
+
+    btn.disabled = false;
+    btn.textContent = 'Profiel opslaan';
 }
 </script>
 

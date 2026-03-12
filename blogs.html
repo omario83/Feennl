@@ -11,9 +11,9 @@
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Insights &amp; Blogs — Feen</title>
+    <title>Inzichten &amp; Blogs � Feen</title>
     <meta name="description" content="Lees de laatste inzichten over finance, accountancy, arbeidsmarkt en bemiddeling van Feen.">
-    <meta property="og:title" content="Insights & Blogs — Feen">
+    <meta property="og:title" content="Inzichten & Blogs � Feen">
     <meta property="og:description" content="Lees de laatste inzichten over finance, accountancy, arbeidsmarkt en bemiddeling van Feen.">
     <meta property="og:url" content="https://feennl.nl/blogs">
     <meta property="og:type" content="website">
@@ -21,7 +21,7 @@
     <meta property="og:locale" content="nl_NL">
     <meta property="og:site_name" content="Feen">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Insights & Blogs — Feen">
+    <meta name="twitter:title" content="Inzichten & Blogs � Feen">
     <meta name="twitter:description" content="Lees de laatste inzichten over finance, accountancy en arbeidsmarkt.">
     <link rel="canonical" href="https://feennl.nl/blogs">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -95,46 +95,60 @@
         .filter-btn:hover { border-color: var(--accent); color: var(--text); }
         .filter-btn.active { background: var(--navy); color: var(--white); border-color: var(--navy); }
 
+        /* BLOG GRID WRAPPER */
+        .blog-grid-wrapper {
+            background: var(--accent); padding: 60px 0 80px;
+        }
+        .blog-grid-wrapper h2 {
+            max-width: 1100px; margin: 0 auto 36px; padding: 0 48px;
+            font-size: 1.8rem; font-weight: 800; color: var(--navy);
+        }
+
         /* BLOG GRID */
         .blog-grid {
-            max-width: 1100px; margin: 40px auto 60px; padding: 0 48px;
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px;
+            max-width: 1100px; margin: 0 auto; padding: 0 48px;
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
         }
         .blog-card {
-            background: var(--white); border-radius: 12px; overflow: hidden;
-            box-shadow: 0 2px 16px rgba(0,0,0,0.05); transition: all 0.3s; cursor: pointer;
+            position: relative; border-radius: 16px; overflow: hidden;
+            aspect-ratio: 3/4; cursor: pointer; transition: transform 0.3s;
         }
-        .blog-card:hover { transform: translateY(-4px); box-shadow: 0 8px 32px rgba(0,0,0,0.1); }
+        .blog-card:hover { transform: translateY(-6px); }
         .blog-card-img {
-            width: 100%; height: 200px; object-fit: cover; display: block;
+            width: 100%; height: 100%; object-fit: cover; display: block;
+            position: absolute; inset: 0;
         }
-        .blog-card-body { padding: 24px; }
+        .blog-card-body {
+            position: absolute; inset: 0; padding: 28px;
+            display: flex; flex-direction: column; justify-content: flex-end;
+            background: linear-gradient(0deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.1) 100%);
+            z-index: 2;
+        }
         .blog-tag {
-            display: inline-block; background: rgba(184,244,112,0.2); color: var(--accent-dark);
-            padding: 3px 10px; border-radius: 4px; font-size: 11px; font-weight: 700;
-            letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 10px;
+            display: inline-block; background: rgba(255,255,255,0.15); color: var(--white);
+            padding: 4px 12px; border-radius: 50px; font-size: 11px; font-weight: 700;
+            letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 12px;
+            backdrop-filter: blur(4px); width: fit-content;
         }
         .blog-card-body h3 {
-            font-size: 1.1rem; font-weight: 700; margin-bottom: 10px; line-height: 1.35;
-            color: var(--text);
+            font-size: 1.05rem; font-weight: 700; margin-bottom: 8px; line-height: 1.35;
+            color: var(--white);
         }
-        .blog-card-body p { font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 14px; }
-        .blog-meta { font-size: 0.78rem; color: #aab0c6; font-weight: 500; }
+        .blog-card-body p { font-size: 0.82rem; color: rgba(255,255,255,0.7); line-height: 1.55; margin-bottom: 10px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+        .blog-meta { font-size: 0.75rem; color: rgba(255,255,255,0.45); font-weight: 500; }
         .blog-read-more {
-            color: var(--accent-dark); font-weight: 700; font-size: 0.85rem;
+            color: var(--accent); font-weight: 700; font-size: 0.85rem;
             text-decoration: none; display: inline-flex; align-items: center; gap: 4px;
         }
-        .blog-read-more:hover { color: var(--navy); }
+        .blog-read-more:hover { color: var(--white); }
 
         /* FEATURED */
         .blog-featured {
             grid-column: 1 / -1;
-            display: grid; grid-template-columns: 1fr 1fr; overflow: hidden;
+            aspect-ratio: 21/9;
         }
-        .blog-featured .blog-card-img { height: 100%; min-height: 300px; }
-        .blog-featured .blog-card-body { padding: 36px; display: flex; flex-direction: column; justify-content: center; }
         .blog-featured .blog-card-body h3 { font-size: 1.5rem; }
-        .blog-featured .blog-card-body p { font-size: 0.95rem; }
+        .blog-featured .blog-card-body p { font-size: 0.95rem; -webkit-line-clamp: 4; }
 
         /* CTA */
         .cta-strip {
@@ -164,8 +178,8 @@
 
         @media (max-width: 900px) {
             .blog-grid { grid-template-columns: repeat(2, 1fr); }
-            .blog-featured { grid-template-columns: 1fr; }
-            .blog-featured .blog-card-img { height: 220px; }
+            .blog-featured { aspect-ratio: 16/9; }
+            .blog-grid-wrapper { padding: 40px 0 60px; }
         }
         @media (max-width: 640px) {
             .nav { padding: 0 20px; }
@@ -175,6 +189,9 @@
             .page-hero h1 { font-size: 2.2rem; }
             .filters { padding: 0 24px; }
             .blog-grid { grid-template-columns: 1fr; padding: 0 24px; }
+            .blog-grid-wrapper h2 { padding: 0 24px; }
+            .blog-card { aspect-ratio: 4/3; }
+            .blog-featured { aspect-ratio: 4/3; }
             .cta-strip { padding: 40px 24px; flex-direction: column; text-align: center; }
             .footer { padding: 30px 24px; flex-direction: column; text-align: center; }
         }
@@ -190,7 +207,7 @@
         <li><a href="/opdrachtgever">Opdrachtgever</a></li>
         <li><a href="/over-ons">Over Ons</a></li>
         <li><a href="/contact">Contact</a></li>
-        <li><a href="/blogs" class="active">Insights</a></li>
+        <li><a href="/blogs" class="active">Inzichten</a></li>
         <li><a href="/inloggen" class="auth-login">Inloggen</a></li>
         <li><a href="/mijn-sollicitaties" class="auth-portal" style="display:none">Mijn Feen</a></li>
     </ul>
@@ -200,7 +217,7 @@
 <div class="mobile-nav" id="mobileNav">
     <button class="mobile-nav-close" onclick="document.getElementById('mobileNav').classList.remove('open')" aria-label="Sluit menu">&times;</button>
     <a href="/">Home</a><a href="/vacature">Vacatures</a><a href="/opdrachtgever">Opdrachtgever</a>
-    <a href="/over-ons">Over Ons</a><a href="/contact">Contact</a><a href="/blogs">Insights</a>
+    <a href="/over-ons">Over Ons</a><a href="/contact">Contact</a><a href="/blogs">Inzichten</a>
     <a href="/inloggen" class="auth-login">Inloggen</a>
     <a href="/mijn-sollicitaties" class="auth-portal" style="display:none">Mijn Feen</a>
 </div>
@@ -208,7 +225,7 @@
 <!-- HERO -->
 <section class="page-hero">
     <div class="page-hero-inner">
-        <div class="page-hero-tag">Insights</div>
+        <div class="page-hero-tag">Inzichten</div>
         <h1>Kennis &amp; <span>inzichten</span></h1>
         <p>De laatste trends, tips en ontwikkelingen in finance, accountancy en de arbeidsmarkt.</p>
     </div>
@@ -226,16 +243,18 @@
 </div>
 
 <!-- BLOG GRID -->
+<section class="blog-grid-wrapper">
+    <h2>Onze nieuwste artikelen</h2>
 <div class="blog-grid" id="blogGrid">
 
     <!-- FEATURED -->
     <a href="/hoge-raad-ondernemerschap-zzp" class="blog-card blog-featured" data-cat="wet-dba" style="text-decoration:none;color:inherit;">
         <img src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=800&q=80&fit=crop" alt="Hoge Raad erkent ondernemerschap zzp'ers" class="blog-card-img">
         <div class="blog-card-body">
-            <span class="blog-tag" style="background:rgba(231,76,60,0.15);color:#c0392b;">Wet DBA</span>
+            <span class="blog-tag">Wet DBA</span>
             <h3>Hoge Raad erkent ondernemerschap zzp'ers: wat betekent de uitspraak van 21 februari 2025?</h3>
             <p>De Hoge Raad heeft ondernemerschap erkend als volwaardig criterium bij de beoordeling van arbeidsrelaties. Ontdek wat dit betekent voor jouw status als zelfstandige.</p>
-            <div class="blog-meta">12 mrt 2026 · 8 min leestijd</div>
+            <div class="blog-meta">12 mrt 2026 � 8 min leestijd</div>
         </div>
     </a>
 
@@ -243,70 +262,70 @@
     <a href="/wet-dba-schijnzelfstandigheid-inzichten-hoge-raad" class="blog-card" data-cat="wet-dba" style="text-decoration:none;color:inherit;">
         <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=600&q=80&fit=crop" alt="Wet DBA schijnzelfstandigheid Hoge Raad" loading="lazy" class="blog-card-img">
         <div class="blog-card-body">
-            <span class="blog-tag" style="background:rgba(231,76,60,0.15);color:#c0392b;">Wet DBA</span>
+            <span class="blog-tag">Wet DBA</span>
             <h3>Wet DBA en schijnzelfstandigheid: nieuwe inzichten van de Hoge Raad</h3>
             <p>De Hoge Raad biedt nieuwe inzichten over de Wet DBA en schijnzelfstandigheid. Ontdek de 9 Deliveroo-criteria en wat ze voor jou betekenen.</p>
-            <div class="blog-meta">10 mrt 2026 · 9 min leestijd</div>
+            <div class="blog-meta">10 mrt 2026 � 9 min leestijd</div>
         </div>
     </a>
 
     <a href="/rechtbank-rotterdam-salesmanager-zelfstandige" class="blog-card" data-cat="wet-dba" style="text-decoration:none;color:inherit;">
         <img src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=600&q=80&fit=crop" alt="Rechtbank Rotterdam salesmanager zelfstandige" loading="lazy" class="blog-card-img">
         <div class="blog-card-body">
-            <span class="blog-tag" style="background:rgba(231,76,60,0.15);color:#c0392b;">Wet DBA</span>
+            <span class="blog-tag">Wet DBA</span>
             <h3>Rechtbank Rotterdam: salesmanager terecht aangemerkt als zelfstandige</h3>
-            <p>Kun je 2,5 jaar voor één opdrachtgever werken en toch zelfstandige zijn? De Rechtbank Rotterdam zegt: ja.</p>
-            <div class="blog-meta">8 mrt 2026 · 7 min leestijd</div>
+            <p>Kun je 2,5 jaar voor ��n opdrachtgever werken en toch zelfstandige zijn? De Rechtbank Rotterdam zegt: ja.</p>
+            <div class="blog-meta">8 mrt 2026 � 7 min leestijd</div>
         </div>
     </a>
 
     <a href="/rechterlijke-uitspraken-wet-dba-2024-2025" class="blog-card" data-cat="wet-dba" style="text-decoration:none;color:inherit;">
         <img src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=600&q=80&fit=crop" alt="Rechterlijke uitspraken Wet DBA overzicht" loading="lazy" class="blog-card-img">
         <div class="blog-card-body">
-            <span class="blog-tag" style="background:rgba(231,76,60,0.15);color:#c0392b;">Wet DBA</span>
-            <h3>Rechterlijke uitspraken Wet DBA 2024–2025: een overzicht</h3>
+            <span class="blog-tag">Wet DBA</span>
+            <h3>Rechterlijke uitspraken Wet DBA 2024�2025: een overzicht</h3>
             <p>Hoe beoordelen rechters arbeidsrelaties onder de Wet DBA? Overzicht van de belangrijkste uitspraken.</p>
-            <div class="blog-meta">6 mrt 2026 · 9 min leestijd</div>
+            <div class="blog-meta">6 mrt 2026 � 9 min leestijd</div>
         </div>
     </a>
 
     <a href="/handhaving-wet-dba-2026-zzp" class="blog-card" data-cat="wet-dba" style="text-decoration:none;color:inherit;">
-        <img src="https://images.unsplash.com/photo-1450101499163-c8848e968bc7?w=600&q=80&fit=crop" alt="Handhaving Wet DBA 2026 zzp" loading="lazy" class="blog-card-img">
+        <img src="https://images.unsplash.com/photo-1556761175-b413da4baf72?w=600&q=80&fit=crop" alt="Handhaving Wet DBA 2026 zzp" loading="lazy" class="blog-card-img">
         <div class="blog-card-body">
-            <span class="blog-tag" style="background:rgba(231,76,60,0.15);color:#c0392b;">Wet DBA</span>
+            <span class="blog-tag">Wet DBA</span>
             <h3>Handhaving Wet DBA 2026: wat betekent dit voor jou als zzp'er?</h3>
             <p>Geen verzuimboetes maar wel naheffingen. Ontdek wat de handhaving in 2026 voor jou als zzp'er betekent.</p>
-            <div class="blog-meta">4 mrt 2026 · 8 min leestijd</div>
+            <div class="blog-meta">4 mrt 2026 � 8 min leestijd</div>
         </div>
     </a>
 
     <a href="/schijnzelfstandigheid-2026-regels-risicos-opdrachtgevers" class="blog-card" data-cat="werkgeverschap" style="text-decoration:none;color:inherit;">
         <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=600&q=80&fit=crop" alt="Schijnzelfstandigheid regels opdrachtgevers" loading="lazy" class="blog-card-img">
         <div class="blog-card-body">
-            <span class="blog-tag" style="background:rgba(142,68,173,0.12);color:#8e44ad;">Werkgeverschap</span>
+            <span class="blog-tag">Werkgeverschap</span>
             <h3>Schijnzelfstandigheid in 2026: regels en risico's voor opdrachtgevers</h3>
             <p>Fiscale en arbeidsrechtelijke gevolgen van schijnzelfstandigheid. Voorkom naheffingen bij zzp-inhuur.</p>
-            <div class="blog-meta">2 mrt 2026 · 8 min leestijd</div>
+            <div class="blog-meta">2 mrt 2026 � 8 min leestijd</div>
         </div>
     </a>
 
     <a href="/wet-dba-gevolgen-ondernemers-2026" class="blog-card" data-cat="wet-dba" style="text-decoration:none;color:inherit;">
         <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=80&fit=crop" alt="Wet DBA gevolgen ondernemers" loading="lazy" class="blog-card-img">
         <div class="blog-card-body">
-            <span class="blog-tag" style="background:rgba(231,76,60,0.15);color:#c0392b;">Wet DBA</span>
+            <span class="blog-tag">Wet DBA</span>
             <h3>Wet DBA: gevolgen voor ondernemers en werkgevers in 2026</h3>
             <p>Van VAR naar DBA: wat je als werkgever moet weten over zzp-inhuur, modelovereenkomsten en de drie pijlers.</p>
-            <div class="blog-meta">28 feb 2026 · 8 min leestijd</div>
+            <div class="blog-meta">28 feb 2026 � 8 min leestijd</div>
         </div>
     </a>
 
     <a href="/handhaving-schijnzelfstandigheid-2026-veranderingen" class="blog-card" data-cat="wet-dba" style="text-decoration:none;color:inherit;">
         <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?w=600&q=80&fit=crop" alt="Handhaving schijnzelfstandigheid veranderingen" loading="lazy" class="blog-card-img">
         <div class="blog-card-body">
-            <span class="blog-tag" style="background:rgba(231,76,60,0.15);color:#c0392b;">Wet DBA</span>
+            <span class="blog-tag">Wet DBA</span>
             <h3>Handhaving schijnzelfstandigheid 2026: wat verandert er en wat niet?</h3>
-            <p>Van vergrijpboetes tot bedrijfsbezoeken — een helder overzicht met vergelijkingstabel.</p>
-            <div class="blog-meta">24 feb 2026 · 9 min leestijd</div>
+            <p>Van vergrijpboetes tot bedrijfsbezoeken � een helder overzicht met vergelijkingstabel.</p>
+            <div class="blog-meta">24 feb 2026 � 9 min leestijd</div>
         </div>
     </a>
 
@@ -316,7 +335,7 @@
             <span class="blog-tag">Tips</span>
             <h3>Wet DBA en schijnzelfstandigheid: veelgestelde vragen beantwoord</h3>
             <p>Van modelovereenkomsten tot handhaving: alles wat je wilt weten over de Wet DBA helder beantwoord.</p>
-            <div class="blog-meta">20 feb 2026 · 10 min leestijd</div>
+            <div class="blog-meta">20 feb 2026 � 10 min leestijd</div>
         </div>
     </a>
 
@@ -326,10 +345,11 @@
             <span class="blog-tag">Tips</span>
             <h3>Wet DBA 2026: voorkom schijnzelfstandigheid als zzp'er</h3>
             <p>Praktische tips, hulpmiddelen en een checklist om compliant te blijven met de Wet DBA in 2026.</p>
-            <div class="blog-meta">16 feb 2026 · 8 min leestijd</div>
+            <div class="blog-meta">16 feb 2026 � 8 min leestijd</div>
         </div>
     </a>
 </div>
+</section>
 
 <!-- CTA -->
 <section class="cta-strip">
@@ -342,12 +362,17 @@
 
 <!-- FOOTER -->
 <footer class="footer">
-    <div class="footer-copy">&copy; 2023 – 2026 Feen. Alle rechten voorbehouden.</div>
+    <div style="display:flex;align-items:center;gap:14px">
+        <img src="https://primary.jwwb.nl/public/j/q/c/temp-bubpssuhqgoxqtzyfqhe/image-high-aunh7o.png?enable-io=true&enable=upscale&height=80" alt="Feen" style="height:28px;opacity:0.8">
+        <span class="footer-copy">&copy; 2023 – 2026 Feen. Alle rechten voorbehouden.</span>
+    </div>
     <div class="footer-links">
         <a href="/">Home</a>
+        <a href="/vacature">Vacatures</a>
+        <a href="/opdrachtgever">Opdrachtgever</a>
         <a href="/contact">Contact</a>
         <a href="https://linkedin.com/company/feennl/" target="_blank" rel="noopener">LinkedIn</a>
-        <a href="https://api.whatsapp.com/send?phone=31687848515" target="_blank" rel="noopener">WhatsApp</a>
+        <a href="https://api.whatsapp.com/send?phone=31621670871" target="_blank" rel="noopener">WhatsApp</a>
     </div>
 </footer>
 

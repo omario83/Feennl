@@ -270,7 +270,7 @@
         }
 
         .filter-option input[type="checkbox"]:checked::after {
-            content: '✓';
+            content: '?';
             position: absolute;
             top: 50%;
             left: 50%;
@@ -657,7 +657,7 @@
     <a href="/" class="header-logo">
         <img src="https://primary.jwwb.nl/public/j/q/c/temp-bubpssuhqgoxqtzyfqhe/image-high-aunh7o.png?enable-io=true&enable=upscale&height=70" alt="Feen" title="Feen">
     </a>
-    <button class="mobile-menu-btn" aria-label="Menu openen" onclick="document.querySelector('.header-nav').classList.toggle('open')">☰</button>
+    <button class="mobile-menu-btn" aria-label="Menu openen" onclick="document.querySelector('.header-nav').classList.toggle('open')">?</button>
     <nav class="header-nav">
         <ul>
             <li><a href="/">Home</a></li>
@@ -685,7 +685,7 @@
 
     <!-- Mobile filter toggle -->
     <button class="mobile-filter-toggle" onclick="document.querySelector('.filters').classList.toggle('open')">
-        ☰ Filters tonen / verbergen
+        ? Filters tonen / verbergen
     </button>
 
     <!-- Sidebar Filters -->
@@ -698,8 +698,8 @@
         <!-- Locatie -->
         <div class="filter-group">
             <h3 onclick="toggleFilter(this)">
-                📍 Locatie
-                <span class="toggle-icon">▾</span>
+                ?? Locatie
+                <span class="toggle-icon">?</span>
             </h3>
             <div class="filter-options" data-filter="locatie">
                 <label class="filter-option">
@@ -732,8 +732,8 @@
         <!-- Sector / Dienstverlening -->
         <div class="filter-group">
             <h3 onclick="toggleFilter(this)">
-                🏢 Sector / Dienstverlening
-                <span class="toggle-icon">▾</span>
+                ?? Sector / Dienstverlening
+                <span class="toggle-icon">?</span>
             </h3>
             <div class="filter-options" data-filter="sector">
                 <label class="filter-option">
@@ -766,8 +766,8 @@
         <!-- Dienstverband -->
         <div class="filter-group">
             <h3 onclick="toggleFilter(this)">
-                📋 Dienstverband
-                <span class="toggle-icon">▾</span>
+                ?? Dienstverband
+                <span class="toggle-icon">?</span>
             </h3>
             <div class="filter-options" data-filter="dienstverband">
                 <label class="filter-option">
@@ -796,8 +796,8 @@
         <!-- Uren per week -->
         <div class="filter-group">
             <h3 onclick="toggleFilter(this)">
-                ⏰ Uren per week
-                <span class="toggle-icon">▾</span>
+                ? Uren per week
+                <span class="toggle-icon">?</span>
             </h3>
             <div class="filter-options" data-filter="uren">
                 <label class="filter-option">
@@ -818,8 +818,8 @@
         <!-- Ervaring -->
         <div class="filter-group">
             <h3 onclick="toggleFilter(this)">
-                🎓 Ervaringsniveau
-                <span class="toggle-icon">▾</span>
+                ?? Ervaringsniveau
+                <span class="toggle-icon">?</span>
             </h3>
             <div class="filter-options" data-filter="ervaring">
                 <label class="filter-option">
@@ -840,24 +840,24 @@
         <!-- Salaris -->
         <div class="filter-group">
             <h3 onclick="toggleFilter(this)">
-                💰 Salarisindicatie
-                <span class="toggle-icon">▾</span>
+                ?? Salarisindicatie
+                <span class="toggle-icon">?</span>
             </h3>
             <div class="filter-options" data-filter="salaris">
                 <label class="filter-option">
-                    <input type="checkbox" value="2500-3500"> €2.500 - €3.500
+                    <input type="checkbox" value="2500-3500"> �2.500 - �3.500
                     <span class="count">4</span>
                 </label>
                 <label class="filter-option">
-                    <input type="checkbox" value="3500-5000"> €3.500 - €5.000
+                    <input type="checkbox" value="3500-5000"> �3.500 - �5.000
                     <span class="count">8</span>
                 </label>
                 <label class="filter-option">
-                    <input type="checkbox" value="5000-7000"> €5.000 - €7.000
+                    <input type="checkbox" value="5000-7000"> �5.000 - �7.000
                     <span class="count">7</span>
                 </label>
                 <label class="filter-option">
-                    <input type="checkbox" value="7000+"> €7.000+
+                    <input type="checkbox" value="7000+"> �7.000+
                     <span class="count">3</span>
                 </label>
             </div>
@@ -871,8 +871,8 @@
             <select class="sort-select" id="sortSelect" onchange="sortVacancies()">
                 <option value="newest">Nieuwste eerst</option>
                 <option value="oldest">Oudste eerst</option>
-                <option value="salary-high">Salaris: hoog → laag</option>
-                <option value="salary-low">Salaris: laag → hoog</option>
+                <option value="salary-high">Salaris: hoog ? laag</option>
+                <option value="salary-low">Salaris: laag ? hoog</option>
             </select>
         </div>
 
@@ -893,15 +893,15 @@
                     Wij zoeken een ervaren Senior Accountant die verantwoordelijk wordt voor het leiden van auditteams en het opbouwen van klantrelaties. Je werkt aan diverse opdrachten voor middelgrote en grote ondernemingen.
                 </div>
                 <div class="vacancy-meta">
-                    <span class="vacancy-meta-item"><span class="icon">📍</span> Amsterdam</span>
-                    <span class="vacancy-meta-item"><span class="icon">📋</span> Vast dienstverband</span>
-                    <span class="vacancy-meta-item"><span class="icon">⏰</span> Fulltime</span>
-                    <span class="vacancy-meta-item"><span class="icon">🎓</span> Senior</span>
+                    <span class="vacancy-meta-item"><span class="icon">??</span> Amsterdam</span>
+                    <span class="vacancy-meta-item"><span class="icon">??</span> Vast dienstverband</span>
+                    <span class="vacancy-meta-item"><span class="icon">?</span> Fulltime</span>
+                    <span class="vacancy-meta-item"><span class="icon">??</span> Senior</span>
                 </div>
                 <div class="vacancy-card-bottom">
-                    <span class="vacancy-salary">€5.500 - €6.800 /maand</span>
+                    <span class="vacancy-salary">�5.500 - �6.800 /maand</span>
                     <span class="vacancy-date">Geplaatst: 5 maart 2026</span>
-                    <a class="btn-apply" href="/vacature-detail?id=demo-senior-accountant">Bekijk vacature →</a>
+                    <a class="btn-apply" href="/vacature-detail?id=demo-senior-accountant">Bekijk vacature ?</a>
                 </div>
             </div>
 
@@ -915,18 +915,18 @@
                     <span class="vacancy-badge badge-new">Nieuw</span>
                 </div>
                 <div class="vacancy-description">
-                    Als Financial Controller ben je verantwoordelijk voor de maandelijkse rapportages, budgettering en financiële analyses. Je rapporteert direct aan de CFO en speelt een sleutelrol in het financiële team.
+                    Als Financial Controller ben je verantwoordelijk voor de maandelijkse rapportages, budgettering en financi�le analyses. Je rapporteert direct aan de CFO en speelt een sleutelrol in het financi�le team.
                 </div>
                 <div class="vacancy-meta">
-                    <span class="vacancy-meta-item"><span class="icon">📍</span> Rotterdam</span>
-                    <span class="vacancy-meta-item"><span class="icon">📋</span> Vast dienstverband</span>
-                    <span class="vacancy-meta-item"><span class="icon">⏰</span> Fulltime</span>
-                    <span class="vacancy-meta-item"><span class="icon">🎓</span> Medior</span>
+                    <span class="vacancy-meta-item"><span class="icon">??</span> Rotterdam</span>
+                    <span class="vacancy-meta-item"><span class="icon">??</span> Vast dienstverband</span>
+                    <span class="vacancy-meta-item"><span class="icon">?</span> Fulltime</span>
+                    <span class="vacancy-meta-item"><span class="icon">??</span> Medior</span>
                 </div>
                 <div class="vacancy-card-bottom">
-                    <span class="vacancy-salary">€4.200 - €4.800 /maand</span>
+                    <span class="vacancy-salary">�4.200 - �4.800 /maand</span>
                     <span class="vacancy-date">Geplaatst: 4 maart 2026</span>
-                    <a class="btn-apply" href="/vacature-detail?id=demo-financial-controller">Bekijk vacature →</a>
+                    <a class="btn-apply" href="/vacature-detail?id=demo-financial-controller">Bekijk vacature ?</a>
                 </div>
             </div>
 
@@ -942,15 +942,15 @@
                     Voor ons groeiende team in Utrecht zoeken wij een gedreven Belastingadviseur. Je adviseert MKB-ondernemers op het gebied van vennootschapsbelasting, inkomstenbelasting en btw.
                 </div>
                 <div class="vacancy-meta">
-                    <span class="vacancy-meta-item"><span class="icon">📍</span> Utrecht</span>
-                    <span class="vacancy-meta-item"><span class="icon">📋</span> Vast dienstverband</span>
-                    <span class="vacancy-meta-item"><span class="icon">⏰</span> Fulltime</span>
-                    <span class="vacancy-meta-item"><span class="icon">🎓</span> Medior</span>
+                    <span class="vacancy-meta-item"><span class="icon">??</span> Utrecht</span>
+                    <span class="vacancy-meta-item"><span class="icon">??</span> Vast dienstverband</span>
+                    <span class="vacancy-meta-item"><span class="icon">?</span> Fulltime</span>
+                    <span class="vacancy-meta-item"><span class="icon">??</span> Medior</span>
                 </div>
                 <div class="vacancy-card-bottom">
-                    <span class="vacancy-salary">€4.000 - €5.000 /maand</span>
+                    <span class="vacancy-salary">�4.000 - �5.000 /maand</span>
                     <span class="vacancy-date">Geplaatst: 3 maart 2026</span>
-                    <a class="btn-apply" href="/vacature-detail?id=demo-belastingadviseur">Bekijk vacature →</a>
+                    <a class="btn-apply" href="/vacature-detail?id=demo-belastingadviseur">Bekijk vacature ?</a>
                 </div>
             </div>
 
@@ -967,15 +967,15 @@
                     Voor een gerenommeerde opdrachtgever zoeken wij een ervaren Audit Manager op interim basis. Je neemt de leiding over lopende controle-opdrachten en stuurt een team van 4-6 medewerkers aan.
                 </div>
                 <div class="vacancy-meta">
-                    <span class="vacancy-meta-item"><span class="icon">📍</span> Amsterdam</span>
-                    <span class="vacancy-meta-item"><span class="icon">📋</span> ZZP / Freelance</span>
-                    <span class="vacancy-meta-item"><span class="icon">⏰</span> Flexibel</span>
-                    <span class="vacancy-meta-item"><span class="icon">🎓</span> Senior</span>
+                    <span class="vacancy-meta-item"><span class="icon">??</span> Amsterdam</span>
+                    <span class="vacancy-meta-item"><span class="icon">??</span> ZZP / Freelance</span>
+                    <span class="vacancy-meta-item"><span class="icon">?</span> Flexibel</span>
+                    <span class="vacancy-meta-item"><span class="icon">??</span> Senior</span>
                 </div>
                 <div class="vacancy-card-bottom">
-                    <span class="vacancy-salary">€85 - €110 /uur</span>
+                    <span class="vacancy-salary">�85 - �110 /uur</span>
                     <span class="vacancy-date">Geplaatst: 2 maart 2026</span>
-                    <a class="btn-apply" href="/vacature-detail?id=demo-audit-manager">Bekijk vacature →</a>
+                    <a class="btn-apply" href="/vacature-detail?id=demo-audit-manager">Bekijk vacature ?</a>
                 </div>
             </div>
 
@@ -988,18 +988,18 @@
                     </div>
                 </div>
                 <div class="vacancy-description">
-                    Een mooie startersfunctie voor pas afgestudeerden in finance. Je ondersteunt bij het opstellen van financiële rapportages en draagt bij aan projecten voor overheidsorganisaties.
+                    Een mooie startersfunctie voor pas afgestudeerden in finance. Je ondersteunt bij het opstellen van financi�le rapportages en draagt bij aan projecten voor overheidsorganisaties.
                 </div>
                 <div class="vacancy-meta">
-                    <span class="vacancy-meta-item"><span class="icon">📍</span> Den Haag</span>
-                    <span class="vacancy-meta-item"><span class="icon">📋</span> Tijdelijk contract</span>
-                    <span class="vacancy-meta-item"><span class="icon">⏰</span> Parttime</span>
-                    <span class="vacancy-meta-item"><span class="icon">🎓</span> Junior</span>
+                    <span class="vacancy-meta-item"><span class="icon">??</span> Den Haag</span>
+                    <span class="vacancy-meta-item"><span class="icon">??</span> Tijdelijk contract</span>
+                    <span class="vacancy-meta-item"><span class="icon">?</span> Parttime</span>
+                    <span class="vacancy-meta-item"><span class="icon">??</span> Junior</span>
                 </div>
                 <div class="vacancy-card-bottom">
-                    <span class="vacancy-salary">€2.800 - €3.200 /maand</span>
+                    <span class="vacancy-salary">�2.800 - �3.200 /maand</span>
                     <span class="vacancy-date">Geplaatst: 1 maart 2026</span>
-                    <a class="btn-apply" href="/vacature-detail?id=demo-junior-analyst">Bekijk vacature →</a>
+                    <a class="btn-apply" href="/vacature-detail?id=demo-junior-analyst">Bekijk vacature ?</a>
                 </div>
             </div>
 
@@ -1015,15 +1015,15 @@
                     Begeleid fusies, overnames en herstructureringen voor middelgrote bedrijven in de Brainport-regio. Je maakt waarderingen, begeleidt due diligence-trajecten en onderhoudt klantrelaties.
                 </div>
                 <div class="vacancy-meta">
-                    <span class="vacancy-meta-item"><span class="icon">📍</span> Eindhoven</span>
-                    <span class="vacancy-meta-item"><span class="icon">📋</span> Vast dienstverband</span>
-                    <span class="vacancy-meta-item"><span class="icon">⏰</span> Fulltime</span>
-                    <span class="vacancy-meta-item"><span class="icon">🎓</span> Senior</span>
+                    <span class="vacancy-meta-item"><span class="icon">??</span> Eindhoven</span>
+                    <span class="vacancy-meta-item"><span class="icon">??</span> Vast dienstverband</span>
+                    <span class="vacancy-meta-item"><span class="icon">?</span> Fulltime</span>
+                    <span class="vacancy-meta-item"><span class="icon">??</span> Senior</span>
                 </div>
                 <div class="vacancy-card-bottom">
-                    <span class="vacancy-salary">€5.000 - €6.500 /maand</span>
+                    <span class="vacancy-salary">�5.000 - �6.500 /maand</span>
                     <span class="vacancy-date">Geplaatst: 28 feb 2026</span>
-                    <a class="btn-apply" href="/vacature-detail?id=demo-corporate-finance">Bekijk vacature →</a>
+                    <a class="btn-apply" href="/vacature-detail?id=demo-corporate-finance">Bekijk vacature ?</a>
                 </div>
             </div>
 
@@ -1039,15 +1039,15 @@
                     Op detacheringsbasis aan de slag bij diverse MKB-kantoren in de regio Rotterdam. Je stelt jaarrekeningen samen, verzorgt aangiften en bent het aanspreekpunt voor een eigen klantenportefeuille.
                 </div>
                 <div class="vacancy-meta">
-                    <span class="vacancy-meta-item"><span class="icon">📍</span> Rotterdam</span>
-                    <span class="vacancy-meta-item"><span class="icon">📋</span> Detachering</span>
-                    <span class="vacancy-meta-item"><span class="icon">⏰</span> Fulltime</span>
-                    <span class="vacancy-meta-item"><span class="icon">🎓</span> Medior</span>
+                    <span class="vacancy-meta-item"><span class="icon">??</span> Rotterdam</span>
+                    <span class="vacancy-meta-item"><span class="icon">??</span> Detachering</span>
+                    <span class="vacancy-meta-item"><span class="icon">?</span> Fulltime</span>
+                    <span class="vacancy-meta-item"><span class="icon">??</span> Medior</span>
                 </div>
                 <div class="vacancy-card-bottom">
-                    <span class="vacancy-salary">€3.800 - €4.500 /maand</span>
+                    <span class="vacancy-salary">�3.800 - �4.500 /maand</span>
                     <span class="vacancy-date">Geplaatst: 26 feb 2026</span>
-                    <a class="btn-apply" href="/vacature-detail?id=demo-accountant-samenstel">Bekijk vacature →</a>
+                    <a class="btn-apply" href="/vacature-detail?id=demo-accountant-samenstel">Bekijk vacature ?</a>
                 </div>
             </div>
 
@@ -1060,18 +1060,18 @@
                     </div>
                 </div>
                 <div class="vacancy-description">
-                    Adviseer organisaties in Noord-Nederland op het gebied van financiële processen, digitalisering en rapportagestructuren. Ideaal voor consultants die impact willen maken buiten de Randstad.
+                    Adviseer organisaties in Noord-Nederland op het gebied van financi�le processen, digitalisering en rapportagestructuren. Ideaal voor consultants die impact willen maken buiten de Randstad.
                 </div>
                 <div class="vacancy-meta">
-                    <span class="vacancy-meta-item"><span class="icon">📍</span> Groningen</span>
-                    <span class="vacancy-meta-item"><span class="icon">📋</span> Interim</span>
-                    <span class="vacancy-meta-item"><span class="icon">⏰</span> Parttime</span>
-                    <span class="vacancy-meta-item"><span class="icon">🎓</span> Medior</span>
+                    <span class="vacancy-meta-item"><span class="icon">??</span> Groningen</span>
+                    <span class="vacancy-meta-item"><span class="icon">??</span> Interim</span>
+                    <span class="vacancy-meta-item"><span class="icon">?</span> Parttime</span>
+                    <span class="vacancy-meta-item"><span class="icon">??</span> Medior</span>
                 </div>
                 <div class="vacancy-card-bottom">
-                    <span class="vacancy-salary">€65 - €85 /uur</span>
+                    <span class="vacancy-salary">�65 - �85 /uur</span>
                     <span class="vacancy-date">Geplaatst: 24 feb 2026</span>
-                    <a class="btn-apply" href="/vacature-detail?id=demo-finance-consultant">Bekijk vacature →</a>
+                    <a class="btn-apply" href="/vacature-detail?id=demo-finance-consultant">Bekijk vacature ?</a>
                 </div>
             </div>
 
@@ -1123,12 +1123,17 @@
 
 <!-- Footer -->
 <footer class="footer">
-    <div class="footer-inner">
-        <span class="footer-copy">&copy; 2023 - 2026 Feen</span>
-        <div class="footer-social">
-            <a href="https://linkedin.com/company/feennl/" target="_blank" rel="noopener" aria-label="LinkedIn">in</a>
-            <a href="https://api.whatsapp.com/send?phone=31687848515" target="_blank" rel="noopener" aria-label="WhatsApp">✆</a>
-        </div>
+    <div style="display:flex;align-items:center;gap:14px">
+        <img src="https://primary.jwwb.nl/public/j/q/c/temp-bubpssuhqgoxqtzyfqhe/image-high-aunh7o.png?enable-io=true&enable=upscale&height=80" alt="Feen" style="height:28px;opacity:0.8">
+        <span class="footer-copy">&copy; 2023 &#8211; 2026 Feen. Alle rechten voorbehouden.</span>
+    </div>
+    <div class="footer-links">
+        <a href="/">Home</a>
+        <a href="/vacature">Vacatures</a>
+        <a href="/opdrachtgever">Opdrachtgever</a>
+        <a href="/contact">Contact</a>
+        <a href="https://linkedin.com/company/feennl/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://api.whatsapp.com/send?phone=31621670871" target="_blank" rel="noopener">WhatsApp</a>
     </div>
 </footer>
 
@@ -1161,7 +1166,7 @@
             values.forEach(val => {
                 const chip = document.createElement('span');
                 chip.className = 'filter-chip';
-                chip.innerHTML = val + ' <span class="remove">×</span>';
+                chip.innerHTML = val + ' <span class="remove">�</span>';
                 chip.addEventListener('click', () => {
                     // Uncheck the corresponding checkbox
                     const checkbox = document.querySelector(

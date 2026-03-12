@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="nl">
 <head>
     <!-- Google tag (gtag.js) -->
@@ -257,7 +257,7 @@
         <li><a href="/opdrachtgever" class="active">Opdrachtgever</a></li>
         <li><a href="/over-ons">Over Ons</a></li>
         <li><a href="/contact">Contact</a></li>
-        <li><a href="/blogs">Insights</a></li>
+        <li><a href="/blogs">Inzichten</a></li>
         <li><a href="/inloggen" class="auth-login">Inloggen</a></li>
         <li><a href="/mijn-sollicitaties" class="auth-portal" style="display:none">Mijn Feen</a></li>
     </ul>
@@ -267,7 +267,7 @@
 <div class="mobile-nav" id="mobileNav">
     <button class="mobile-nav-close" onclick="document.getElementById('mobileNav').classList.remove('open')" aria-label="Sluit menu">&times;</button>
     <a href="/">Home</a><a href="/vacature">Vacatures</a><a href="/opdrachtgever">Opdrachtgever</a>
-    <a href="/over-ons">Over Ons</a><a href="/contact">Contact</a><a href="/blogs">Insights</a>
+    <a href="/over-ons">Over Ons</a><a href="/contact">Contact</a><a href="/blogs">Inzichten</a>
     <a href="/inloggen" class="auth-login">Inloggen</a>
     <a href="/mijn-sollicitaties" class="auth-portal" style="display:none">Mijn Feen</a>
 </div>
@@ -291,23 +291,25 @@
 <div class="dashboard">
     <div class="dash-nav">
         <div class="dash-nav-btn active" onclick="showPanel('diensten')">
-            <span class="dash-nav-icon">🔗</span>
+            <span class="dash-nav-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></span>
             <span class="dash-nav-label">Feen Verbindt</span>
         </div>
-        <div class="dash-nav-btn" onclick="showPanel('rekentool')">
-            <span class="dash-nav-icon">🧮</span>
+        <div class="dash-nav-btn" onclick="showPanel('rekentool')" style="border:2px solid var(--accent);background:#f4ffe4">
+            <span class="dash-nav-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="10" y2="10"/><line x1="14" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="10" y2="14"/><line x1="14" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="10" y2="18"/><line x1="14" y1="18" x2="16" y2="18"/></svg></span>
             <span class="dash-nav-label">Rekentool</span>
+            <span style="display:block;font-size:0.7rem;color:var(--accent-dark);font-weight:600;margin-top:4px">→ Bereken uw besparing</span>
         </div>
-        <div class="dash-nav-btn" onclick="showPanel('checklist')">
-            <span class="dash-nav-icon">✅</span>
+        <div class="dash-nav-btn" onclick="showPanel('checklist')" style="border:2px solid var(--accent);background:#f4ffe4">
+            <span class="dash-nav-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span>
             <span class="dash-nav-label">Checklist</span>
+            <span style="display:block;font-size:0.7rem;color:var(--accent-dark);font-weight:600;margin-top:4px">→ Doe de check</span>
         </div>
         <div class="dash-nav-btn" onclick="showPanel('vacature')">
-            <span class="dash-nav-icon">🚀</span>
+            <span class="dash-nav-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg></span>
             <span class="dash-nav-label">Vacature Aanmelden</span>
         </div>
         <div class="dash-nav-btn" onclick="showPanel('intake')">
-            <span class="dash-nav-icon">📅</span>
+            <span class="dash-nav-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span>
             <span class="dash-nav-label">Intake Inplannen</span>
         </div>
     </div>
@@ -395,13 +397,14 @@
                     </div>
                 </div>
                 <div class="result-box" id="resultBox">
-                    <div class="result-label">Uw bemiddelingskosten via Feen</div>
-                    <div class="result-amount" id="resultAmount">€ 0,00</div>
+                    <div class="result-label">Uw besparing met Feen</div>
+                    <div class="result-amount" id="resultSavings" style="color:#1a5e1a">€ 0,00</div>
                     <div class="result-detail" id="resultDetail"></div>
                     <div class="result-comparison">
-                        <p>Bij een gemiddelde bemiddelaar (15-20%) betaalt u:</p>
-                        <div class="savings" id="resultComparison"></div>
-                        <p style="margin-top:8px;font-weight:800;">U bespaart met Feen: <span id="resultSavings"></span></p>
+                        <p style="margin-bottom:6px">Bij een gemiddelde bemiddelaar (15-20%) betaalt u:</p>
+                        <div class="savings" id="resultComparison" style="color:#c0392b"></div>
+                        <p style="margin-top:14px;margin-bottom:6px">Bij Feen (6%) betaalt u:</p>
+                        <div class="savings" id="resultAmount" style="color:#1a5e1a"></div>
                     </div>
                 </div>
             </div>
@@ -412,18 +415,17 @@
     <div class="panel" id="panel-checklist">
         <div class="panel-card">
             <h2>Hoe staat uw organisatie <span>ervoor?</span></h2>
-            <p class="subtitle">Beantwoord 8 korte vragen en ontdek in welke fase uw organisatie zich bevindt.</p>
+            <p class="subtitle">Beantwoord 5 korte vragen en ontdek in welke fase uw organisatie zich bevindt.</p>
 
             <div class="check-progress">
                 <div class="dot" id="cdot-1"></div><div class="dot" id="cdot-2"></div>
                 <div class="dot" id="cdot-3"></div><div class="dot" id="cdot-4"></div>
-                <div class="dot" id="cdot-5"></div><div class="dot" id="cdot-6"></div>
-                <div class="dot" id="cdot-7"></div><div class="dot" id="cdot-8"></div>
+                <div class="dot" id="cdot-5"></div>
             </div>
 
             <div class="check-question active" id="cq-1">
                 <div class="check-card">
-                    <span class="qnum">Vraag 1 van 8</span>
+                    <span class="qnum">Vraag 1 van 5</span>
                     <h4>Heeft u momenteel openstaande posities die langer dan 4 weken onvervuld zijn?</h4>
                     <div class="check-options">
                         <div class="check-option" onclick="checkAnswer(1, 3, this)">Ja, meerdere</div>
@@ -434,7 +436,7 @@
             </div>
             <div class="check-question" id="cq-2">
                 <div class="check-card">
-                    <span class="qnum">Vraag 2 van 8</span>
+                    <span class="qnum">Vraag 2 van 5</span>
                     <h4>Merkt u dat uw huidige team overbelast raakt door onderbezetting?</h4>
                     <div class="check-options">
                         <div class="check-option" onclick="checkAnswer(2, 3, this)">Ja, structureel</div>
@@ -445,7 +447,7 @@
             </div>
             <div class="check-question" id="cq-3">
                 <div class="check-card">
-                    <span class="qnum">Vraag 3 van 8</span>
+                    <span class="qnum">Vraag 3 van 5</span>
                     <h4>Worden deadlines (jaarafsluiting, aangiften) steeds lastiger gehaald?</h4>
                     <div class="check-options">
                         <div class="check-option" onclick="checkAnswer(3, 3, this)">Ja, regelmatig</div>
@@ -456,55 +458,26 @@
             </div>
             <div class="check-question" id="cq-4">
                 <div class="check-card">
-                    <span class="qnum">Vraag 4 van 8</span>
-                    <h4>Is er de afgelopen 12 maanden verloop geweest in uw financiële team?</h4>
+                    <span class="qnum">Vraag 4 van 5</span>
+                    <h4>Betaalt u momenteel meer dan 10% bemiddelingskosten voor personeel?</h4>
                     <div class="check-options">
-                        <div class="check-option" onclick="checkAnswer(4, 3, this)">Meerdere vertrokken</div>
-                        <div class="check-option" onclick="checkAnswer(4, 2, this)">Eén persoon</div>
-                        <div class="check-option" onclick="checkAnswer(4, 0, this)">Stabiel team</div>
+                        <div class="check-option" onclick="checkAnswer(4, 2, this)">Ja</div>
+                        <div class="check-option" onclick="checkAnswer(4, 1, this)">Weet ik niet</div>
+                        <div class="check-option" onclick="checkAnswer(4, 0, this)">Nee</div>
                     </div>
                 </div>
             </div>
             <div class="check-question" id="cq-5">
                 <div class="check-card">
-                    <span class="qnum">Vraag 5 van 8</span>
-                    <h4>Ziet u fouten of vertragingen toenemen in de financiële rapportages?</h4>
-                    <div class="check-options">
-                        <div class="check-option" onclick="checkAnswer(5, 3, this)">Ja, duidelijk</div>
-                        <div class="check-option" onclick="checkAnswer(5, 1, this)">Af en toe</div>
-                        <div class="check-option" onclick="checkAnswer(5, 0, this)">Nee, alles klopt</div>
-                    </div>
-                </div>
-            </div>
-            <div class="check-question" id="cq-6">
-                <div class="check-card">
-                    <span class="qnum">Vraag 6 van 8</span>
-                    <h4>Heeft u de komende 3 maanden extra capaciteit nodig (drukke periodes)?</h4>
-                    <div class="check-options">
-                        <div class="check-option" onclick="checkAnswer(6, 3, this)">Zeker weten</div>
-                        <div class="check-option" onclick="checkAnswer(6, 1, this)">Mogelijk</div>
-                        <div class="check-option" onclick="checkAnswer(6, 0, this)">Nee</div>
-                    </div>
-                </div>
-            </div>
-            <div class="check-question" id="cq-7">
-                <div class="check-card">
-                    <span class="qnum">Vraag 7 van 8</span>
-                    <h4>Betaalt u momenteel meer dan 10% bemiddelingskosten voor personeel?</h4>
-                    <div class="check-options">
-                        <div class="check-option" onclick="checkAnswer(7, 2, this)">Ja</div>
-                        <div class="check-option" onclick="checkAnswer(7, 1, this)">Weet ik niet</div>
-                        <div class="check-option" onclick="checkAnswer(7, 0, this)">Nee</div>
-                    </div>
-                </div>
-            </div>
-            <div class="check-question" id="cq-8">
-                <div class="check-card">
-                    <span class="qnum">Vraag 8 van 8</span>
+                    <span class="qnum">Vraag 5 van 5</span>
                     <h4>Vindt u het lastig om gekwalificeerde financiële professionals te vinden?</h4>
                     <div class="check-options">
-                        <div class="check-option" onclick="checkAnswer(8, 3, this)">Zeer lastig</div>
-                        <div class="check-option" onclick="checkAnswer(8, 2, this)">Kost veel tijd</div>
+                        <div class="check-option" onclick="checkAnswer(5, 3, this)">Zeer lastig</div>
+                        <div class="check-option" onclick="checkAnswer(5, 2, this)">Kost veel tijd</div>
+                        <div class="check-option" onclick="checkAnswer(5, 0, this)">Valt mee</div>
+                    </div>
+                </div>
+            </div>
                         <div class="check-option" onclick="checkAnswer(8, 0, this)">Valt mee</div>
                     </div>
                 </div>
@@ -702,13 +675,19 @@
 </script>
 
 <!-- FOOTER -->
-<footer class="footer">
-    <div class="footer-copy">&copy; 2023 – 2026 Feen. Alle rechten voorbehouden.</div>
-    <div class="footer-links">
-        <a href="/">Home</a><a href="/contact">Contact</a>
+<footer class="footer" style="flex-direction:column;gap:24px;text-align:center;padding:48px">
+    <a href="/">
+        <img src="https://primary.jwwb.nl/public/j/q/c/temp-bubpssuhqgoxqtzyfqhe/image-high-aunh7o.png?enable-io=true&enable=upscale&height=80" alt="Feen" style="height:48px;opacity:0.9;margin-bottom:8px">
+    </a>
+    <div class="footer-links" style="justify-content:center">
+        <a href="/">Home</a>
+        <a href="/vacature">Vacatures</a>
+        <a href="/contact">Contact</a>
+        <a href="/blogs">Inzichten</a>
         <a href="https://linkedin.com/company/feennl/" target="_blank" rel="noopener">LinkedIn</a>
-        <a href="https://api.whatsapp.com/send?phone=31687848515" target="_blank" rel="noopener">WhatsApp</a>
+        <a href="https://api.whatsapp.com/send?phone=31621670871" target="_blank" rel="noopener">WhatsApp</a>
     </div>
+    <div class="footer-copy">&copy; 2023 – 2026 Feen. Alle rechten voorbehouden.</div>
 </footer>
 
 <script>
@@ -749,17 +728,17 @@ function berekenKosten() {
     if (!functie || !medewerkers || !uurloon || !uren) { alert('Vul alle velden in.'); return; }
     var total = medewerkers * uurloon * uren;
     var feen = total * 0.06, markt = total * 0.175, save = markt - feen;
-    document.getElementById('resultAmount').textContent = '€ ' + feen.toLocaleString('nl-NL', {minimumFractionDigits:2,maximumFractionDigits:2});
-    document.getElementById('resultDetail').textContent = medewerkers + 'x ' + functie + ' · ' + uren + ' uur · €' + uurloon + '/uur · 6% fee';
+    document.getElementById('resultSavings').textContent = '€ ' + save.toLocaleString('nl-NL', {minimumFractionDigits:2,maximumFractionDigits:2}) + ' per maand';
+    document.getElementById('resultDetail').textContent = medewerkers + 'x ' + functie + ' · ' + uren + ' uur · €' + uurloon + '/uur';
     document.getElementById('resultComparison').textContent = '€ ' + markt.toLocaleString('nl-NL', {minimumFractionDigits:2,maximumFractionDigits:2}) + ' per maand';
-    document.getElementById('resultSavings').textContent = '€ ' + save.toLocaleString('nl-NL', {minimumFractionDigits:2,maximumFractionDigits:2}) + ' per maand!';
+    document.getElementById('resultAmount').textContent = '€ ' + feen.toLocaleString('nl-NL', {minimumFractionDigits:2,maximumFractionDigits:2}) + ' per maand';
     var box = document.getElementById('resultBox');
     box.classList.add('visible');
     box.scrollIntoView({ behavior:'smooth', block:'center' });
 }
 
 // ===== CHECKLIST =====
-var checkScores = {}, checkTotal = 8;
+var checkScores = {}, checkTotal = 5;
 function checkAnswer(q, score, el) {
     el.parentElement.querySelectorAll('.check-option').forEach(function(o) { o.classList.remove('selected'); });
     el.classList.add('selected');

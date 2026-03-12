@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="nl">
 <head>
     <!-- Google tag (gtag.js) -->
@@ -437,7 +437,7 @@
         <li><a href="/opdrachtgever">Opdrachtgever</a></li>
         <li><a href="/over-ons">Over Ons</a></li>
         <li><a href="/contact">Contact</a></li>
-        <li><a href="/blogs">Insights</a></li>
+        <li><a href="/blogs">Inzichten</a></li>
         <li><a href="/inloggen" class="auth-login">Inloggen</a></li>
         <li><a href="/mijn-sollicitaties" class="auth-portal" style="display:none">Mijn Feen</a></li>
     </ul>
@@ -453,7 +453,7 @@
     <a href="/opdrachtgever" onclick="document.getElementById('mobileNav').classList.remove('open')">Opdrachtgever</a>
     <a href="/over-ons" onclick="document.getElementById('mobileNav').classList.remove('open')">Over Ons</a>
     <a href="/contact" onclick="document.getElementById('mobileNav').classList.remove('open')">Contact</a>
-    <a href="/blogs" onclick="document.getElementById('mobileNav').classList.remove('open')">Insights</a>
+    <a href="/blogs" onclick="document.getElementById('mobileNav').classList.remove('open')">Inzichten</a>
     <a href="/inloggen" class="auth-login" onclick="document.getElementById('mobileNav').classList.remove('open')">Inloggen</a>
     <a href="/mijn-sollicitaties" class="auth-portal" style="display:none" onclick="document.getElementById('mobileNav').classList.remove('open')">Mijn Feen</a>
 </div>
@@ -507,7 +507,7 @@
 <!-- OPDRACHTGEVER SECTIE -->
 <section class="section-split">
     <div class="split-image">
-        <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=1200&q=80&fit=crop" alt="Professioneel team in overleg" loading="lazy">
+        <img src="https://images.unsplash.com/photo-1600880292089-7a1c37dbb9e2?w=1200&q=80&fit=crop" alt="Professioneel team in overleg" loading="lazy">
     </div>
     <div class="split-content">
         <div class="split-tag">Voor opdrachtgevers</div>
@@ -540,43 +540,137 @@
     </div>
 </section>
 
-<!-- BLOGS SECTIE -->
-<section class="blogs-home" style="padding:80px 48px;max-width:1200px;margin:0 auto">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:40px;flex-wrap:wrap;gap:16px">
-        <div>
-            <h2 style="font-size:2rem;font-weight:800;letter-spacing:-0.5px">Laatste <span style="color:var(--accent-dark)">inzichten</span></h2>
-            <p style="color:var(--text-muted);font-size:0.95rem;margin-top:6px">Blijf op de hoogte van de laatste ontwikkelingen in finance en accountancy.</p>
+<!-- BLOGS SECTIE - Het laatste nieuws -->
+<section style="background:#b8f470;padding:80px 48px">
+    <div style="max-width:1200px;margin:0 auto">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:40px;flex-wrap:wrap;gap:16px">
+            <h2 style="font-size:2rem;font-weight:800;letter-spacing:-0.5px;color:#1a1f3a">Het laatste nieuws</h2>
+            <div style="display:flex;align-items:center;gap:24px">
+                <a href="/blogs" style="color:#1a1f3a;font-weight:700;font-size:14px;text-decoration:none;display:flex;align-items:center;gap:6px">Bekijk al onze inzichten &rarr;</a>
+            </div>
         </div>
-        <a href="/blogs" style="background:var(--navy);color:var(--white);padding:12px 28px;border-radius:6px;font-weight:700;font-size:13px;text-decoration:none;transition:all 0.25s">Alle artikelen &rarr;</a>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px">
+            <a href="/hoge-raad-ondernemerschap-zzp" style="position:relative;border-radius:12px;overflow:hidden;min-height:420px;display:flex;flex-direction:column;justify-content:flex-end;text-decoration:none;color:#fff;transition:transform 0.3s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='none'">
+                <img src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=600&q=80&fit=crop" alt="Hoge Raad erkent ondernemerschap zzp'ers" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+                <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0.3) 50%,transparent 100%)"></div>
+                <div style="position:relative;padding:28px 24px">
+                    <span style="display:inline-block;background:rgba(184,244,112,0.25);color:#b8f470;padding:3px 10px;border-radius:4px;font-size:11px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:10px">Wet DBA</span>
+                    <h3 style="font-size:1rem;font-weight:700;line-height:1.4;margin-bottom:8px">Familiebelangen bij vastgoed: Hoge Raad over consolidatie en overdrachtsbelasting</h3>
+                    <p style="font-size:0.82rem;color:rgba(255,255,255,0.7);line-height:1.5">Ondernemerschap erkend als volwaardig criterium bij arbeidsrelaties.</p>
+                </div>
+            </a>
+            <a href="/handhaving-wet-dba-2026-zzp" style="position:relative;border-radius:12px;overflow:hidden;min-height:420px;display:flex;flex-direction:column;justify-content:flex-end;text-decoration:none;color:#fff;transition:transform 0.3s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='none'">
+                <img src="https://images.unsplash.com/photo-1556761175-b413da4baf72?w=600&q=80&fit=crop" alt="Handhaving Wet DBA 2026 zzp" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+                <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0.3) 50%,transparent 100%)"></div>
+                <div style="position:relative;padding:28px 24px">
+                    <span style="display:inline-block;background:rgba(184,244,112,0.25);color:#b8f470;padding:3px 10px;border-radius:4px;font-size:11px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:10px">Wet DBA</span>
+                    <h3 style="font-size:1rem;font-weight:700;line-height:1.4;margin-bottom:8px">Handhaving Wet DBA 2026: wat betekent dit voor jou als zzp'er?</h3>
+                    <p style="font-size:0.82rem;color:rgba(255,255,255,0.7);line-height:1.5">Geen verzuimboetes maar wel naheffingen. Zo bereid je je voor.</p>
+                </div>
+            </a>
+            <a href="/wet-dba-veelgestelde-vragen" style="position:relative;border-radius:12px;overflow:hidden;min-height:420px;display:flex;flex-direction:column;justify-content:flex-end;text-decoration:none;color:#fff;transition:transform 0.3s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='none'">
+                <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=600&q=80&fit=crop" alt="Wet DBA veelgestelde vragen" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+                <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0.3) 50%,transparent 100%)"></div>
+                <div style="position:relative;padding:28px 24px">
+                    <span style="display:inline-block;background:rgba(184,244,112,0.25);color:#b8f470;padding:3px 10px;border-radius:4px;font-size:11px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:10px">Tips</span>
+                    <h3 style="font-size:1rem;font-weight:700;line-height:1.4;margin-bottom:8px">Werknemersparticipaties: succesvol implementeren en grip houden</h3>
+                    <p style="font-size:0.82rem;color:rgba(255,255,255,0.7);line-height:1.5">Alles wat je wilt weten over de Wet DBA helder beantwoord.</p>
+                </div>
+            </a>
+            <a href="/wet-dba-schijnzelfstandigheid-inzichten-hoge-raad" style="position:relative;border-radius:12px;overflow:hidden;min-height:420px;display:flex;flex-direction:column;justify-content:flex-end;text-decoration:none;color:#fff;transition:transform 0.3s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='none'">
+                <img src="https://images.unsplash.com/photo-1560472355-536de3962603?w=600&q=80&fit=crop" alt="Wet DBA schijnzelfstandigheid" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+                <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0.3) 50%,transparent 100%)"></div>
+                <div style="position:relative;padding:28px 24px">
+                    <span style="display:inline-block;background:rgba(184,244,112,0.25);color:#b8f470;padding:3px 10px;border-radius:4px;font-size:11px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:10px">Wet DBA</span>
+                    <h3 style="font-size:1rem;font-weight:700;line-height:1.4;margin-bottom:8px">Herfinanciering van de bv: vermogen wijzigen met een recap</h3>
+                    <p style="font-size:0.82rem;color:rgba(255,255,255,0.7);line-height:1.5">De Hoge Raad biedt nieuwe inzichten over schijnzelfstandigheid.</p>
+                </div>
+            </a>
+        </div>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:28px">
-        <a href="/hoge-raad-ondernemerschap-zzp" style="background:var(--white);border-radius:12px;overflow:hidden;box-shadow:0 2px 16px rgba(0,0,0,0.05);transition:all 0.3s;text-decoration:none;color:inherit" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='none'">
-            <img src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=600&q=80&fit=crop" alt="Hoge Raad erkent ondernemerschap zzp'ers" loading="lazy" style="width:100%;height:180px;object-fit:cover;display:block">
-            <div style="padding:24px">
-                <span style="display:inline-block;background:rgba(231,76,60,0.15);color:#c0392b;padding:3px 10px;border-radius:4px;font-size:11px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:10px">Wet DBA</span>
-                <h3 style="font-size:1.05rem;font-weight:700;margin-bottom:8px;line-height:1.35">Hoge Raad erkent ondernemerschap zzp'ers: uitspraak 21 februari 2025</h3>
-                <p style="font-size:0.85rem;color:var(--text-muted);line-height:1.6;margin-bottom:12px">Ondernemerschap erkend als volwaardig criterium bij arbeidsrelaties.</p>
-                <span style="font-size:0.78rem;color:#aab0c6">12 mrt 2026 · 8 min</span>
+</section>
+
+<!-- VACATURES SECTIE -->
+<section style="background:var(--navy-deep);padding:80px 48px">
+    <div style="max-width:1200px;margin:0 auto">
+        <div style="text-align:center;margin-bottom:48px">
+            <h2 style="font-size:2rem;font-weight:800;color:#fff;margin-bottom:10px">Recente <span style="color:var(--accent)">vacatures</span></h2>
+            <p style="color:rgba(255,255,255,0.6);font-size:1rem;max-width:550px;margin:0 auto">Ontdek de nieuwste kansen in finance &amp; accountancy en solliciteer direct.</p>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-bottom:40px">
+            <a href="/vacature-detail?id=demo-senior-accountant" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:28px;text-decoration:none;color:#fff;transition:all 0.3s" onmouseover="this.style.transform='translateY(-4px)';this.style.borderColor='rgba(184,244,112,0.3)'" onmouseout="this.style.transform='none';this.style.borderColor='rgba(255,255,255,0.1)'">
+                <span style="display:inline-block;background:rgba(184,244,112,0.2);color:#b8f470;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;margin-bottom:14px">Nieuw</span>
+                <h3 style="font-size:1.15rem;font-weight:700;margin-bottom:6px">Senior Accountant</h3>
+                <p style="font-size:0.88rem;color:#b8f470;font-weight:600;margin-bottom:12px">Big 4 kantoor</p>
+                <div style="display:flex;gap:16px;font-size:0.8rem;color:rgba(255,255,255,0.5);flex-wrap:wrap">
+                    <span>📍 Amsterdam</span><span>📋 Vast</span><span>💰 €5.500 - €6.800</span>
+                </div>
+            </a>
+            <a href="/vacature-detail?id=demo-financial-controller" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:28px;text-decoration:none;color:#fff;transition:all 0.3s" onmouseover="this.style.transform='translateY(-4px)';this.style.borderColor='rgba(184,244,112,0.3)'" onmouseout="this.style.transform='none';this.style.borderColor='rgba(255,255,255,0.1)'">
+                <span style="display:inline-block;background:rgba(184,244,112,0.2);color:#b8f470;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;margin-bottom:14px">Nieuw</span>
+                <h3 style="font-size:1.15rem;font-weight:700;margin-bottom:6px">Financial Controller</h3>
+                <p style="font-size:0.88rem;color:#b8f470;font-weight:600;margin-bottom:12px">Internationaal bedrijf</p>
+                <div style="display:flex;gap:16px;font-size:0.8rem;color:rgba(255,255,255,0.5);flex-wrap:wrap">
+                    <span>📍 Rotterdam</span><span>📋 Vast</span><span>💰 €4.200 - €5.500</span>
+                </div>
+            </a>
+            <a href="/vacature-detail?id=demo-belastingadviseur" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:28px;text-decoration:none;color:#fff;transition:all 0.3s" onmouseover="this.style.transform='translateY(-4px)';this.style.borderColor='rgba(184,244,112,0.3)'" onmouseout="this.style.transform='none';this.style.borderColor='rgba(255,255,255,0.1)'">
+                <span style="display:inline-block;background:rgba(184,244,112,0.2);color:#b8f470;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;margin-bottom:14px">Nieuw</span>
+                <h3 style="font-size:1.15rem;font-weight:700;margin-bottom:6px">Belastingadviseur</h3>
+                <p style="font-size:0.88rem;color:#b8f470;font-weight:600;margin-bottom:12px">Middelgroot kantoor</p>
+                <div style="display:flex;gap:16px;font-size:0.8rem;color:rgba(255,255,255,0.5);flex-wrap:wrap">
+                    <span>📍 Utrecht</span><span>📋 Vast</span><span>💰 €4.000 - €5.200</span>
+                </div>
+            </a>
+        </div>
+        <div style="text-align:center">
+            <a href="/vacature" style="display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:var(--navy);padding:16px 36px;border-radius:8px;font-weight:700;font-size:15px;text-decoration:none;transition:all 0.25s">Bekijk alle vacatures &rarr;</a>
+        </div>
+    </div>
+</section>
+
+<!-- REVIEWS SECTIE -->
+<section style="background:var(--white);padding:80px 48px">
+    <div style="max-width:1200px;margin:0 auto">
+        <div style="text-align:center;margin-bottom:48px">
+            <h2 style="font-size:2rem;font-weight:800;color:var(--navy);margin-bottom:10px">Wat professionals <span style="color:var(--accent-dark)">over ons zeggen</span></h2>
+            <p style="color:var(--text-muted);font-size:1rem;max-width:550px;margin:0 auto">Ontdek hoe Feen professionals heeft geholpen bij het vinden van hun ideale opdracht.</p>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:28px">
+            <div style="background:var(--off-white);border-radius:14px;padding:32px;border:1px solid #e4e7ee">
+                <div style="display:flex;gap:4px;margin-bottom:16px;font-size:1.1rem">⭐⭐⭐⭐⭐</div>
+                <p style="color:var(--text);font-size:0.95rem;line-height:1.7;margin-bottom:20px;font-style:italic">"Via Feen heb ik binnen twee weken een geweldige opdracht gevonden als Financial Controller. Het persoonlijke contact en de snelheid waarmee alles werd geregeld, was indrukwekkend. En de lage fee maakt het extra aantrekkelijk."</p>
+                <div style="display:flex;align-items:center;gap:12px">
+                    <div style="width:44px;height:44px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--navy);font-size:16px">MV</div>
+                    <div>
+                        <div style="font-weight:700;font-size:0.9rem;color:var(--navy)">Mark V.</div>
+                        <div style="font-size:0.8rem;color:var(--text-muted)">Financial Controller · Amsterdam</div>
+                    </div>
+                </div>
             </div>
-        </a>
-        <a href="/handhaving-wet-dba-2026-zzp" style="background:var(--white);border-radius:12px;overflow:hidden;box-shadow:0 2px 16px rgba(0,0,0,0.05);transition:all 0.3s;text-decoration:none;color:inherit" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='none'">
-            <img src="https://images.unsplash.com/photo-1450101499163-c8848e968bc7?w=600&q=80&fit=crop" alt="Handhaving Wet DBA 2026 zzp" loading="lazy" style="width:100%;height:180px;object-fit:cover;display:block">
-            <div style="padding:24px">
-                <span style="display:inline-block;background:rgba(231,76,60,0.15);color:#c0392b;padding:3px 10px;border-radius:4px;font-size:11px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:10px">Wet DBA</span>
-                <h3 style="font-size:1.05rem;font-weight:700;margin-bottom:8px;line-height:1.35">Handhaving Wet DBA 2026: wat betekent dit voor jou als zzp'er?</h3>
-                <p style="font-size:0.85rem;color:var(--text-muted);line-height:1.6;margin-bottom:12px">Geen verzuimboetes maar wel naheffingen. Zo bereid je je voor.</p>
-                <span style="font-size:0.78rem;color:#aab0c6">4 mrt 2026 · 8 min</span>
+            <div style="background:var(--off-white);border-radius:14px;padding:32px;border:1px solid #e4e7ee">
+                <div style="display:flex;gap:4px;margin-bottom:16px;font-size:1.1rem">⭐⭐⭐⭐⭐</div>
+                <p style="color:var(--text);font-size:0.95rem;line-height:1.7;margin-bottom:20px;font-style:italic">"Na jaren bij dezelfde werkgever wilde ik als zzp'er aan de slag. Feen begreep precies wat ik zocht en koppelde me aan een opdrachtgever die perfect bij mijn profiel paste. De begeleiding was uitstekend van begin tot eind."</p>
+                <div style="display:flex;align-items:center;gap:12px">
+                    <div style="width:44px;height:44px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--navy);font-size:16px">SB</div>
+                    <div>
+                        <div style="font-weight:700;font-size:0.9rem;color:var(--navy)">Sophie B.</div>
+                        <div style="font-size:0.8rem;color:var(--text-muted)">Senior Accountant · Rotterdam</div>
+                    </div>
+                </div>
             </div>
-        </a>
-        <a href="/wet-dba-veelgestelde-vragen" style="background:var(--white);border-radius:12px;overflow:hidden;box-shadow:0 2px 16px rgba(0,0,0,0.05);transition:all 0.3s;text-decoration:none;color:inherit" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='none'">
-            <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=600&q=80&fit=crop" alt="Wet DBA veelgestelde vragen" loading="lazy" style="width:100%;height:180px;object-fit:cover;display:block">
-            <div style="padding:24px">
-                <span style="display:inline-block;background:rgba(184,244,112,0.2);color:var(--accent-dark);padding:3px 10px;border-radius:4px;font-size:11px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:10px">Tips</span>
-                <h3 style="font-size:1.05rem;font-weight:700;margin-bottom:8px;line-height:1.35">Wet DBA en schijnzelfstandigheid: veelgestelde vragen beantwoord</h3>
-                <p style="font-size:0.85rem;color:var(--text-muted);line-height:1.6;margin-bottom:12px">Alles wat je wilt weten over de Wet DBA helder beantwoord.</p>
-                <span style="font-size:0.78rem;color:#aab0c6">20 feb 2026 · 10 min</span>
+            <div style="background:var(--off-white);border-radius:14px;padding:32px;border:1px solid #e4e7ee">
+                <div style="display:flex;gap:4px;margin-bottom:16px;font-size:1.1rem">⭐⭐⭐⭐⭐</div>
+                <p style="color:var(--text);font-size:0.95rem;line-height:1.7;margin-bottom:20px;font-style:italic">"Wat mij opviel aan Feen is de transparantie. Geen verborgen kosten, snel geschakeld en altijd bereikbaar. Binnen 48 uur had ik al een gesprek bij de opdrachtgever. Ik raad Feen aan iedereen aan die serieus op zoek is."</p>
+                <div style="display:flex;align-items:center;gap:12px">
+                    <div style="width:44px;height:44px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--navy);font-size:16px">JD</div>
+                    <div>
+                        <div style="font-weight:700;font-size:0.9rem;color:var(--navy)">Jamal D.</div>
+                        <div style="font-size:0.8rem;color:var(--text-muted)">Belastingadviseur · Den Haag</div>
+                    </div>
+                </div>
             </div>
-        </a>
+        </div>
     </div>
 </section>
 
@@ -588,7 +682,7 @@
     </div>
     <div class="contact-strip-actions">
         <a href="/vacature" class="btn-primary">Bekijk vacatures <span class="arrow">&rarr;</span></a>
-        <a href="tel:+31687848515" class="btn-outline">Bel +31 6 87848515</a>
+        <a href="tel:+31621670871" class="btn-outline">Bel 06 21 67 08 71</a>
     </div>
 </section>
 
@@ -617,7 +711,7 @@
   "description": "De eerlijkste bemiddelaar voor professionals in finance & accountancy. De laagste fees van Nederland.",
   "contactPoint": {
     "@type": "ContactPoint",
-    "telephone": "+31687848515",
+    "telephone": "+31621670871",
     "contactType": "customer service",
     "availableLanguage": "Dutch"
   },
@@ -642,14 +736,20 @@
 </script>
 
 <!-- FOOTER -->
-<footer class="footer">
-    <div class="footer-copy">&copy; 2023 – 2026 Feen. Alle rechten voorbehouden.</div>
-    <div class="footer-links">
+<footer class="footer" style="flex-direction:column;gap:24px;text-align:center;padding:48px">
+    <a href="/">
+        <img src="https://primary.jwwb.nl/public/j/q/c/temp-bubpssuhqgoxqtzyfqhe/image-high-aunh7o.png?enable-io=true&enable=upscale&height=80" alt="Feen" style="height:48px;opacity:0.9;margin-bottom:8px">
+    </a>
+    <div class="footer-links" style="justify-content:center">
         <a href="/over-ons">Over Ons</a>
+        <a href="/vacature">Vacatures</a>
+        <a href="/opdrachtgever">Opdrachtgever</a>
         <a href="/contact">Contact</a>
+        <a href="/blogs">Inzichten</a>
         <a href="https://linkedin.com/company/feennl/" target="_blank" rel="noopener">LinkedIn</a>
-        <a href="https://api.whatsapp.com/send?phone=31687848515" target="_blank" rel="noopener">WhatsApp</a>
+        <a href="https://api.whatsapp.com/send?phone=31621670871" target="_blank" rel="noopener">WhatsApp</a>
     </div>
+    <div class="footer-copy">&copy; 2023 – 2026 Feen. Alle rechten voorbehouden.</div>
 </footer>
 
 <script>

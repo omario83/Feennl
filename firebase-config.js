@@ -18,6 +18,7 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db   = firebase.firestore();
+const storage = typeof firebase.storage === 'function' ? firebase.storage() : null;
 
 // ============================================================
 // AUTH STATE HELPER — update nav op alle pagina's
