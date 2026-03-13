@@ -10,7 +10,7 @@
       gtag('config', 'G-DVPJM8XPXK');
     </script>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Vacature — Feen</title>
     <meta name="description" content="Bekijk de volledige vacature bij Feen.">
     <meta property="og:title" content="Vacature — Feen">
@@ -41,7 +41,7 @@
             --success: #27ae60;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
+        html { scroll-behavior: smooth; overflow-x: hidden; max-width: 100vw; }
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             color: var(--text);
@@ -339,12 +339,26 @@
 // Haal vacature ID uit URL (?id=xxx)
 const params = new URLSearchParams(window.location.search);
 const vacId = params.get('id');
+var cachedVacData = null;
+var cachedVacId = null;
 
-if (!vacId) {
-    showNotFound();
-} else {
-    loadVacature(vacId);
-}
+// Wait for auth state to be resolved before loading
+auth.onAuthStateChanged(function() {
+    if (!vacId) {
+        showNotFound();
+    } else if (!cachedVacData) {
+        loadVacature(vacId);
+    } else {
+        // Auth state changed after initial load, rebuild sidebar
+        var container = document.getElementById('detailContainer');
+        var sidebar = container.querySelector('.detail-sidebar');
+        if (sidebar) {
+            var tmp = document.createElement('div');
+            tmp.innerHTML = buildSidebar(cachedVacData, cachedVacId);
+            sidebar.replaceWith(tmp.firstChild);
+        }
+    }
+});
 
 async function loadVacature(id) {
     try {
@@ -355,6 +369,8 @@ async function loadVacature(id) {
         }
 
         const v = doc.data();
+        cachedVacData = v;
+        cachedVacId = id;
         document.title = v.functie + ' — Feen';
         document.getElementById('breadcrumbTitle').textContent = v.functie;
         document.getElementById('loadingState').style.display = 'none';
@@ -390,6 +406,19 @@ function buildMain(v, id) {
 }
 
 function buildSidebar(v, id) {
+    var user = auth.currentUser;
+    var solliciteerHtml = '';
+    if (user && user.emailVerified) {
+        solliciteerHtml = '<div id="solliciteerForm">'
+            + '<button class="btn-solliciteer" onclick="solliciteer(\'' + id + '\')">Solliciteer direct →</button>'
+            + '</div>';
+    } else {
+        solliciteerHtml = '<div id="solliciteerForm">'
+            + '<p style="text-align:center;color:var(--text-muted);font-size:0.9rem;margin-bottom:14px">Je moet ingelogd zijn om te solliciteren</p>'
+            + '<a href="/inloggen?redirect=' + encodeURIComponent(window.location.pathname + window.location.search) + '" class="btn-solliciteer" style="display:block;text-align:center;text-decoration:none">Inloggen om te solliciteren →</a>'
+            + '</div>';
+    }
+
     return '<div class="detail-sidebar">'
         // Overzicht card
         + '<div class="sidebar-card">'
@@ -404,10 +433,7 @@ function buildSidebar(v, id) {
         + '</div>'
         // Solliciteer card
         + '<div class="sidebar-card">'
-        + '<div id="solliciteerForm">'
-        + '<button class="btn-solliciteer" onclick="solliciteer(\'' + id + '\')">Solliciteer direct →</button>'
-        + '<p style="text-align:center;color:var(--text-muted);font-size:0.8rem;margin-top:10px;">Je moet ingelogd zijn om te solliciteren</p>'
-        + '</div>'
+        + solliciteerHtml
         + '<div class="solliciteer-success" id="solliciteerSuccess">'
         + '<div class="icon">🎉</div>'
         + '<p><strong>Sollicitatie verstuurd!</strong><br>Je kunt de status volgen via <a href="/mijn-sollicitaties">Mijn Feen</a>.</p>'

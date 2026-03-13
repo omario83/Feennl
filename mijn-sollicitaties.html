@@ -10,7 +10,7 @@
       gtag('config', 'G-DVPJM8XPXK');
     </script>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Mijn Sollicitaties — Feen</title>
     <meta name="description" content="Volg je sollicitaties in real-time bij Feen.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,11 +18,11 @@
     <style>
         :root {
             --navy: #1a1f3a;
-            --navy-deep: #12152a;
-            --accent: #b8f470;
-            --accent-dark: #9ad45a;
+            --navy-deep: #0f1628;
+            --accent: #70c4f4;
+            --accent-dark: #4ba8e0;
             --white: #ffffff;
-            --off-white: #f8f9fb;
+            --off-white: #f0f4f8;
             --text: #1a1f3a;
             --text-muted: #6b7194;
             --border: #e2e5f0;
@@ -32,7 +32,7 @@
             --info: #3498db;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
+        html { scroll-behavior: smooth; overflow-x: hidden; max-width: 100vw; }
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             color: var(--text);
@@ -43,11 +43,12 @@
 
         /* NAV */
         .nav {
-            background: var(--navy-deep);
+            background: linear-gradient(135deg, #0f1628, #1a2340);
             padding: 0 48px; height: 72px;
             display: flex; align-items: center; justify-content: space-between;
             position: sticky; top: 0; z-index: 1000;
-            box-shadow: 0 2px 24px rgba(0,0,0,0.15);
+            box-shadow: 0 2px 24px rgba(0,0,0,0.2);
+            border-bottom: 2px solid var(--accent);
         }
         .nav-logo { height: 32px; opacity: 0.9; }
         .nav-links { display: flex; gap: 32px; list-style: none; align-items: center; }
@@ -441,10 +442,7 @@
 <nav class="nav">
     <a href="/"><img src="https://primary.jwwb.nl/public/j/q/c/temp-bubpssuhqgoxqtzyfqhe/image-high-aunh7o.png?enable-io=true&enable=upscale&height=64" alt="Feen" class="nav-logo"></a>
     <ul class="nav-links" id="navLinks" style="display:none">
-        <li><a href="/vacature">Vacatures</a></li>
         <li><a href="/mijn-sollicitaties" class="active">Mijn Feen</a></li>
-        <li><a href="/over-ons">Over Ons</a></li>
-        <li><a href="/blogs">Inzichten</a></li>
     </ul>
     <div class="nav-user" id="navUser" style="display:none">
         <div class="nav-user-avatar" id="navAvatar"></div>
@@ -455,8 +453,7 @@
 </nav>
 <div class="mobile-nav" id="mobileNav">
     <button class="mobile-nav-close" onclick="document.getElementById('mobileNav').classList.remove('open')" aria-label="Sluit menu">&times;</button>
-    <a href="/">Home</a><a href="/vacature" class="auth-nav-link" style="display:none">Vacatures</a><a href="/mijn-sollicitaties" class="auth-nav-link" style="display:none">Mijn Feen</a>
-    <a href="/over-ons" class="auth-nav-link" style="display:none">Over Ons</a><a href="/blogs" class="auth-nav-link" style="display:none">Inzichten</a>
+    <a href="/">Home</a><a href="/mijn-sollicitaties" class="auth-nav-link" style="display:none">Mijn Feen</a>
     <a href="#" class="auth-nav-link" style="display:none" onclick="feenLogout(); return false;">Uitloggen</a>
 </div>
 
@@ -638,6 +635,12 @@
                         <div class="cv-filename" id="cvFileName" style="display:none"></div>
                     </div>
                     <input type="file" id="cvFileInput" accept=".pdf,.doc,.docx" style="display:none" onchange="handleCvSelect(this)">
+                    <div id="cvExisting" style="display:none;margin-top:12px;padding:12px 16px;background:#f0f4f8;border-radius:8px;display:flex;align-items:center;gap:12px">
+                        <span style="font-size:1.2rem">📄</span>
+                        <span id="cvExistingName" style="font-weight:600;font-size:0.9rem;flex:1"></span>
+                        <a id="cvDownloadLink" href="#" target="_blank" rel="noopener" style="background:var(--accent);color:var(--navy);padding:6px 16px;border-radius:6px;font-weight:700;font-size:0.82rem;text-decoration:none">Downloaden</a>
+                    </div>
+                    <p id="cvUploadHint" style="display:none;margin-top:8px;font-size:0.82rem;color:var(--accent-dark);font-weight:600">⬆ Klik op "Profiel opslaan" om je CV te uploaden</p>
                 </div>
 
                 <!-- SAVE -->
@@ -822,6 +825,7 @@ function handleCvSelect(input) {
     const nameEl = document.getElementById('cvFileName');
     nameEl.textContent = '📄 ' + file.name;
     nameEl.style.display = 'block';
+    document.getElementById('cvUploadHint').style.display = 'block';
 }
 
 // Drag & drop support
@@ -857,6 +861,11 @@ async function loadProfile(uid) {
                 document.getElementById('cvFileName').textContent = '📄 ' + d.cvNaam;
                 document.getElementById('cvFileName').style.display = 'block';
                 document.getElementById('cvUploadZone').classList.add('has-file');
+                if (d.cvUrl) {
+                    document.getElementById('cvExistingName').textContent = d.cvNaam;
+                    document.getElementById('cvDownloadLink').href = d.cvUrl;
+                    document.getElementById('cvExisting').style.display = 'flex';
+                }
             }
         }
     } catch (e) {
@@ -887,13 +896,25 @@ async function saveProfile() {
         };
 
         // Upload CV if selected
-        if (selectedCvFile && storage) {
+        if (selectedCvFile) {
+            if (!storage) {
+                alert('CV uploaden is momenteel niet beschikbaar. Neem contact op met Feen.');
+                btn.disabled = false;
+                btn.textContent = 'Profiel opslaan';
+                return;
+            }
+            btn.textContent = 'CV uploaden...';
             const ext = selectedCvFile.name.split('.').pop();
             const safeFilename = currentUser.uid + '_cv.' + ext;
             const ref = storage.ref('cv/' + safeFilename);
             await ref.put(selectedCvFile);
             profileData.cvUrl = await ref.getDownloadURL();
             profileData.cvNaam = selectedCvFile.name;
+            // Update UI
+            document.getElementById('cvExistingName').textContent = selectedCvFile.name;
+            document.getElementById('cvDownloadLink').href = profileData.cvUrl;
+            document.getElementById('cvExisting').style.display = 'flex';
+            document.getElementById('cvUploadHint').style.display = 'none';
             selectedCvFile = null;
         }
 
