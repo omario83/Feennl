@@ -512,6 +512,8 @@ async function solliciteer(vacatureId) {
             userId: user.uid,
             naam: naam,
             email: user.email,
+            cvUrl: userData.cvUrl || '',
+            cvNaam: userData.cvNaam || '',
             fase: 1,
             aangemaakt: firebase.firestore.FieldValue.serverTimestamp()
         });

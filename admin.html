@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="nl">
 <head>
     <!-- Google tag (gtag.js) -->
@@ -11,7 +11,7 @@
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Backoffice â€” Feen Admin</title>
+    <title>Backoffice — Feen Admin</title>
     <meta name="robots" content="noindex, nofollow">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -481,11 +481,11 @@ html { overflow-x: hidden; max-width: 100vw; }
 <div class="admin-layout">
     <!-- SIDEBAR -->
     <aside class="sidebar">
-        <button class="sidebar-link active" onclick="showAdminPanel('dashboard', this)">ðŸ“Š Dashboard</button>
-        <button class="sidebar-link" onclick="showAdminPanel('aanvragen', this)">ðŸ“‹ Vacature-aanvragen <span class="badge" id="aanvragenBadge">0</span></button>
-        <button class="sidebar-link" onclick="showAdminPanel('vacatures', this)">ðŸ“‚ Vacatures beheren</button>
-        <button class="sidebar-link" onclick="showAdminPanel('reacties', this)">ðŸ‘¥ Kandidaat-reacties <span class="badge" id="reactiesBadge">0</span></button>
-        <button class="sidebar-link" onclick="showAdminPanel('gebruikers', this)">ðŸ§‘ Gebruikers</button>
+        <button class="sidebar-link active" onclick="showAdminPanel('dashboard', this)">📊 Dashboard</button>
+        <button class="sidebar-link" onclick="showAdminPanel('aanvragen', this)">📋 Vacature-aanvragen <span class="badge" id="aanvragenBadge">0</span></button>
+        <button class="sidebar-link" onclick="showAdminPanel('vacatures', this)">📂 Vacatures beheren</button>
+        <button class="sidebar-link" onclick="showAdminPanel('reacties', this)">👥 Kandidaat-reacties <span class="badge" id="reactiesBadge">0</span></button>
+        <button class="sidebar-link" onclick="showAdminPanel('gebruikers', this)">🧑 Gebruikers</button>
     </aside>
 
     <!-- MAIN -->
@@ -495,24 +495,24 @@ html { overflow-x: hidden; max-width: 100vw; }
         <div class="admin-panel active" id="panel-dashboard">
             <div class="section-header">
                 <h2>Dashboard</h2>
-                <button class="btn-seed" id="seedBtn" onclick="seedDemoVacatures()">ðŸŒ± Demo vacatures laden</button>
+                <button class="btn-seed" id="seedBtn" onclick="seedDemoVacatures()">🌱 Demo vacatures laden</button>
             </div>
             <div class="stats-grid">
                 <div class="stat-box">
                     <div class="stat-label">Vacature-aanvragen</div>
-                    <div class="stat-value" id="statAanvragen">â€”</div>
+                    <div class="stat-value" id="statAanvragen">—</div>
                 </div>
                 <div class="stat-box">
                     <div class="stat-label">Actieve vacatures</div>
-                    <div class="stat-value" id="statVacatures">â€”</div>
+                    <div class="stat-value" id="statVacatures">—</div>
                 </div>
                 <div class="stat-box">
                     <div class="stat-label">Kandidaat-reacties</div>
-                    <div class="stat-value" id="statReacties">â€”</div>
+                    <div class="stat-value" id="statReacties">—</div>
                 </div>
                 <div class="stat-box">
                     <div class="stat-label">Geregistreerde gebruikers</div>
-                    <div class="stat-value" id="statGebruikers">â€”</div>
+                    <div class="stat-value" id="statGebruikers">—</div>
                 </div>
             </div>
             <div class="table-card">
@@ -651,26 +651,26 @@ html { overflow-x: hidden; max-width: 100vw; }
                 <div><label style="font-size:0.82rem;font-weight:600;display:block;margin-bottom:4px;">Uren</label><select id="nv-uren" style="width:100%;padding:10px;border:1px solid var(--border);border-radius:6px;font-family:inherit;"><option>Fulltime</option><option>Parttime</option><option>Flexibel</option></select></div>
                 <div><label style="font-size:0.82rem;font-weight:600;display:block;margin-bottom:4px;">Ervaring</label><select id="nv-ervaring" style="width:100%;padding:10px;border:1px solid var(--border);border-radius:6px;font-family:inherit;"><option>Junior</option><option>Medior</option><option>Senior</option></select></div>
                 <div><label style="font-size:0.82rem;font-weight:600;display:block;margin-bottom:4px;">Duur</label><input id="nv-duur" placeholder="Bijv. 6 maanden" style="width:100%;padding:10px;border:1px solid var(--border);border-radius:6px;font-family:inherit;"></div>
-                <div><label style="font-size:0.82rem;font-weight:600;display:block;margin-bottom:4px;">Salaris</label><input id="nv-salaris" placeholder="Bijv. â‚¬4.000 - â‚¬5.000 /maand" style="width:100%;padding:10px;border:1px solid var(--border);border-radius:6px;font-family:inherit;"></div>
+                <div><label style="font-size:0.82rem;font-weight:600;display:block;margin-bottom:4px;">Salaris</label><input id="nv-salaris" placeholder="Bijv. €4.000 - €5.000 /maand" style="width:100%;padding:10px;border:1px solid var(--border);border-radius:6px;font-family:inherit;"></div>
             </div>
             <div style="margin-top:12px;">
                 <label style="font-size:0.82rem;font-weight:600;display:block;margin-bottom:4px;">Omschrijving</label>
                 <textarea id="nv-omschrijving" rows="3" style="width:100%;padding:10px;border:1px solid var(--border);border-radius:6px;font-family:inherit;resize:vertical;"></textarea>
             </div>
             <div style="margin-top:12px;">
-                <label style="font-size:0.82rem;font-weight:600;display:block;margin-bottom:4px;">Werkzaamheden (Ã©Ã©n per regel)</label>
+                <label style="font-size:0.82rem;font-weight:600;display:block;margin-bottom:4px;">Werkzaamheden (één per regel)</label>
                 <textarea id="nv-werkzaamheden" rows="3" placeholder="Eerste werkzaamheid&#10;Tweede werkzaamheid" style="width:100%;padding:10px;border:1px solid var(--border);border-radius:6px;font-family:inherit;resize:vertical;"></textarea>
             </div>
             <div style="margin-top:12px;">
-                <label style="font-size:0.82rem;font-weight:600;display:block;margin-bottom:4px;">Minimale vereisten (Ã©Ã©n per regel)</label>
+                <label style="font-size:0.82rem;font-weight:600;display:block;margin-bottom:4px;">Minimale vereisten (één per regel)</label>
                 <textarea id="nv-vereisten" rows="3" placeholder="WO/HBO Accountancy&#10;RA-titel" style="width:100%;padding:10px;border:1px solid var(--border);border-radius:6px;font-family:inherit;resize:vertical;"></textarea>
             </div>
             <div style="margin-top:12px;">
-                <label style="font-size:0.82rem;font-weight:600;display:block;margin-bottom:4px;">Wensen / nice-to-have (Ã©Ã©n per regel)</label>
+                <label style="font-size:0.82rem;font-weight:600;display:block;margin-bottom:4px;">Wensen / nice-to-have (één per regel)</label>
                 <textarea id="nv-wensen" rows="2" style="width:100%;padding:10px;border:1px solid var(--border);border-radius:6px;font-family:inherit;resize:vertical;"></textarea>
             </div>
             <div style="margin-top:12px;">
-                <label style="font-size:0.82rem;font-weight:600;display:block;margin-bottom:4px;">Wat biedt de werkgever? (Ã©Ã©n per regel)</label>
+                <label style="font-size:0.82rem;font-weight:600;display:block;margin-bottom:4px;">Wat biedt de werkgever? (één per regel)</label>
                 <textarea id="nv-aanbod" rows="3" placeholder="Marktconform salaris&#10;30 vakantiedagen&#10;Pensioenregeling" style="width:100%;padding:10px;border:1px solid var(--border);border-radius:6px;font-family:inherit;resize:vertical;"></textarea>
             </div>
             <button type="submit" id="nv-submit" style="margin-top:20px;width:100%;padding:14px;background:var(--accent);color:var(--navy);border:none;border-radius:8px;font-size:1rem;font-weight:700;font-family:inherit;cursor:pointer;">Vacature publiceren</button>
@@ -684,8 +684,8 @@ html { overflow-x: hidden; max-width: 100vw; }
         <div class="kk-header">
             <div class="kk-avatar" id="kkAvatar">?</div>
             <div class="kk-info">
-                <h3 id="kkNaam">â€”</h3>
-                <p id="kkSubtitle">â€”</p>
+                <h3 id="kkNaam">—</h3>
+                <p id="kkSubtitle">—</p>
             </div>
             <button class="kk-close" onclick="closeKlantenkaart()">&times;</button>
         </div>
@@ -805,7 +805,7 @@ async function seedDemoVacatures() {
             uren: 'Fulltime',
             ervaring: 'Senior',
             duur: 'Onbepaalde tijd',
-            salaris: 'â‚¬5.500 - â‚¬6.800 /maand',
+            salaris: '€5.500 - €6.800 /maand',
             badge: 'new', badgeText: 'Nieuw',
             omschrijving: 'Wij zoeken een ervaren Senior Accountant die verantwoordelijk wordt voor het leiden van auditteams en het opbouwen van klantrelaties. Je werkt aan diverse opdrachten voor middelgrote en grote ondernemingen binnen uiteenlopende sectoren. Je krijgt de ruimte om je verder te ontwikkelen richting managerniveau.',
             werkzaamheden: [
@@ -830,10 +830,10 @@ async function seedDemoVacatures() {
                 'Affiniteit met ESG-rapportage'
             ],
             aanbod: [
-                'Marktconform salaris â‚¬5.500 - â‚¬6.800 bruto per maand',
+                'Marktconform salaris €5.500 - €6.800 bruto per maand',
                 '30 vakantiedagen',
                 'Uitstekende pensioenregeling',
-                'Opleidingsbudget van â‚¬3.000 per jaar',
+                'Opleidingsbudget van €3.000 per jaar',
                 'Flexibel werken (hybride model)',
                 'Lease-auto regeling',
                 'Jaarlijkse winstdeling'
@@ -848,16 +848,16 @@ async function seedDemoVacatures() {
             uren: 'Fulltime',
             ervaring: 'Medior',
             duur: 'Onbepaalde tijd',
-            salaris: 'â‚¬4.200 - â‚¬4.800 /maand',
+            salaris: '€4.200 - €4.800 /maand',
             badge: 'new', badgeText: 'Nieuw',
-            omschrijving: 'Als Financial Controller ben je de rechterhand van de CFO bij dit snelgroeiende techbedrijf. Je bent verantwoordelijk voor de maandafsluitingen, budgettering en financiÃ«le analyses die het management helpen bij strategische beslissingen. Een dynamische rol in een ambitieuze omgeving.',
+            omschrijving: 'Als Financial Controller ben je de rechterhand van de CFO bij dit snelgroeiende techbedrijf. Je bent verantwoordelijk voor de maandafsluitingen, budgettering en financiële analyses die het management helpen bij strategische beslissingen. Een dynamische rol in een ambitieuze omgeving.',
             werkzaamheden: [
                 'Verantwoordelijk voor maand-, kwartaal- en jaarafsluitingen',
                 'Opstellen van managementrapportages en dashboards',
                 'Budgettering, forecasting en variance analyses',
-                'Verbeteren van financiÃ«le processen en interne controls',
+                'Verbeteren van financiële processen en interne controls',
                 'Samenwerken met de externe accountant',
-                'Adviseren van het managementteam op basis van financiÃ«le data'
+                'Adviseren van het managementteam op basis van financiële data'
             ],
             vereisten: [
                 'HBO/WO Finance, Accounting of Bedrijfseconomie',
@@ -872,7 +872,7 @@ async function seedDemoVacatures() {
                 'RC-titel of in opleiding'
             ],
             aanbod: [
-                'Salaris â‚¬4.200 - â‚¬4.800 bruto per maand',
+                'Salaris €4.200 - €4.800 bruto per maand',
                 '27 vakantiedagen + 5 ADV-dagen',
                 'Pensioenregeling',
                 'Thuiswerkvergoeding',
@@ -890,7 +890,7 @@ async function seedDemoVacatures() {
             uren: 'Fulltime',
             ervaring: 'Medior',
             duur: 'Onbepaalde tijd',
-            salaris: 'â‚¬4.000 - â‚¬5.000 /maand',
+            salaris: '€4.000 - €5.000 /maand',
             omschrijving: 'Voor ons groeiende team in Utrecht zoeken wij een gedreven Belastingadviseur. Je adviseert MKB-ondernemers op het gebied van vennootschapsbelasting, inkomstenbelasting en btw. Je werkt in een hecht team met veel ruimte voor eigen initiatief en ontwikkeling.',
             werkzaamheden: [
                 'Adviseren van MKB-ondernemers over fiscale vraagstukken',
@@ -913,7 +913,7 @@ async function seedDemoVacatures() {
                 'Lid van het Register Belastingadviseurs (RB) of NOB'
             ],
             aanbod: [
-                'Salaris â‚¬4.000 - â‚¬5.000 bruto per maand',
+                'Salaris €4.000 - €5.000 bruto per maand',
                 '28 vakantiedagen',
                 'Studiekostenregeling (volledige vergoeding)',
                 'Pensioenregeling',
@@ -931,7 +931,7 @@ async function seedDemoVacatures() {
             uren: 'Flexibel',
             ervaring: 'Senior',
             duur: '6 maanden',
-            salaris: 'â‚¬85 - â‚¬110 /uur',
+            salaris: '€85 - €110 /uur',
             badge: 'urgent', badgeText: 'Urgent',
             omschrijving: 'Voor een gerenommeerde opdrachtgever zoeken wij een ervaren Audit Manager op interim basis. Je neemt de leiding over lopende controle-opdrachten en stuurt een team van 4-6 medewerkers aan. Directe start mogelijk, aanvankelijk 6 maanden met optie tot verlenging.',
             werkzaamheden: [
@@ -950,12 +950,12 @@ async function seedDemoVacatures() {
                 'Flexibel en direct inzetbaar'
             ],
             wensen: [
-                'Ervaring met financiÃ«le instellingen',
+                'Ervaring met financiële instellingen',
                 'Bekend met CaseWare of Datev',
                 'Ervaring met SOC-rapportages'
             ],
             aanbod: [
-                'Uurtarief â‚¬85 - â‚¬110 (afhankelijk van ervaring)',
+                'Uurtarief €85 - €110 (afhankelijk van ervaring)',
                 'Flexibele inzet (32-40 uur per week)',
                 'Directe start mogelijk',
                 'Mogelijkheid tot verlenging',
@@ -972,15 +972,15 @@ async function seedDemoVacatures() {
             uren: 'Parttime',
             ervaring: 'Junior',
             duur: '12 maanden',
-            salaris: 'â‚¬2.800 - â‚¬3.200 /maand',
-            omschrijving: 'Een mooie startersfunctie voor pas afgestudeerden in finance. Je ondersteunt bij het opstellen van financiÃ«le rapportages en draagt bij aan projecten voor overheidsorganisaties. Ideaal als je wilt groeien in een professionele omgeving met maatschappelijke impact.',
+            salaris: '€2.800 - €3.200 /maand',
+            omschrijving: 'Een mooie startersfunctie voor pas afgestudeerden in finance. Je ondersteunt bij het opstellen van financiële rapportages en draagt bij aan projecten voor overheidsorganisaties. Ideaal als je wilt groeien in een professionele omgeving met maatschappelijke impact.',
             werkzaamheden: [
-                'Ondersteunen bij financiÃ«le analyses en rapportages',
-                'Verzamelen en verwerken van financiÃ«le data',
+                'Ondersteunen bij financiële analyses en rapportages',
+                'Verzamelen en verwerken van financiële data',
                 'Meewerken aan begrotingsstudies voor overheidsklanten',
                 'Opstellen van presentaties en managementsamenvattingen',
                 'Uitvoeren van benchmark-analyses',
-                'Ondersteunen bij het verbeteren van financiÃ«le processen'
+                'Ondersteunen bij het verbeteren van financiële processen'
             ],
             vereisten: [
                 'HBO/WO Finance, Economie of Bedrijfskunde',
@@ -990,12 +990,12 @@ async function seedDemoVacatures() {
                 'Goede schriftelijke communicatie in het Nederlands'
             ],
             wensen: [
-                'Stage-ervaring in een financiÃ«le omgeving',
+                'Stage-ervaring in een financiële omgeving',
                 'Kennis van Power BI',
                 'Interesse in beleidsanalyse'
             ],
             aanbod: [
-                'Salaris â‚¬2.800 - â‚¬3.200 bruto per maand (o.b.v. 32 uur)',
+                'Salaris €2.800 - €3.200 bruto per maand (o.b.v. 32 uur)',
                 '25 vakantiedagen (naar rato)',
                 'Reiskostenvergoeding',
                 'Laptop en telefoon van de zaak',
@@ -1013,12 +1013,12 @@ async function seedDemoVacatures() {
             uren: 'Fulltime',
             ervaring: 'Senior',
             duur: 'Onbepaalde tijd',
-            salaris: 'â‚¬5.000 - â‚¬6.500 /maand',
+            salaris: '€5.000 - €6.500 /maand',
             omschrijving: 'Begeleid fusies, overnames en herstructureringen voor middelgrote bedrijven in de Brainport-regio. Je maakt waarderingen, begeleidt due diligence-trajecten en onderhoudt klantrelaties. Een uitdagende rol voor een ambitieuze corporate finance professional.',
             werkzaamheden: [
                 'Begeleiden van M&A-transacties van begin tot eind',
                 'Uitvoeren van bedrijfswaarderingen (DCF, multiples)',
-                'CoÃ¶rdineren van due diligence-trajecten',
+                'Coördineren van due diligence-trajecten',
                 'Opstellen van informatiememoranda en teasers',
                 'Onderhandelen namens kopers en verkopers',
                 'Opbouwen en onderhouden van klantrelaties'
@@ -1026,7 +1026,7 @@ async function seedDemoVacatures() {
             vereisten: [
                 'WO Bedrijfseconomie, Finance of Accountancy',
                 'Minimaal 5 jaar ervaring in corporate finance of M&A',
-                'Sterke financiÃ«le modelleringsvaardigheden',
+                'Sterke financiële modelleringsvaardigheden',
                 'Uitstekend in Nederlands en Engels (schriftelijk en mondeling)',
                 'Zelfstandig, proactief en commercieel ingesteld'
             ],
@@ -1036,7 +1036,7 @@ async function seedDemoVacatures() {
                 'Ervaring met tech- of maakindustrie deals'
             ],
             aanbod: [
-                'Salaris â‚¬5.000 - â‚¬6.500 bruto per maand',
+                'Salaris €5.000 - €6.500 bruto per maand',
                 'Succes-fee bonus bij geslaagde transacties',
                 '28 vakantiedagen',
                 'Lease-auto',
@@ -1054,12 +1054,12 @@ async function seedDemoVacatures() {
             uren: 'Fulltime',
             ervaring: 'Medior',
             duur: '6-12 maanden',
-            salaris: 'â‚¬3.800 - â‚¬4.500 /maand',
+            salaris: '€3.800 - €4.500 /maand',
             omschrijving: 'Op detacheringsbasis aan de slag bij diverse MKB-kantoren in de regio Rotterdam. Je stelt jaarrekeningen samen, verzorgt aangiften en bent het aanspreekpunt voor een eigen klantenportefeuille. Afwisselend werk met veel zelfstandigheid.',
             werkzaamheden: [
                 'Samenstellen van jaarrekeningen voor MKB-ondernemingen',
                 'Verzorgen van aangiften IB en VPB',
-                'Beoordelen van financiÃ«le administraties',
+                'Beoordelen van financiële administraties',
                 'Adviseren van ondernemers over bedrijfseconomische vraagstukken',
                 'Contact onderhouden met een eigen klantenportefeuille',
                 'Signaleren van fiscale aandachtspunten'
@@ -1077,7 +1077,7 @@ async function seedDemoVacatures() {
                 'Kennis van salarisadministratie'
             ],
             aanbod: [
-                'Salaris â‚¬3.800 - â‚¬4.500 bruto per maand',
+                'Salaris €3.800 - €4.500 bruto per maand',
                 'Detacheringsvergoeding bovenop salaris',
                 '25 vakantiedagen',
                 'Reiskostenvergoeding of OV-kaart',
@@ -1095,12 +1095,12 @@ async function seedDemoVacatures() {
             uren: 'Parttime',
             ervaring: 'Medior',
             duur: '3-6 maanden',
-            salaris: 'â‚¬65 - â‚¬85 /uur',
-            omschrijving: 'Adviseer organisaties in Noord-Nederland op het gebied van financiÃ«le processen, digitalisering en rapportagestructuren. Ideaal voor consultants die impact willen maken buiten de Randstad. Parttime inzet mogelijk, locatie Groningen met mogelijkheid om deels remote te werken.',
+            salaris: '€65 - €85 /uur',
+            omschrijving: 'Adviseer organisaties in Noord-Nederland op het gebied van financiële processen, digitalisering en rapportagestructuren. Ideaal voor consultants die impact willen maken buiten de Randstad. Parttime inzet mogelijk, locatie Groningen met mogelijkheid om deels remote te werken.',
             werkzaamheden: [
-                'Analyseren en optimaliseren van financiÃ«le processen',
+                'Analyseren en optimaliseren van financiële processen',
                 'Implementeren van digitale rapportagetools',
-                'Adviseren over inrichting van de financiÃ«le functie',
+                'Adviseren over inrichting van de financiële functie',
                 'Begeleiden van verandertrajecten binnen finance-afdelingen',
                 'Opstellen van business cases en procesbeschrijvingen',
                 'Trainen van gebruikers bij nieuwe systemen'
@@ -1118,7 +1118,7 @@ async function seedDemoVacatures() {
                 'Netwerk in Noord-Nederland'
             ],
             aanbod: [
-                'Uurtarief â‚¬65 - â‚¬85 (afhankelijk van ervaring)',
+                'Uurtarief €65 - €85 (afhankelijk van ervaring)',
                 'Flexibele inzet (16-32 uur per week)',
                 'Deels remote werken mogelijk',
                 'Directe projectstart',
@@ -1136,18 +1136,18 @@ async function seedDemoVacatures() {
             batch.set(ref, { ...data, actief: true, geplaatst: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true });
         }
         await batch.commit();
-        btn.textContent = 'âœ“ 8 vacatures geladen!';
+        btn.textContent = '✓ 8 vacatures geladen!';
         btn.style.background = 'var(--success)';
         btn.style.color = 'white';
         loadDashboard();
     } catch(e) {
         console.error('Seed mislukt:', e);
         if (e.code === 'permission-denied') {
-            alert('Firestore security rules blokkeren schrijven. Ga naar Firebase Console â†’ Firestore â†’ Rules en zet de juiste regels neer (zie uitleg hieronder de knop).');
+            alert('Firestore security rules blokkeren schrijven. Ga naar Firebase Console → Firestore → Rules en zet de juiste regels neer (zie uitleg hieronder de knop).');
         } else {
             alert('Seed mislukt: ' + e.message);
         }
-        btn.textContent = 'Fout â€” probeer opnieuw';
+        btn.textContent = 'Fout — probeer opnieuw';
         btn.disabled = false;
     }
 }
@@ -1181,12 +1181,12 @@ async function loadDashboard() {
             const row = document.createElement('tr');
             row.innerHTML = '<td>' + fmtDate(d.aangemaakt) + '</td>'
                 + '<td><strong>' + esc(d.bedrijf) + '</strong></td>'
-                + '<td>' + esc(d.functie || 'â€”') + '</td>'
+                + '<td>' + esc(d.functie || '—') + '</td>'
                 + '<td><span class="status-badge status-' + esc(d.status || 'nieuw') + '">' + esc(d.status || 'nieuw') + '</span></td>';
             tbody.appendChild(row);
         });
         if (aanvragenSnap.empty) {
-            tbody.innerHTML = '<tr><td colspan="4" class="empty"><div class="icon">ðŸ“‹</div>Nog geen aanvragen</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="4" class="empty"><div class="icon">📋</div>Nog geen aanvragen</td></tr>';
         }
     } catch(e) {
         console.error('Dashboard laden mislukt:', e);
@@ -1203,7 +1203,7 @@ async function loadAanvragen() {
     tbody.innerHTML = '';
 
     if (snap.empty) {
-        tbody.innerHTML = '<tr><td colspan="7" class="empty"><div class="icon">ðŸ“‹</div>Nog geen aanvragen</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="7" class="empty"><div class="icon">📋</div>Nog geen aanvragen</td></tr>';
         return;
     }
 
@@ -1211,15 +1211,15 @@ async function loadAanvragen() {
         const d = doc.data();
         const row = document.createElement('tr');
         const bijlageHtml = d.bestandUrl
-            ? '<a class="btn-download" href="' + esc(d.bestandUrl) + '" target="_blank" rel="noopener">ðŸ“Ž ' + esc(d.bestandNaam || 'Download') + '</a>'
-            : '<span style="color:var(--text-muted)">â€”</span>';
+            ? '<a class="btn-download" href="' + esc(d.bestandUrl) + '" target="_blank" rel="noopener">📎 ' + esc(d.bestandNaam || 'Download') + '</a>'
+            : '<span style="color:var(--text-muted)">—</span>';
 
         const contactHtml = buildContactBtns(d.email, d.telefoon);
 
         row.innerHTML = '<td>' + fmtDate(d.aangemaakt) + '</td>'
             + '<td><a class="clickable-name" onclick="openKlantenkaartAanvrager(\'' + doc.id + '\')">' + esc(d.contactpersoon || d.bedrijf) + '</a><br><span style="color:var(--text-muted);font-size:0.78rem">' + esc(d.bedrijf) + '</span></td>'
             + '<td>' + contactHtml + '</td>'
-            + '<td>' + esc(d.functie || 'â€”') + '</td>'
+            + '<td>' + esc(d.functie || '—') + '</td>'
             + '<td>' + bijlageHtml + '</td>'
             + '<td><select class="fase-select" onchange="updateAanvraagStatus(\'' + doc.id + '\', this.value)">'
             + statusOptions(d.status || 'nieuw')
@@ -1242,10 +1242,10 @@ async function showAanvraagDetail(docId) {
         + modalRow('Contactpersoon', d.contactpersoon)
         + modalRow('E-mail', d.email)
         + modalRow('Telefoon', d.telefoon)
-        + modalRow('Functie', d.functie || 'â€”')
-        + modalRow('Aantal professionals', d.aantal || 'â€”')
-        + modalRow('Toelichting', d.toelichting || 'â€”')
-        + modalRow('Bijlage', d.bestandUrl ? '<a href="' + esc(d.bestandUrl) + '" target="_blank" rel="noopener" class="btn-download">ðŸ“Ž ' + esc(d.bestandNaam) + '</a>' : 'â€”')
+        + modalRow('Functie', d.functie || '—')
+        + modalRow('Aantal professionals', d.aantal || '—')
+        + modalRow('Toelichting', d.toelichting || '—')
+        + modalRow('Bijlage', d.bestandUrl ? '<a href="' + esc(d.bestandUrl) + '" target="_blank" rel="noopener" class="btn-download">📎 ' + esc(d.bestandNaam) + '</a>' : '—')
         + modalRow('Status', d.status || 'nieuw')
         + modalRow('Aangemaakt', fmtDate(d.aangemaakt));
     document.getElementById('detailModal').classList.add('show');
@@ -1265,7 +1265,7 @@ async function loadVacatures() {
     tbody.innerHTML = '';
 
     if (snap.empty) {
-        tbody.innerHTML = '<tr><td colspan="6" class="empty"><div class="icon">ðŸ“‚</div>Nog geen vacatures.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="6" class="empty"><div class="icon">📂</div>Nog geen vacatures.</td></tr>';
         return;
     }
 
@@ -1275,7 +1275,7 @@ async function loadVacatures() {
         const row = document.createElement('tr');
         row.innerHTML = '<td><strong>' + esc(v.functie) + '</strong></td>'
             + '<td>' + esc(v.bedrijf || 'Vertrouwelijk') + '</td>'
-            + '<td>' + esc(v.locatie || 'â€”') + '</td>'
+            + '<td>' + esc(v.locatie || '—') + '</td>'
             + '<td>' + reSnap.size + ' reacties</td>'
             + '<td><input type="checkbox"' + (v.actief ? ' checked' : '') + ' onchange="toggleVacature(\'' + doc.id + '\', this.checked)" style="cursor:pointer;width:18px;height:18px;"></td>'
             + '<td><button class="btn-sm" onclick="deleteVacature(\'' + doc.id + '\')">Verwijderen</button></td>';
@@ -1351,6 +1351,19 @@ async function loadReacties() {
         });
     }
 
+    // Enrich reacties with user profile CV as fallback
+    for (const r of allReacties) {
+        if (!r.cvUrl && r.userId) {
+            try {
+                const uDoc = await db.collection('gebruikers').doc(r.userId).get();
+                if (uDoc.exists && uDoc.data().cvUrl) {
+                    r.cvUrl = uDoc.data().cvUrl;
+                    r.cvNaam = uDoc.data().cvNaam || 'CV';
+                }
+            } catch(e) { /* skip */ }
+        }
+    }
+
     allReacties.sort((a, b) => {
         const ta = a.aangemaakt ? a.aangemaakt.toMillis() : 0;
         const tb = b.aangemaakt ? b.aangemaakt.toMillis() : 0;
@@ -1361,7 +1374,7 @@ async function loadReacties() {
     tbody.innerHTML = '';
 
     if (allReacties.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="7" class="empty"><div class="icon">ðŸ‘¥</div>Nog geen reacties van kandidaten</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="7" class="empty"><div class="icon">👥</div>Nog geen reacties van kandidaten</td></tr>';
         return;
     }
 
@@ -1375,22 +1388,22 @@ async function loadReacties() {
 
         const contactHtml = buildContactBtns(r.email);
         const nameLink = r.userId
-            ? '<a class="clickable-name" onclick="openKlantenkaart(\'' + esc(r.userId) + '\')">' + esc(r.naam || 'â€”') + '</a>'
-            : '<strong>' + esc(r.naam || 'â€”') + '</strong>';
+            ? '<a class="clickable-name" onclick="openKlantenkaart(\'' + esc(r.userId) + '\')">' + esc(r.naam || '—') + '</a>'
+            : '<strong>' + esc(r.naam || '—') + '</strong>';
 
         // CV / Documents column
-        let docsHtml = '<span style="color:var(--text-muted)">â€”</span>';
+        let docsHtml = '<span style="color:var(--text-muted)">—</span>';
         if (r.cvUrl) {
-            docsHtml = '<a class="btn-download" href="' + esc(r.cvUrl) + '" target="_blank" rel="noopener">ðŸ“„ CV</a>';
+            docsHtml = '<a class="btn-download" href="' + esc(r.cvUrl) + '" target="_blank" rel="noopener">📄 CV</a>';
         }
         if (r.motivatieUrl) {
-            docsHtml += ' <a class="btn-download" href="' + esc(r.motivatieUrl) + '" target="_blank" rel="noopener">ðŸ“ Motivatie</a>';
+            docsHtml += ' <a class="btn-download" href="' + esc(r.motivatieUrl) + '" target="_blank" rel="noopener">📝 Motivatie</a>';
         }
 
         row.innerHTML = '<td>' + fmtDate(r.aangemaakt) + '</td>'
             + '<td>' + nameLink + '</td>'
             + '<td>' + contactHtml + '</td>'
-            + '<td>' + esc(r.vacatureFunctie || 'â€”') + '</td>'
+            + '<td>' + esc(r.vacatureFunctie || '—') + '</td>'
             + '<td>' + docsHtml + '</td>'
             + '<td><select class="fase-select" onchange="updateFase(\'' + r.vacatureId + '\', \'' + r.reactieId + '\', \'' + r.userId + '\', parseInt(this.value))">' + faseOpts + '</select></td>'
             + '<td></td>';
@@ -1424,7 +1437,7 @@ async function loadGebruikers() {
     tbody.innerHTML = '';
 
     if (snap.empty) {
-        tbody.innerHTML = '<tr><td colspan="5" class="empty"><div class="icon">ðŸ§‘</div>Nog geen geregistreerde gebruikers</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="5" class="empty"><div class="icon">🧑</div>Nog geen geregistreerde gebruikers</td></tr>';
         return;
     }
 
@@ -1435,8 +1448,8 @@ async function loadGebruikers() {
         const row = document.createElement('tr');
         row.innerHTML = '<td><a class="clickable-name" onclick="openKlantenkaart(\'' + doc.id + '\')">' + esc(naam.trim()) + '</a></td>'
             + '<td>' + contactHtml + '</td>'
-            + '<td>' + esc(d.telefoon || 'â€”') + '</td>'
-            + '<td>' + esc(d.rol || 'â€”') + '</td>'
+            + '<td>' + esc(d.telefoon || '—') + '</td>'
+            + '<td>' + esc(d.rol || '—') + '</td>'
             + '<td>' + fmtDate(d.aangemaakt) + '</td>';
         tbody.appendChild(row);
     });
@@ -1446,12 +1459,12 @@ async function loadGebruikers() {
 function buildContactBtns(email, telefoon) {
     let html = '<div class="contact-btns">';
     if (email) {
-        html += '<a class="contact-btn email-btn" href="mailto:' + esc(email) + '" title="E-mail sturen">âœ‰</a>';
+        html += '<a class="contact-btn email-btn" href="mailto:' + esc(email) + '" title="E-mail sturen">✉</a>';
     }
     if (telefoon) {
         const tel = telefoon.replace(/\s/g, '');
-        html += '<a class="contact-btn phone-btn" href="tel:' + esc(tel) + '" title="Bellen">ðŸ“ž</a>';
-        html += '<a class="contact-btn wa-btn" href="https://api.whatsapp.com/send?phone=' + esc(tel.replace('+','').replace(/^0/,'31')) + '" target="_blank" rel="noopener" title="WhatsApp">ðŸ’¬</a>';
+        html += '<a class="contact-btn phone-btn" href="tel:' + esc(tel) + '" title="Bellen">📞</a>';
+        html += '<a class="contact-btn wa-btn" href="https://api.whatsapp.com/send?phone=' + esc(tel.replace('+','').replace(/^0/,'31')) + '" target="_blank" rel="noopener" title="WhatsApp">💬</a>';
     }
     html += '</div>';
     return html;
@@ -1475,13 +1488,13 @@ async function openKlantenkaart(userId) {
     // Header
     document.getElementById('kkAvatar').textContent = getInitials(u.voornaam, u.achternaam);
     document.getElementById('kkNaam').textContent = naam.trim();
-    document.getElementById('kkSubtitle').textContent = (u.rol || 'Gebruiker') + ' â€¢ lid sinds ' + fmtDate(u.aangemaakt);
+    document.getElementById('kkSubtitle').textContent = (u.rol || 'Gebruiker') + ' • lid sinds ' + fmtDate(u.aangemaakt);
 
     // Contact bar
     document.getElementById('kkContactBar').innerHTML =
-        (u.email ? '<a class="kk-contact-btn" href="mailto:' + esc(u.email) + '">âœ‰ï¸ E-mail sturen</a>' : '')
-        + (u.telefoon ? '<a class="kk-contact-btn" href="tel:' + esc(u.telefoon) + '">ðŸ“ž Bellen</a>' : '')
-        + (u.telefoon ? '<a class="kk-contact-btn" href="https://api.whatsapp.com/send?phone=' + esc(u.telefoon.replace(/\s/g,'').replace('+','').replace(/^0/,'31')) + '" target="_blank" rel="noopener">ðŸ’¬ WhatsApp</a>' : '');
+        (u.email ? '<a class="kk-contact-btn" href="mailto:' + esc(u.email) + '">✉️ E-mail sturen</a>' : '')
+        + (u.telefoon ? '<a class="kk-contact-btn" href="tel:' + esc(u.telefoon) + '">📞 Bellen</a>' : '')
+        + (u.telefoon ? '<a class="kk-contact-btn" href="https://api.whatsapp.com/send?phone=' + esc(u.telefoon.replace(/\s/g,'').replace('+','').replace(/^0/,'31')) + '" target="_blank" rel="noopener">💬 WhatsApp</a>' : '');
 
     // Tab: Overzicht
     document.getElementById('kkTab-overzicht').innerHTML =
@@ -1492,7 +1505,9 @@ async function openKlantenkaart(userId) {
         + kkField('Telefoon', u.telefoon)
         + kkField('Rol', u.rol)
         + kkField('Geregistreerd', fmtDate(u.aangemaakt))
-        + '</div>';
+        + kkField('CV', u.cvUrl ? '✅ Geüpload (' + esc(u.cvNaam || 'document') + ')' : '❌ Niet geüpload')
+        + '</div>'
+        + (u.cvUrl ? '<div style="margin-top:16px;"><a class="kk-contact-btn" href="' + esc(u.cvUrl) + '" target="_blank" rel="noopener">📄 CV downloaden</a></div>' : '');
 
     // Tab: Activiteit
     await loadKkActiviteit(userId);
@@ -1522,12 +1537,12 @@ async function openKlantenkaartAanvrager(docId) {
 
     document.getElementById('kkAvatar').textContent = getInitials(d.contactpersoon || d.bedrijf);
     document.getElementById('kkNaam').textContent = d.contactpersoon || d.bedrijf;
-    document.getElementById('kkSubtitle').textContent = 'Opdrachtgever â€¢ ' + esc(d.bedrijf);
+    document.getElementById('kkSubtitle').textContent = 'Opdrachtgever • ' + esc(d.bedrijf);
 
     document.getElementById('kkContactBar').innerHTML =
-        (d.email ? '<a class="kk-contact-btn" href="mailto:' + esc(d.email) + '">âœ‰ï¸ E-mail sturen</a>' : '')
-        + (d.telefoon ? '<a class="kk-contact-btn" href="tel:' + esc(d.telefoon) + '">ðŸ“ž Bellen</a>' : '')
-        + (d.telefoon ? '<a class="kk-contact-btn" href="https://api.whatsapp.com/send?phone=' + esc(d.telefoon.replace(/\s/g,'').replace('+','').replace(/^0/,'31')) + '" target="_blank" rel="noopener">ðŸ’¬ WhatsApp</a>' : '');
+        (d.email ? '<a class="kk-contact-btn" href="mailto:' + esc(d.email) + '">✉️ E-mail sturen</a>' : '')
+        + (d.telefoon ? '<a class="kk-contact-btn" href="tel:' + esc(d.telefoon) + '">📞 Bellen</a>' : '')
+        + (d.telefoon ? '<a class="kk-contact-btn" href="https://api.whatsapp.com/send?phone=' + esc(d.telefoon.replace(/\s/g,'').replace('+','').replace(/^0/,'31')) + '" target="_blank" rel="noopener">💬 WhatsApp</a>' : '');
 
     document.getElementById('kkTab-overzicht').innerHTML =
         '<div class="kk-grid">'
@@ -1541,12 +1556,12 @@ async function openKlantenkaartAanvrager(docId) {
         + kkField('Aangemaakt', fmtDate(d.aangemaakt))
         + '</div>'
         + (d.toelichting ? '<div style="margin-top:20px;"><label style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-muted);font-weight:700;">Toelichting</label><p style="font-size:0.9rem;line-height:1.6;margin-top:6px;">' + esc(d.toelichting) + '</p></div>' : '')
-        + (d.bestandUrl ? '<div style="margin-top:16px;"><a class="kk-contact-btn" href="' + esc(d.bestandUrl) + '" target="_blank" rel="noopener">ðŸ“Ž ' + esc(d.bestandNaam || 'Bijlage downloaden') + '</a></div>' : '');
+        + (d.bestandUrl ? '<div style="margin-top:16px;"><a class="kk-contact-btn" href="' + esc(d.bestandUrl) + '" target="_blank" rel="noopener">📎 ' + esc(d.bestandNaam || 'Bijlage downloaden') + '</a></div>' : '');
 
-    document.getElementById('kkTab-activiteit').innerHTML = '<div class="kk-timeline"><div class="kk-event"><div class="event-date">' + fmtDate(d.aangemaakt) + '</div><div class="event-text">Vacature-aanvraag ingediend voor "' + esc(d.functie || 'â€”') + '"</div></div></div>';
+    document.getElementById('kkTab-activiteit').innerHTML = '<div class="kk-timeline"><div class="kk-event"><div class="event-date">' + fmtDate(d.aangemaakt) + '</div><div class="event-text">Vacature-aanvraag ingediend voor "' + esc(d.functie || '—') + '"</div></div></div>';
 
     document.getElementById('kkTab-documenten').innerHTML = d.bestandUrl
-        ? '<table style="width:100%;"><thead><tr><th>Type</th><th>Bestand</th></tr></thead><tbody><tr><td><strong>Functieprofiel</strong></td><td><a class="btn-download" href="' + esc(d.bestandUrl) + '" target="_blank" rel="noopener">ðŸ“Ž ' + esc(d.bestandNaam || 'Download') + '</a></td></tr></tbody></table>'
+        ? '<table style="width:100%;"><thead><tr><th>Type</th><th>Bestand</th></tr></thead><tbody><tr><td><strong>Functieprofiel</strong></td><td><a class="btn-download" href="' + esc(d.bestandUrl) + '" target="_blank" rel="noopener">📎 ' + esc(d.bestandNaam || 'Download') + '</a></td></tr></tbody></table>'
         : '<p style="color:var(--text-muted);">Geen documenten bij deze aanvraag.</p>';
 
     await loadKkNotities('vacature-aanvragen', docId);
@@ -1579,7 +1594,7 @@ async function loadKkDocumenten(userId) {
     const userDoc = await db.collection('gebruikers').doc(userId).get();
     if (userDoc.exists) {
         const u = userDoc.data();
-        if (u.cvUrl) docs.push({ type: 'CV (profiel)', url: u.cvUrl, naam: u.cvNaam || 'CV', vacature: 'â€”', datum: u.aangemaakt });
+        if (u.cvUrl) docs.push({ type: 'CV (profiel)', url: u.cvUrl, naam: u.cvNaam || 'CV', vacature: '—', datum: u.aangemaakt });
     }
 
     if (docs.length === 0) {
@@ -1591,8 +1606,8 @@ async function loadKkDocumenten(userId) {
     docs.forEach(d => {
         html += '<tr>'
             + '<td><strong>' + esc(d.type) + '</strong></td>'
-            + '<td><a class="btn-download" href="' + esc(d.url) + '" target="_blank" rel="noopener">ðŸ“Ž ' + esc(d.naam) + '</a></td>'
-            + '<td>' + esc(d.vacature || 'â€”') + '</td>'
+            + '<td><a class="btn-download" href="' + esc(d.url) + '" target="_blank" rel="noopener">📎 ' + esc(d.naam) + '</a></td>'
+            + '<td>' + esc(d.vacature || '—') + '</td>'
             + '<td>' + fmtDate(d.datum) + '</td>'
             + '</tr>';
     });
@@ -1611,16 +1626,17 @@ async function loadKkActiviteit(userId) {
     if (userDoc.exists) {
         const u = userDoc.data();
         if (u.aangemaakt) events.push({ date: u.aangemaakt, text: 'Account aangemaakt' });
+        if (u.cvUrl) events.push({ date: u.bijgewerkt || u.aangemaakt, text: 'CV geüpload: ' + (u.cvNaam || 'document') });
     }
 
     // Sollicitaties
     const solSnap = await db.collection('gebruikers').doc(userId).collection('sollicitaties').orderBy('aangemaakt', 'desc').get();
     solSnap.forEach(doc => {
         const s = doc.data();
-        events.push({ date: s.aangemaakt, text: 'Gesolliciteerd op "' + (s.functie || 'â€”') + '" bij ' + (s.bedrijf || 'Vertrouwelijk') });
+        events.push({ date: s.aangemaakt, text: 'Gesolliciteerd op "' + (s.functie || '—') + '" bij ' + (s.bedrijf || 'Vertrouwelijk') });
         if (s.bijgewerkt && s.fase > 1) {
             const FASES = ['','Aangemeld','Screening','Interview','Aangeboden','Geplaatst'];
-            events.push({ date: s.bijgewerkt, text: 'Fase bijgewerkt naar "' + FASES[s.fase] + '" voor "' + (s.functie || 'â€”') + '"' });
+            events.push({ date: s.bijgewerkt, text: 'Fase bijgewerkt naar "' + FASES[s.fase] + '" voor "' + (s.functie || '—') + '"' });
         }
     });
 
@@ -1655,7 +1671,7 @@ async function loadKkSollicitaties(userId) {
     let html = '<table style="width:100%;"><thead><tr><th>Functie</th><th>Bedrijf</th><th>Fase</th><th>Datum</th></tr></thead><tbody>';
     solSnap.forEach(doc => {
         const s = doc.data();
-        html += '<tr><td>' + esc(s.functie || 'â€”') + '</td><td>' + esc(s.bedrijf || 'â€”') + '</td><td><span class="status-badge status-actief">' + FASES[s.fase || 1] + '</span></td><td>' + fmtDate(s.aangemaakt) + '</td></tr>';
+        html += '<tr><td>' + esc(s.functie || '—') + '</td><td>' + esc(s.bedrijf || '—') + '</td><td><span class="status-badge status-actief">' + FASES[s.fase || 1] + '</span></td><td>' + fmtDate(s.aangemaakt) + '</td></tr>';
     });
     html += '</tbody></table>';
     el.innerHTML = html;
@@ -1719,11 +1735,11 @@ function closeModal() {
 }
 
 function modalRow(label, value) {
-    return '<div class="modal-row"><span class="label">' + label + '</span><span class="value">' + (value || 'â€”') + '</span></div>';
+    return '<div class="modal-row"><span class="label">' + label + '</span><span class="value">' + (value || '—') + '</span></div>';
 }
 
 function kkField(label, value) {
-    return '<div class="kk-field"><label>' + label + '</label><span>' + esc(value || 'â€”') + '</span></div>';
+    return '<div class="kk-field"><label>' + label + '</label><span>' + esc(value || '—') + '</span></div>';
 }
 
 function getInitials(voornaam, achternaam) {
@@ -1736,12 +1752,12 @@ function getInitials(voornaam, achternaam) {
 }
 
 function fmtDate(ts) {
-    if (!ts || !ts.toDate) return 'â€”';
+    if (!ts || !ts.toDate) return '—';
     return ts.toDate().toLocaleDateString('nl-NL', { day: 'numeric', month: 'short', year: 'numeric' });
 }
 
 function fmtDateTime(ts) {
-    if (!ts || !ts.toDate) return 'â€”';
+    if (!ts || !ts.toDate) return '—';
     const d = ts.toDate();
     return d.toLocaleDateString('nl-NL', { day: 'numeric', month: 'short', year: 'numeric' })
         + ' ' + d.toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' });
