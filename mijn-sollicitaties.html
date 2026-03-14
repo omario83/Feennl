@@ -746,7 +746,7 @@ async function loadSollicitaties(uid) {
     try {
         const snapshot = await db.collection('gebruikers').doc(uid)
             .collection('sollicitaties')
-            .orderBy('bijgewerkt', 'desc')
+            .orderBy('aangemaakt', 'desc')
             .get();
 
         document.getElementById('loadingState').style.display = 'none';
@@ -759,6 +759,7 @@ async function loadSollicitaties(uid) {
 
         const counts = [0, 0, 0, 0, 0];
         const list = document.getElementById('solList');
+        list.innerHTML = '';
 
         snapshot.forEach(doc => {
             const d = doc.data();
@@ -773,6 +774,7 @@ async function loadSollicitaties(uid) {
         }
 
     } catch (err) {
+        console.error('Sollicitaties laden mislukt:', err);
         document.getElementById('loadingState').innerHTML =
             '<p style="color:var(--danger)">Kon sollicitaties niet laden. Probeer de pagina te verversen.</p>';
     }
