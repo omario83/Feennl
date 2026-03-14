@@ -867,9 +867,14 @@ function handleCvSelect(input) {
 }
 
 async function uploadCv() {
-    if (!selectedCvFile || !currentUser) return;
+    if (!selectedCvFile || !currentUser) {
+        alert('Selecteer eerst een bestand en zorg dat je ingelogd bent.');
+        return;
+    }
+    console.log('Storage beschikbaar:', !!storage);
+    console.log('User UID:', currentUser.uid);
     if (!storage) {
-        alert('CV uploaden is momenteel niet beschikbaar. Neem contact op met Feen.');
+        alert('Firebase Storage is niet geladen. Probeer de pagina te herladen.');
         return;
     }
     const btn = document.getElementById('btnUploadCv');
@@ -883,9 +888,12 @@ async function uploadCv() {
         const ext = selectedCvFile.name.split('.').pop();
         const timestamp = Date.now();
         const safeFilename = currentUser.uid + '_cv_' + timestamp + '.' + ext;
+        console.log('Uploading to:', 'cv/' + safeFilename);
         const ref = storage.ref('cv/' + safeFilename);
-        await ref.put(selectedCvFile);
-        const downloadUrl = await ref.getDownloadURL();
+        const snapshot = await ref.put(selectedCvFile);
+        console.log('Upload voltooid, download URL ophalen...');
+        const downloadUrl = await snapshot.ref.getDownloadURL();
+        console.log('Download URL:', downloadUrl);
 
         // Save to CV history subcollection
         await db.collection('gebruikers').doc(currentUser.uid).collection('cvs').add({
@@ -894,6 +902,7 @@ async function uploadCv() {
             storageRef: 'cv/' + safeFilename,
             geupload: firebase.firestore.FieldValue.serverTimestamp()
         });
+        console.log('CV opgeslagen in subcollectie');
 
         // Also update main profile with latest CV
         await db.collection('gebruikers').doc(currentUser.uid).set({
@@ -901,6 +910,7 @@ async function uploadCv() {
             cvNaam: selectedCvFile.name,
             bijgewerkt: firebase.firestore.FieldValue.serverTimestamp()
         }, { merge: true });
+        console.log('Profiel bijgewerkt met CV');
 
         status.textContent = '✅ CV succesvol geüpload!';
         selectedCvFile = null;
@@ -913,8 +923,15 @@ async function uploadCv() {
         // Refresh CV list
         await loadCvHistory(currentUser.uid);
     } catch (e) {
-        status.textContent = '❌ Upload mislukt: ' + e.message;
-        console.error(e);
+        console.error('CV upload error:', e);
+        console.error('Error code:', e.code);
+        console.error('Error message:', e.message);
+        if (e.code === 'storage/unauthorized') {
+            status.textContent = '❌ Geen toestemming. Firebase Storage rules moeten worden aangepast.';
+            alert('Upload geblokkeerd door Firebase Storage beveiligingsregels.\n\nGa naar Firebase Console → Storage → Rules en vervang de regels door:\n\nrules_version = \'2\';\nservice firebase.storage {\n  match /b/{bucket}/o {\n    match /cv/{allPaths=**} {\n      allow read: if request.auth != null;\n      allow write: if request.auth != null\n                   && request.resource.size < 10 * 1024 * 1024\n                   && request.resource.contentType.matches(\'application/.*\');\n    }\n  }\n}');
+        } else {
+            status.textContent = '❌ Upload mislukt: ' + e.message;
+        }
     }
     btn.disabled = false;
     btn.textContent = '📤 CV uploaden';
