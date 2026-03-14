@@ -158,6 +158,33 @@
         .btn-save:hover { background: var(--accent-dark); transform: translateY(-1px); }
         .btn-save:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
         .save-msg { font-size: 0.85rem; color: var(--success); margin-left: 16px; font-weight: 600; display: none; }
+        .btn-cv-upload {
+            background: var(--navy); color: white; padding: 10px 24px;
+            border-radius: 8px; font-weight: 700; font-size: 13px; border: none;
+            cursor: pointer; font-family: inherit; transition: all 0.25s;
+            display: inline-flex; align-items: center; gap: 8px; margin-top: 12px;
+        }
+        .btn-cv-upload:hover { background: var(--navy-deep); }
+        .btn-cv-upload:disabled { opacity: 0.5; cursor: not-allowed; }
+        .cv-history-list { margin-top: 20px; }
+        .cv-history-item {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 12px 16px; background: var(--off-white); border-radius: 8px;
+            margin-bottom: 8px; border: 1px solid var(--border);
+        }
+        .cv-history-item .cv-info { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
+        .cv-history-item .cv-name { font-weight: 600; font-size: 0.88rem; color: var(--navy); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .cv-history-item .cv-date { font-size: 0.78rem; color: var(--text-muted); white-space: nowrap; margin-left: 8px; }
+        .cv-history-item .cv-actions { display: flex; gap: 6px; flex-shrink: 0; margin-left: 12px; }
+        .cv-history-item .cv-actions a {
+            display: inline-flex; align-items: center; gap: 4px;
+            padding: 5px 12px; border-radius: 6px; font-size: 0.78rem;
+            font-weight: 600; text-decoration: none; border: 1px solid var(--border);
+            background: white; color: var(--navy); transition: all 0.2s;
+        }
+        .cv-history-item .cv-actions a:hover { border-color: var(--accent); background: rgba(184,244,112,0.1); }
+        .cv-history-item.active { border-color: var(--accent); background: #f4ffe4; }
+        .cv-history-item.active .cv-name::after { content: ' (actief)'; font-weight: 400; font-size: 0.75rem; color: var(--success); }
 
         /* DASHBOARD */
         .dashboard {
@@ -620,27 +647,38 @@
                         <label>Korte omschrijving</label>
                         <textarea id="profOmschrijving" rows="3" placeholder="Beschrijf kort je expertise en wat je zoekt..."></textarea>
                     </div>
+                    <div class="form-row-inline">
+                        <div class="form-row">
+                            <label>Gewenst uurloon</label>
+                            <input type="text" id="profUurloon" placeholder="Bijv. €75 - €95">
+                        </div>
+                        <div class="form-row">
+                            <label>Actieradius / gewenste werkplek</label>
+                            <input type="text" id="profActieradius" placeholder="Bijv. Max 50 km of Amsterdam">
+                        </div>
+                    </div>
                 </div>
 
                 <!-- CV UPLOAD -->
                 <div class="profile-card full-width">
                     <h3>
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 12 15 15"/></svg>
-                        CV uploaden
+                        CV beheren
                     </h3>
                     <div class="cv-upload-zone" id="cvUploadZone" onclick="document.getElementById('cvFileInput').click()">
                         <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#6b7194" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                        <p>Sleep je CV hierheen of <strong>klik om te uploaden</strong></p>
+                        <p>Sleep je CV hierheen of <strong>klik om te selecteren</strong></p>
                         <p style="font-size:0.78rem;color:#aab0c6;margin-top:4px">PDF, DOC of DOCX · Max 10 MB</p>
                         <div class="cv-filename" id="cvFileName" style="display:none"></div>
                     </div>
                     <input type="file" id="cvFileInput" accept=".pdf,.doc,.docx" style="display:none" onchange="handleCvSelect(this)">
-                    <div id="cvExisting" style="display:none;margin-top:12px;padding:12px 16px;background:#f0f4f8;border-radius:8px;display:flex;align-items:center;gap:12px">
-                        <span style="font-size:1.2rem">📄</span>
-                        <span id="cvExistingName" style="font-weight:600;font-size:0.9rem;flex:1"></span>
-                        <a id="cvDownloadLink" href="#" target="_blank" rel="noopener" style="background:var(--accent);color:var(--navy);padding:6px 16px;border-radius:6px;font-weight:700;font-size:0.82rem;text-decoration:none">Downloaden</a>
+                    <button class="btn-cv-upload" id="btnUploadCv" onclick="uploadCv()" style="display:none">📤 CV uploaden</button>
+                    <p id="cvUploadStatus" style="display:none;margin-top:8px;font-size:0.82rem;color:var(--accent-dark);font-weight:600"></p>
+
+                    <!-- CV HISTORY -->
+                    <div class="cv-history-list" id="cvHistoryList">
+                        <p style="color:var(--text-muted);font-size:0.88rem">Nog geen CV's geüpload.</p>
                     </div>
-                    <p id="cvUploadHint" style="display:none;margin-top:8px;font-size:0.82rem;color:var(--accent-dark);font-weight:600">⬆ Klik op "Profiel opslaan" om je CV te uploaden</p>
                 </div>
 
                 <!-- SAVE -->
@@ -825,7 +863,101 @@ function handleCvSelect(input) {
     const nameEl = document.getElementById('cvFileName');
     nameEl.textContent = '📄 ' + file.name;
     nameEl.style.display = 'block';
-    document.getElementById('cvUploadHint').style.display = 'block';
+    document.getElementById('btnUploadCv').style.display = 'inline-flex';
+}
+
+async function uploadCv() {
+    if (!selectedCvFile || !currentUser) return;
+    if (!storage) {
+        alert('CV uploaden is momenteel niet beschikbaar. Neem contact op met Feen.');
+        return;
+    }
+    const btn = document.getElementById('btnUploadCv');
+    const status = document.getElementById('cvUploadStatus');
+    btn.disabled = true;
+    btn.textContent = '⏳ Uploaden...';
+    status.style.display = 'block';
+    status.textContent = 'CV wordt geüpload...';
+
+    try {
+        const ext = selectedCvFile.name.split('.').pop();
+        const timestamp = Date.now();
+        const safeFilename = currentUser.uid + '_cv_' + timestamp + '.' + ext;
+        const ref = storage.ref('cv/' + safeFilename);
+        await ref.put(selectedCvFile);
+        const downloadUrl = await ref.getDownloadURL();
+
+        // Save to CV history subcollection
+        await db.collection('gebruikers').doc(currentUser.uid).collection('cvs').add({
+            naam: selectedCvFile.name,
+            url: downloadUrl,
+            storageRef: 'cv/' + safeFilename,
+            geupload: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+        // Also update main profile with latest CV
+        await db.collection('gebruikers').doc(currentUser.uid).set({
+            cvUrl: downloadUrl,
+            cvNaam: selectedCvFile.name,
+            bijgewerkt: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+
+        status.textContent = '✅ CV succesvol geüpload!';
+        selectedCvFile = null;
+        document.getElementById('cvFileInput').value = '';
+        document.getElementById('cvUploadZone').classList.remove('has-file');
+        document.getElementById('cvFileName').style.display = 'none';
+        btn.style.display = 'none';
+        setTimeout(function() { status.style.display = 'none'; }, 4000);
+
+        // Refresh CV list
+        await loadCvHistory(currentUser.uid);
+    } catch (e) {
+        status.textContent = '❌ Upload mislukt: ' + e.message;
+        console.error(e);
+    }
+    btn.disabled = false;
+    btn.textContent = '📤 CV uploaden';
+}
+
+async function loadCvHistory(uid) {
+    const el = document.getElementById('cvHistoryList');
+    try {
+        const snap = await db.collection('gebruikers').doc(uid).collection('cvs').orderBy('geupload', 'desc').get();
+        if (snap.empty) {
+            el.innerHTML = '<p style="color:var(--text-muted);font-size:0.88rem">Nog geen CV\'s geüpload.</p>';
+            return;
+        }
+
+        // Get current active CV url
+        const userDoc = await db.collection('gebruikers').doc(uid).get();
+        const activeCvUrl = userDoc.exists ? (userDoc.data().cvUrl || '') : '';
+
+        let html = '<p style="font-size:0.82rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px">Geüploade CV\'s</p>';
+        snap.forEach(function(doc) {
+            const c = doc.data();
+            const isActive = c.url === activeCvUrl;
+            const datum = c.geupload ? c.geupload.toDate().toLocaleDateString('nl-NL', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '—';
+            html += '<div class="cv-history-item' + (isActive ? ' active' : '') + '">'
+                + '<div class="cv-info"><span style="font-size:1.1rem">📄</span>'
+                + '<span class="cv-name">' + escHtml(c.naam || 'CV') + '</span>'
+                + '<span class="cv-date">' + datum + '</span></div>'
+                + '<div class="cv-actions">'
+                + '<a href="' + escHtml(c.url) + '" target="_blank" rel="noopener">Downloaden</a>'
+                + '</div></div>';
+        });
+        el.innerHTML = html;
+    } catch (e) {
+        console.error('CV geschiedenis laden mislukt:', e);
+        el.innerHTML = '<p style="color:var(--text-muted);font-size:0.88rem">CV\'s laden mislukt.</p>';
+    }
+}
+
+function escHtml(s) {
+    if (!s) return '';
+    var d = document.createElement('div');
+    d.textContent = s;
+    return d.innerHTML;
 }
 
 // Drag & drop support
@@ -857,17 +989,11 @@ async function loadProfile(uid) {
             if (d.ervaring) document.getElementById('profErvaring').value = d.ervaring;
             if (d.beschikbaarheid) document.getElementById('profBeschikbaarheid').value = d.beschikbaarheid;
             if (d.omschrijving) document.getElementById('profOmschrijving').value = d.omschrijving;
-            if (d.cvNaam) {
-                document.getElementById('cvFileName').textContent = '📄 ' + d.cvNaam;
-                document.getElementById('cvFileName').style.display = 'block';
-                document.getElementById('cvUploadZone').classList.add('has-file');
-                if (d.cvUrl) {
-                    document.getElementById('cvExistingName').textContent = d.cvNaam;
-                    document.getElementById('cvDownloadLink').href = d.cvUrl;
-                    document.getElementById('cvExisting').style.display = 'flex';
-                }
-            }
+            if (d.uurloon) document.getElementById('profUurloon').value = d.uurloon;
+            if (d.actieradius) document.getElementById('profActieradius').value = d.actieradius;
         }
+        // Load CV history
+        await loadCvHistory(uid);
     } catch (e) {
         console.error('Profiel laden mislukt:', e);
     }
@@ -892,31 +1018,10 @@ async function saveProfile() {
             ervaring: document.getElementById('profErvaring').value,
             beschikbaarheid: document.getElementById('profBeschikbaarheid').value,
             omschrijving: document.getElementById('profOmschrijving').value.trim(),
+            uurloon: document.getElementById('profUurloon').value.trim(),
+            actieradius: document.getElementById('profActieradius').value.trim(),
             bijgewerkt: firebase.firestore.FieldValue.serverTimestamp()
         };
-
-        // Upload CV if selected
-        if (selectedCvFile) {
-            if (!storage) {
-                alert('CV uploaden is momenteel niet beschikbaar. Neem contact op met Feen.');
-                btn.disabled = false;
-                btn.textContent = 'Profiel opslaan';
-                return;
-            }
-            btn.textContent = 'CV uploaden...';
-            const ext = selectedCvFile.name.split('.').pop();
-            const safeFilename = currentUser.uid + '_cv.' + ext;
-            const ref = storage.ref('cv/' + safeFilename);
-            await ref.put(selectedCvFile);
-            profileData.cvUrl = await ref.getDownloadURL();
-            profileData.cvNaam = selectedCvFile.name;
-            // Update UI
-            document.getElementById('cvExistingName').textContent = selectedCvFile.name;
-            document.getElementById('cvDownloadLink').href = profileData.cvUrl;
-            document.getElementById('cvExisting').style.display = 'flex';
-            document.getElementById('cvUploadHint').style.display = 'none';
-            selectedCvFile = null;
-        }
 
         await db.collection('gebruikers').doc(currentUser.uid).set(profileData, { merge: true });
 

@@ -1504,6 +1504,8 @@ async function openKlantenkaart(userId) {
         + kkField('E-mail', u.email)
         + kkField('Telefoon', u.telefoon)
         + kkField('Rol', u.rol)
+        + kkField('Gewenst uurloon', u.uurloon)
+        + kkField('Actieradius', u.actieradius)
         + kkField('Geregistreerd', fmtDate(u.aangemaakt))
         + kkField('CV', u.cvUrl ? '✅ Geüpload (' + esc(u.cvNaam || 'document') + ')' : '❌ Niet geüpload')
         + '</div>'
@@ -1578,6 +1580,15 @@ async function loadKkDocumenten(userId) {
 
     const docs = [];
 
+    // Load CV history from subcollection
+    try {
+        const cvSnap = await db.collection('gebruikers').doc(userId).collection('cvs').orderBy('geupload', 'desc').get();
+        cvSnap.forEach(cDoc => {
+            const c = cDoc.data();
+            if (c.url) docs.push({ type: 'CV', url: c.url, naam: c.naam || 'CV', vacature: '—', datum: c.geupload });
+        });
+    } catch(e) { /* subcollection may not exist */ }
+
     // Search all vacature reacties for this user's uploaded files
     const vacSnap = await db.collection('vacatures').get();
     for (const vDoc of vacSnap.docs) {
@@ -1585,16 +1596,18 @@ async function loadKkDocumenten(userId) {
         const reSnap = await vDoc.ref.collection('reacties').where('userId', '==', userId).get();
         reSnap.forEach(rDoc => {
             const r = rDoc.data();
-            if (r.cvUrl) docs.push({ type: 'CV', url: r.cvUrl, naam: r.cvNaam || 'CV', vacature: vData.functie, datum: r.aangemaakt });
+            if (r.cvUrl && !docs.some(d => d.url === r.cvUrl)) docs.push({ type: 'CV (sollicitatie)', url: r.cvUrl, naam: r.cvNaam || 'CV', vacature: vData.functie, datum: r.aangemaakt });
             if (r.motivatieUrl) docs.push({ type: 'Motivatiebrief', url: r.motivatieUrl, naam: r.motivatieNaam || 'Motivatiebrief', vacature: vData.functie, datum: r.aangemaakt });
         });
     }
 
-    // Check gebruikers doc for profile uploads
-    const userDoc = await db.collection('gebruikers').doc(userId).get();
-    if (userDoc.exists) {
-        const u = userDoc.data();
-        if (u.cvUrl) docs.push({ type: 'CV (profiel)', url: u.cvUrl, naam: u.cvNaam || 'CV', vacature: '—', datum: u.aangemaakt });
+    // Fallback: check main profile doc if no CVs found in subcollection
+    if (!docs.some(d => d.type === 'CV')) {
+        const userDoc = await db.collection('gebruikers').doc(userId).get();
+        if (userDoc.exists) {
+            const u = userDoc.data();
+            if (u.cvUrl) docs.push({ type: 'CV (profiel)', url: u.cvUrl, naam: u.cvNaam || 'CV', vacature: '—', datum: u.bijgewerkt || u.aangemaakt });
+        }
     }
 
     if (docs.length === 0) {
