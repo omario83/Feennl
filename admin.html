@@ -1510,9 +1510,11 @@ async function updateFase(vacatureId, reactieId, userId, fase, notitie) {
 let pendingFaseSelect = null;
 
 function openFaseModal(selectEl) {
+    console.log('openFaseModal aangeroepen', selectEl);
     const newFase = parseInt(selectEl.value);
     const currentFase = parseInt(selectEl.dataset.current);
-    if (newFase === currentFase) return;
+    console.log('currentFase:', currentFase, 'newFase:', newFase);
+    if (newFase === currentFase) { console.log('Fase ongewijzigd, modal niet geopend'); return; }
 
     pendingFaseSelect = selectEl;
     const FASES = ['', 'Aangemeld', 'Screening', 'Interview', 'Aangeboden', 'Geplaatst'];
@@ -1525,7 +1527,9 @@ function openFaseModal(selectEl) {
     ).join('');
     document.getElementById('faseModalNotitie').value = '';
     document.getElementById('faseModalError').style.display = 'none';
+    console.log('Modal element:', document.getElementById('faseModal'));
     document.getElementById('faseModal').classList.add('show');
+    console.log('Modal show class toegevoegd');
 }
 
 function closeFaseModal() {
