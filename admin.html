@@ -1486,23 +1486,20 @@ async function updateFase(vacatureId, reactieId, userId, fase, notitie) {
             aangemaakt: firebase.firestore.FieldValue.serverTimestamp()
         });
     }
-    // Also save on vacature reactie level
-    await db.collection('vacatures').doc(vacatureId).collection('reacties').doc(reactieId).collection('notities').add({
-        tekst: notitieText,
-        aangemaakt: firebase.firestore.FieldValue.serverTimestamp()
-    });
 
     if (userId) {
-        const userSolSnap = await db.collection('gebruikers').doc(userId)
-            .collection('sollicitaties')
-            .where('vacatureId', '==', vacatureId)
-            .get();
-        userSolSnap.forEach(async (solDoc) => {
-            await solDoc.ref.update({
-                fase: fase,
-                bijgewerkt: firebase.firestore.FieldValue.serverTimestamp()
+        try {
+            const userSolSnap = await db.collection('gebruikers').doc(userId)
+                .collection('sollicitaties')
+                .where('vacatureId', '==', vacatureId)
+                .get();
+            userSolSnap.forEach(async (solDoc) => {
+                await solDoc.ref.update({
+                    fase: fase,
+                    bijgewerkt: firebase.firestore.FieldValue.serverTimestamp()
+                });
             });
-        });
+        } catch(e) { console.warn('Sollicitatie sync overgeslagen:', e.message); }
     }
 }
 
