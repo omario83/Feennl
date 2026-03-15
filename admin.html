@@ -582,23 +582,8 @@ html { overflow-x: hidden; max-width: 100vw; }
                 <h2>Kandidaat-reacties</h2>
                 <span class="count" id="reactiesCount"></span>
             </div>
-            <div class="table-card">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Datum</th>
-                            <th>Kandidaat</th>
-                            <th>E-mail</th>
-                            <th>Vacature</th>
-                            <th>CV / Documenten</th>
-                            <th>Fase</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody id="reactiesTbody">
-                        <tr><td colspan="7" class="loading-text">Laden...</td></tr>
-                    </tbody>
-                </table>
+            <div id="reactiesContainer">
+                <div class="table-card"><table><tbody><tr><td class="loading-text">Laden...</td></tr></tbody></table></div>
             </div>
         </div>
 
@@ -1349,83 +1334,113 @@ async function deleteVacature(docId) {
 
 // ===== KANDIDAAT-REACTIES =====
 async function loadReacties() {
-    const tbody = document.getElementById('reactiesTbody');
-    tbody.innerHTML = '<tr><td colspan="6" class="loading-text">Laden...</td></tr>';
+    const container = document.getElementById('reactiesContainer');
+    container.innerHTML = '<div class="table-card"><table><tbody><tr><td class="loading-text">Laden...</td></tr></tbody></table></div>';
 
     const vacSnap = await db.collection('vacatures').get();
-    const allReacties = [];
+    const vacatureGroups = {};
+    let totalReacties = 0;
 
     for (const vDoc of vacSnap.docs) {
         const vData = vDoc.data();
         const reSnap = await vDoc.ref.collection('reacties').get();
+        if (reSnap.empty) continue;
+
+        const reacties = [];
         reSnap.forEach(rDoc => {
-            allReacties.push({
+            reacties.push({
                 ...rDoc.data(),
                 reactieId: rDoc.id,
                 vacatureId: vDoc.id,
                 vacatureFunctie: vData.functie
             });
         });
-    }
 
-    // Enrich reacties with user profile CV as fallback
-    for (const r of allReacties) {
-        if (!r.cvUrl && r.userId) {
-            try {
-                const uDoc = await db.collection('gebruikers').doc(r.userId).get();
-                if (uDoc.exists && uDoc.data().cvUrl) {
-                    r.cvUrl = uDoc.data().cvUrl;
-                    r.cvNaam = uDoc.data().cvNaam || 'CV';
-                }
-            } catch(e) { /* skip */ }
+        // Enrich with user profile CV as fallback
+        for (const r of reacties) {
+            if (!r.cvUrl && r.userId) {
+                try {
+                    const uDoc = await db.collection('gebruikers').doc(r.userId).get();
+                    if (uDoc.exists && uDoc.data().cvUrl) {
+                        r.cvUrl = uDoc.data().cvUrl;
+                        r.cvNaam = uDoc.data().cvNaam || 'CV';
+                    }
+                } catch(e) { /* skip */ }
+            }
         }
+
+        reacties.sort((a, b) => {
+            const ta = a.aangemaakt ? a.aangemaakt.toMillis() : 0;
+            const tb = b.aangemaakt ? b.aangemaakt.toMillis() : 0;
+            return tb - ta;
+        });
+
+        totalReacties += reacties.length;
+        vacatureGroups[vDoc.id] = {
+            functie: vData.functie || 'Onbekende vacature',
+            bedrijf: vData.bedrijf || 'Vertrouwelijk',
+            locatie: vData.locatie || '',
+            reacties: reacties
+        };
     }
 
-    allReacties.sort((a, b) => {
-        const ta = a.aangemaakt ? a.aangemaakt.toMillis() : 0;
-        const tb = b.aangemaakt ? b.aangemaakt.toMillis() : 0;
-        return tb - ta;
-    });
+    document.getElementById('reactiesCount').textContent = totalReacties + ' reacties';
+    container.innerHTML = '';
 
-    document.getElementById('reactiesCount').textContent = allReacties.length + ' reacties';
-    tbody.innerHTML = '';
-
-    if (allReacties.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="7" class="empty"><div class="icon">👥</div>Nog geen reacties van kandidaten</td></tr>';
+    if (totalReacties === 0) {
+        container.innerHTML = '<div class="table-card" style="text-align:center;padding:40px;"><div style="font-size:3rem;margin-bottom:12px;">👥</div><p style="color:var(--text-muted)">Nog geen reacties van kandidaten</p></div>';
         return;
     }
 
     const FASES = ['', 'Aangemeld', 'Screening', 'Interview', 'Aangeboden', 'Geplaatst'];
 
-    allReacties.forEach(r => {
-        const row = document.createElement('tr');
-        const faseOpts = [1,2,3,4,5].map(f =>
-            '<option value="' + f + '"' + (f === (r.fase || 1) ? ' selected' : '') + '>' + FASES[f] + '</option>'
-        ).join('');
+    for (const vacId of Object.keys(vacatureGroups)) {
+        const group = vacatureGroups[vacId];
+        const section = document.createElement('div');
+        section.style.marginBottom = '28px';
 
-        const contactHtml = buildContactBtns(r.email);
-        const nameLink = r.userId
-            ? '<a class="clickable-name" onclick="openKlantenkaart(\'' + esc(r.userId) + '\')">' + esc(r.naam || '—') + '</a>'
-            : '<strong>' + esc(r.naam || '—') + '</strong>';
+        let headerHtml = '<div style="background:var(--navy);color:white;padding:14px 20px;border-radius:10px 10px 0 0;display:flex;align-items:center;justify-content:space-between;">';
+        headerHtml += '<div><strong style="font-size:1rem;">' + esc(group.functie) + '</strong>';
+        headerHtml += '<span style="opacity:0.7;margin-left:12px;font-size:0.85rem;">' + esc(group.bedrijf);
+        if (group.locatie) headerHtml += ' — ' + esc(group.locatie);
+        headerHtml += '</span></div>';
+        headerHtml += '<span style="background:var(--accent);color:var(--navy);font-size:0.75rem;font-weight:700;padding:3px 10px;border-radius:12px;">' + group.reacties.length + ' kandidaten</span>';
+        headerHtml += '</div>';
 
-        // CV / Documents column
-        let docsHtml = '<span style="color:var(--text-muted)">—</span>';
-        if (r.cvUrl) {
-            docsHtml = '<a class="btn-download" href="' + esc(r.cvUrl) + '" target="_blank" rel="noopener">📄 CV</a>';
-        }
-        if (r.motivatieUrl) {
-            docsHtml += ' <a class="btn-download" href="' + esc(r.motivatieUrl) + '" target="_blank" rel="noopener">📝 Motivatie</a>';
-        }
+        let tableHtml = '<div class="table-card" style="border-radius:0 0 10px 10px;margin-top:0;">';
+        tableHtml += '<table><thead><tr><th>Datum</th><th>Kandidaat</th><th>E-mail</th><th>CV / Documenten</th><th>Fase</th></tr></thead><tbody>';
 
-        row.innerHTML = '<td>' + fmtDate(r.aangemaakt) + '</td>'
-            + '<td>' + nameLink + '</td>'
-            + '<td>' + contactHtml + '</td>'
-            + '<td>' + esc(r.vacatureFunctie || '—') + '</td>'
-            + '<td>' + docsHtml + '</td>'
-            + '<td><select class="fase-select" onchange="updateFase(\'' + r.vacatureId + '\', \'' + r.reactieId + '\', \'' + r.userId + '\', parseInt(this.value))">' + faseOpts + '</select></td>'
-            + '<td></td>';
-        tbody.appendChild(row);
-    });
+        group.reacties.forEach(r => {
+            const faseOpts = [1,2,3,4,5].map(f =>
+                '<option value="' + f + '"' + (f === (r.fase || 1) ? ' selected' : '') + '>' + FASES[f] + '</option>'
+            ).join('');
+
+            const contactHtml = buildContactBtns(r.email);
+            const nameLink = r.userId
+                ? '<a class="clickable-name" onclick="openKlantenkaart(\'' + esc(r.userId) + '\')">' + esc(r.naam || '—') + '</a>'
+                : '<strong>' + esc(r.naam || '—') + '</strong>';
+
+            let docsHtml = '<span style="color:var(--text-muted)">—</span>';
+            if (r.cvUrl) {
+                docsHtml = '<a class="btn-download" href="' + esc(r.cvUrl) + '" target="_blank" rel="noopener">📄 CV</a>';
+            }
+            if (r.motivatieUrl) {
+                docsHtml += ' <a class="btn-download" href="' + esc(r.motivatieUrl) + '" target="_blank" rel="noopener">📝 Motivatie</a>';
+            }
+
+            tableHtml += '<tr>'
+                + '<td>' + fmtDate(r.aangemaakt) + '</td>'
+                + '<td>' + nameLink + '</td>'
+                + '<td>' + contactHtml + '</td>'
+                + '<td>' + docsHtml + '</td>'
+                + '<td><select class="fase-select" onchange="updateFase(\'' + r.vacatureId + '\', \'' + r.reactieId + '\', \'' + (r.userId || '') + '\', parseInt(this.value))">' + faseOpts + '</select></td>'
+                + '</tr>';
+        });
+
+        tableHtml += '</tbody></table></div>';
+        section.innerHTML = headerHtml + tableHtml;
+        container.appendChild(section);
+    }
 }
 
 async function updateFase(vacatureId, reactieId, userId, fase) {
