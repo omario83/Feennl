@@ -622,6 +622,28 @@ html { overflow-x: hidden; max-width: 100vw; }
     </div>
 </div>
 
+<!-- FASE WIJZIG MODAL -->
+<div class="modal-overlay" id="faseModal">
+    <div class="modal" style="max-width:480px;">
+        <button class="modal-close" onclick="closeFaseModal()">&times;</button>
+        <h3 id="faseModalTitle">Fase wijzigen</h3>
+        <p style="font-size:0.88rem;color:var(--text-muted);margin-bottom:16px;" id="faseModalSubtitle"></p>
+        <div style="margin-bottom:16px;">
+            <label style="display:block;font-size:0.82rem;font-weight:600;color:var(--text-muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px;">Nieuwe fase</label>
+            <select id="faseModalSelect" style="width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:0.92rem;font-family:inherit;"></select>
+        </div>
+        <div style="margin-bottom:16px;">
+            <label style="display:block;font-size:0.82rem;font-weight:600;color:var(--text-muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px;">Notitie (verplicht)</label>
+            <textarea id="faseModalNotitie" rows="3" placeholder="Beschrijf wat je hebt gedaan of waarom de fase is gewijzigd..." style="width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:0.92rem;font-family:inherit;resize:vertical;"></textarea>
+            <p id="faseModalError" style="color:var(--danger);font-size:0.82rem;margin-top:4px;display:none;">Vul een notitie in voordat je de fase wijzigt.</p>
+        </div>
+        <div style="display:flex;gap:12px;justify-content:flex-end;">
+            <button onclick="closeFaseModal()" style="padding:10px 20px;border:1.5px solid var(--border);border-radius:8px;background:white;font-family:inherit;font-size:0.88rem;cursor:pointer;">Annuleren</button>
+            <button id="faseModalSubmit" onclick="submitFaseChange()" style="padding:10px 24px;border:none;border-radius:8px;background:var(--accent);color:var(--navy);font-weight:700;font-family:inherit;font-size:0.88rem;cursor:pointer;">Fase wijzigen</button>
+        </div>
+    </div>
+</div>
+
 <!-- NEW VACATURE MODAL -->
 <div class="modal-overlay" id="newVacModal">
     <div class="modal" style="max-width:720px;">
@@ -1380,6 +1402,9 @@ async function loadReacties() {
             functie: vData.functie || 'Onbekende vacature',
             bedrijf: vData.bedrijf || 'Vertrouwelijk',
             locatie: vData.locatie || '',
+            dienstverband: vData.dienstverband || '',
+            uren: vData.uren || '',
+            duur: vData.duur || '',
             reacties: reacties
         };
     }
@@ -1399,12 +1424,18 @@ async function loadReacties() {
         const section = document.createElement('div');
         section.style.marginBottom = '28px';
 
-        let headerHtml = '<div style="background:var(--navy);color:white;padding:14px 20px;border-radius:10px 10px 0 0;display:flex;align-items:center;justify-content:space-between;">';
-        headerHtml += '<div><strong style="font-size:1rem;">' + esc(group.functie) + '</strong>';
-        headerHtml += '<span style="opacity:0.7;margin-left:12px;font-size:0.85rem;">' + esc(group.bedrijf);
-        if (group.locatie) headerHtml += ' — ' + esc(group.locatie);
-        headerHtml += '</span></div>';
+        let headerHtml = '<div style="background:var(--navy);color:white;padding:16px 20px;border-radius:10px 10px 0 0;">';
+        headerHtml += '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">';
+        headerHtml += '<strong style="font-size:1.05rem;">' + esc(group.functie) + '</strong>';
         headerHtml += '<span style="background:var(--accent);color:var(--navy);font-size:0.75rem;font-weight:700;padding:3px 10px;border-radius:12px;">' + group.reacties.length + ' kandidaten</span>';
+        headerHtml += '</div>';
+        headerHtml += '<div style="display:flex;flex-wrap:wrap;gap:16px;font-size:0.82rem;opacity:0.8;">';
+        headerHtml += '<span>🏢 ' + esc(group.bedrijf) + '</span>';
+        if (group.locatie) headerHtml += '<span>📍 ' + esc(group.locatie) + '</span>';
+        if (group.dienstverband) headerHtml += '<span>📋 ' + esc(group.dienstverband) + '</span>';
+        if (group.uren) headerHtml += '<span>⏰ ' + esc(group.uren) + '</span>';
+        if (group.duur) headerHtml += '<span>📅 ' + esc(group.duur) + '</span>';
+        headerHtml += '</div>';
         headerHtml += '</div>';
 
         let tableHtml = '<div class="table-card" style="border-radius:0 0 10px 10px;margin-top:0;">';
@@ -1433,7 +1464,7 @@ async function loadReacties() {
                 + '<td>' + nameLink + '</td>'
                 + '<td>' + contactHtml + '</td>'
                 + '<td>' + docsHtml + '</td>'
-                + '<td><select class="fase-select" onchange="updateFase(\'' + r.vacatureId + '\', \'' + r.reactieId + '\', \'' + (r.userId || '') + '\', parseInt(this.value))">' + faseOpts + '</select></td>'
+                + '<td><select class="fase-select" data-vacature="' + r.vacatureId + '" data-reactie="' + r.reactieId + '" data-user="' + (r.userId || '') + '" data-naam="' + esc(r.naam || '—') + '" data-current="' + (r.fase || 1) + '" onchange="openFaseModal(this)">' + faseOpts + '</select></td>'
                 + '</tr>';
         });
 
@@ -1443,8 +1474,24 @@ async function loadReacties() {
     }
 }
 
-async function updateFase(vacatureId, reactieId, userId, fase) {
+async function updateFase(vacatureId, reactieId, userId, fase, notitie) {
     await db.collection('vacatures').doc(vacatureId).collection('reacties').doc(reactieId).update({ fase: fase });
+
+    // Save fase-change notitie
+    const FASES = ['', 'Aangemeld', 'Screening', 'Interview', 'Aangeboden', 'Geplaatst'];
+    const notitieText = 'Fase gewijzigd naar "' + FASES[fase] + '": ' + notitie;
+    if (userId) {
+        await db.collection('gebruikers').doc(userId).collection('notities').add({
+            tekst: notitieText,
+            aangemaakt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+    }
+    // Also save on vacature reactie level
+    await db.collection('vacatures').doc(vacatureId).collection('reacties').doc(reactieId).collection('notities').add({
+        tekst: notitieText,
+        aangemaakt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
     if (userId) {
         const userSolSnap = await db.collection('gebruikers').doc(userId)
             .collection('sollicitaties')
@@ -1457,6 +1504,68 @@ async function updateFase(vacatureId, reactieId, userId, fase) {
             });
         });
     }
+}
+
+// ===== FASE MODAL =====
+let pendingFaseSelect = null;
+
+function openFaseModal(selectEl) {
+    const newFase = parseInt(selectEl.value);
+    const currentFase = parseInt(selectEl.dataset.current);
+    if (newFase === currentFase) return;
+
+    pendingFaseSelect = selectEl;
+    const FASES = ['', 'Aangemeld', 'Screening', 'Interview', 'Aangeboden', 'Geplaatst'];
+    const naam = selectEl.dataset.naam;
+
+    document.getElementById('faseModalTitle').textContent = 'Fase wijzigen voor ' + naam;
+    document.getElementById('faseModalSubtitle').textContent = FASES[currentFase] + ' → ' + FASES[newFase];
+    document.getElementById('faseModalSelect').innerHTML = [1,2,3,4,5].map(f =>
+        '<option value="' + f + '"' + (f === newFase ? ' selected' : '') + '>' + FASES[f] + '</option>'
+    ).join('');
+    document.getElementById('faseModalNotitie').value = '';
+    document.getElementById('faseModalError').style.display = 'none';
+    document.getElementById('faseModal').classList.add('show');
+}
+
+function closeFaseModal() {
+    document.getElementById('faseModal').classList.remove('show');
+    // Reset select to original value
+    if (pendingFaseSelect) {
+        pendingFaseSelect.value = pendingFaseSelect.dataset.current;
+        pendingFaseSelect = null;
+    }
+}
+
+async function submitFaseChange() {
+    const notitie = document.getElementById('faseModalNotitie').value.trim();
+    if (!notitie) {
+        document.getElementById('faseModalError').style.display = 'block';
+        document.getElementById('faseModalNotitie').focus();
+        return;
+    }
+
+    const btn = document.getElementById('faseModalSubmit');
+    btn.disabled = true;
+    btn.textContent = 'Opslaan...';
+
+    const fase = parseInt(document.getElementById('faseModalSelect').value);
+    const vacatureId = pendingFaseSelect.dataset.vacature;
+    const reactieId = pendingFaseSelect.dataset.reactie;
+    const userId = pendingFaseSelect.dataset.user;
+
+    try {
+        await updateFase(vacatureId, reactieId, userId, fase, notitie);
+        pendingFaseSelect.dataset.current = fase;
+        pendingFaseSelect.value = fase;
+        pendingFaseSelect = null;
+        document.getElementById('faseModal').classList.remove('show');
+    } catch(e) {
+        alert('Fout bij opslaan: ' + e.message);
+    }
+
+    btn.disabled = false;
+    btn.textContent = 'Fase wijzigen';
 }
 
 // ===== GEBRUIKERS =====
