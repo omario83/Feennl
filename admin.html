@@ -1156,7 +1156,7 @@ async function seedDemoVacatures() {
 async function loadDashboard() {
     try {
         const [aanvragenSnap, vacSnap, gebruikersSnap] = await Promise.all([
-            db.collection('vacature-aanvragen').orderBy('aangemaakt', 'desc').get(),
+            db.collection('vacature-aanvragen').get(),
             db.collection('vacatures').get(),
             db.collection('gebruikers').get()
         ]);
@@ -1174,9 +1174,15 @@ async function loadDashboard() {
         document.getElementById('statReacties').textContent = reactieCount;
         document.getElementById('reactiesBadge').textContent = reactieCount;
 
+        const sortedAanvragen = aanvragenSnap.docs.sort((a, b) => {
+            const ta = a.data().aangemaakt ? a.data().aangemaakt.toMillis() : 0;
+            const tb = b.data().aangemaakt ? b.data().aangemaakt.toMillis() : 0;
+            return tb - ta;
+        });
+
         const tbody = document.getElementById('dashRecentAanvragen');
         tbody.innerHTML = '';
-        aanvragenSnap.docs.slice(0, 5).forEach(doc => {
+        sortedAanvragen.slice(0, 5).forEach(doc => {
             const d = doc.data();
             const row = document.createElement('tr');
             row.innerHTML = '<td>' + fmtDate(d.aangemaakt) + '</td>'
@@ -1198,7 +1204,7 @@ async function loadAanvragen() {
     const tbody = document.getElementById('aanvragenTbody');
     tbody.innerHTML = '<tr><td colspan="7" class="loading-text">Laden...</td></tr>';
 
-    const snap = await db.collection('vacature-aanvragen').orderBy('aangemaakt', 'desc').get();
+    const snap = await db.collection('vacature-aanvragen').get();
     document.getElementById('aanvragenCount').textContent = snap.size + ' aanvragen';
     tbody.innerHTML = '';
 
@@ -1207,7 +1213,13 @@ async function loadAanvragen() {
         return;
     }
 
-    snap.forEach(doc => {
+    const sortedDocs = snap.docs.sort((a, b) => {
+        const ta = a.data().aangemaakt ? a.data().aangemaakt.toMillis() : 0;
+        const tb = b.data().aangemaakt ? b.data().aangemaakt.toMillis() : 0;
+        return tb - ta;
+    });
+
+    sortedDocs.forEach(doc => {
         const d = doc.data();
         const row = document.createElement('tr');
         const bijlageHtml = d.bestandUrl
@@ -1261,7 +1273,12 @@ async function loadVacatures() {
     const tbody = document.getElementById('vacaturesTbody');
     tbody.innerHTML = '<tr><td colspan="6" class="loading-text">Laden...</td></tr>';
 
-    const snap = await db.collection('vacatures').orderBy('geplaatst', 'desc').get();
+    const snap = await db.collection('vacatures').get();
+    snap.docs.sort((a, b) => {
+        const ta = a.data().geplaatst ? a.data().geplaatst.toMillis() : 0;
+        const tb = b.data().geplaatst ? b.data().geplaatst.toMillis() : 0;
+        return tb - ta;
+    });
     tbody.innerHTML = '';
 
     if (snap.empty) {
@@ -1340,7 +1357,7 @@ async function loadReacties() {
 
     for (const vDoc of vacSnap.docs) {
         const vData = vDoc.data();
-        const reSnap = await vDoc.ref.collection('reacties').orderBy('aangemaakt', 'desc').get();
+        const reSnap = await vDoc.ref.collection('reacties').get();
         reSnap.forEach(rDoc => {
             allReacties.push({
                 ...rDoc.data(),
@@ -1432,7 +1449,7 @@ async function loadGebruikers() {
     const tbody = document.getElementById('gebruikersTbody');
     tbody.innerHTML = '<tr><td colspan="5" class="loading-text">Laden...</td></tr>';
 
-    const snap = await db.collection('gebruikers').orderBy('aangemaakt', 'desc').get();
+    const snap = await db.collection('gebruikers').get();
     document.getElementById('gebruikersCount').textContent = snap.size + ' gebruikers';
     tbody.innerHTML = '';
 
@@ -1441,7 +1458,13 @@ async function loadGebruikers() {
         return;
     }
 
-    snap.forEach(doc => {
+    const sortedUsers = snap.docs.sort((a, b) => {
+        const ta = a.data().aangemaakt ? a.data().aangemaakt.toMillis() : 0;
+        const tb = b.data().aangemaakt ? b.data().aangemaakt.toMillis() : 0;
+        return tb - ta;
+    });
+
+    sortedUsers.forEach(doc => {
         const d = doc.data();
         const naam = (d.voornaam || '') + ' ' + (d.achternaam || '');
         const contactHtml = buildContactBtns(d.email, d.telefoon);
@@ -1582,7 +1605,13 @@ async function loadKkDocumenten(userId) {
 
     // Load CV history from subcollection
     try {
-        const cvSnap = await db.collection('gebruikers').doc(userId).collection('cvs').orderBy('geupload', 'desc').get();
+        const cvSnap = await db.collection('gebruikers').doc(userId).collection('cvs').get();
+        // Sort client-side
+        cvSnap.docs.sort((a, b) => {
+            const ta = a.data().geupload ? a.data().geupload.toMillis() : 0;
+            const tb = b.data().geupload ? b.data().geupload.toMillis() : 0;
+            return tb - ta;
+        });
         cvSnap.forEach(cDoc => {
             const c = cDoc.data();
             if (c.url) docs.push({ type: 'CV', url: c.url, naam: c.naam || 'CV', vacature: '—', datum: c.geupload });
@@ -1643,8 +1672,13 @@ async function loadKkActiviteit(userId) {
     }
 
     // Sollicitaties
-    const solSnap = await db.collection('gebruikers').doc(userId).collection('sollicitaties').orderBy('aangemaakt', 'desc').get();
-    solSnap.forEach(doc => {
+    const solSnap = await db.collection('gebruikers').doc(userId).collection('sollicitaties').get();
+    solSnap.docs.sort((a, b) => {
+        const ta = a.data().aangemaakt ? a.data().aangemaakt.toMillis() : 0;
+        const tb = b.data().aangemaakt ? b.data().aangemaakt.toMillis() : 0;
+        return tb - ta;
+    });
+    solSnap.docs.forEach(doc => {
         const s = doc.data();
         events.push({ date: s.aangemaakt, text: 'Gesolliciteerd op "' + (s.functie || '—') + '" bij ' + (s.bedrijf || 'Vertrouwelijk') });
         if (s.bijgewerkt && s.fase > 1) {
@@ -1673,16 +1707,21 @@ async function loadKkSollicitaties(userId) {
     const el = document.getElementById('kkTab-sollicitaties');
     el.innerHTML = '<p style="color:var(--text-muted);">Laden...</p>';
 
-    const solSnap = await db.collection('gebruikers').doc(userId).collection('sollicitaties').orderBy('aangemaakt', 'desc').get();
+    const solSnap = await db.collection('gebruikers').doc(userId).collection('sollicitaties').get();
+    const solDocs = solSnap.docs.sort((a, b) => {
+        const ta = a.data().aangemaakt ? a.data().aangemaakt.toMillis() : 0;
+        const tb = b.data().aangemaakt ? b.data().aangemaakt.toMillis() : 0;
+        return tb - ta;
+    });
 
-    if (solSnap.empty) {
+    if (solDocs.length === 0) {
         el.innerHTML = '<p style="color:var(--text-muted);">Nog geen sollicitaties.</p>';
         return;
     }
 
     const FASES = ['','Aangemeld','Screening','Interview','Aangeboden','Geplaatst'];
     let html = '<table style="width:100%;"><thead><tr><th>Functie</th><th>Bedrijf</th><th>Fase</th><th>Datum</th></tr></thead><tbody>';
-    solSnap.forEach(doc => {
+    solDocs.forEach(doc => {
         const s = doc.data();
         html += '<tr><td>' + esc(s.functie || '—') + '</td><td>' + esc(s.bedrijf || '—') + '</td><td><span class="status-badge status-actief">' + FASES[s.fase || 1] + '</span></td><td>' + fmtDate(s.aangemaakt) + '</td></tr>';
     });
@@ -1695,13 +1734,18 @@ async function loadKkNotities(collection, docId) {
     const el = document.getElementById('kkTab-notities');
     el.innerHTML = '<p style="color:var(--text-muted);">Laden...</p>';
 
-    const snap = await db.collection(collection).doc(docId).collection('notities').orderBy('aangemaakt', 'desc').get();
+    const snap = await db.collection(collection).doc(docId).collection('notities').get();
+    snap.docs.sort((a, b) => {
+        const ta = a.data().aangemaakt ? a.data().aangemaakt.toMillis() : 0;
+        const tb = b.data().aangemaakt ? b.data().aangemaakt.toMillis() : 0;
+        return tb - ta;
+    });
 
     let html = '<div class="kk-notities">';
-    if (snap.empty) {
+    if (snap.docs.length === 0) {
         html += '<p style="color:var(--text-muted);margin-bottom:16px;">Nog geen notities.</p>';
     } else {
-        snap.forEach(doc => {
+        snap.docs.forEach(doc => {
             const n = doc.data();
             html += '<div class="kk-notitie"><div class="notitie-date">' + fmtDateTime(n.aangemaakt) + '</div><div class="notitie-text">' + esc(n.tekst) + '</div></div>';
         });
