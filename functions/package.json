@@ -1,0 +1,17 @@
+{
+  "name": "feen-functions",
+  "description": "Firebase Cloud Functions voor Feen – TenderNed integratie",
+  "engines": {
+    "node": "18"
+  },
+  "main": "index.js",
+  "scripts": {
+    "serve": "firebase emulators:start --only functions",
+    "deploy": "firebase deploy --only functions"
+  },
+  "dependencies": {
+    "firebase-admin": "^11.11.0",
+    "firebase-functions": "^4.5.0",
+    "node-fetch": "^2.7.0"
+  }
+}

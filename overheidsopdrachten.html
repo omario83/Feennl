@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DVPJM8XPXK"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-DVPJM8XPXK');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Overheidsopdrachten | Feen</title>
+    <meta name="description" content="Bekijk actuele overheidsopdrachten en aanbestedingen in finance & accountancy via TenderNed. Vind opdrachten bij de overheid.">
+    <meta property="og:title" content="Overheidsopdrachten Finance & Accountancy | Feen">
+    <meta property="og:description" content="Actuele overheidsopdrachten en aanbestedingen in finance & accountancy. Rechtstreeks van TenderNed.">
+    <meta property="og:url" content="https://feennl.nl/overheidsopdrachten">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://primary.jwwb.nl/public/j/q/c/temp-bubpssuhqgoxqtzyfqhe/image-high-aunh7o.png?enable-io=true&enable=upscale&height=400">
+    <meta property="og:locale" content="nl_NL">
+    <meta property="og:site_name" content="Feen">
+    <link rel="canonical" href="https://feennl.nl/overheidsopdrachten">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Maven+Pro:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { overflow-x: hidden; max-width: 100vw; }
+        body {
+            font-family: 'Lato', sans-serif;
+            background-color: #1a1a2e;
+            color: #ffffff;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        /* === Header === */
+        .header {
+            background-color: #1a1a2e;
+            padding: 16px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .header-logo img { height: 55px; width: auto; }
+        .header-nav ul { display: flex; gap: 32px; align-items: center; }
+        .header-nav a {
+            font-family: 'Maven Pro', sans-serif;
+            font-size: 15px;
+            color: #ffffff;
+            transition: color 0.2s;
+            padding: 8px 0;
+        }
+        .header-nav a:hover, .header-nav a.active { color: #b8f470; }
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 28px;
+            cursor: pointer;
+        }
+
+        /* === Hero === */
+        .hero {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            padding: 60px 40px 50px;
+            text-align: center;
+        }
+        .hero h1 {
+            font-family: 'Maven Pro', sans-serif;
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+        .hero h1 span { color: #b8f470; }
+        .hero p {
+            font-size: 18px;
+            color: rgba(255,255,255,0.7);
+            max-width: 650px;
+            margin: 0 auto 28px;
+        }
+
+        /* Search */
+        .search-bar {
+            max-width: 650px;
+            margin: 0 auto;
+            display: flex;
+            gap: 0;
+            background: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        .search-bar input {
+            flex: 1;
+            padding: 14px 20px;
+            font-size: 15px;
+            border: none;
+            outline: none;
+            font-family: 'Lato', sans-serif;
+            color: #333;
+        }
+        .search-bar button {
+            padding: 14px 28px;
+            background-color: #b8f470;
+            color: #1a1a2e;
+            font-weight: 700;
+            font-family: 'Maven Pro', sans-serif;
+            font-size: 15px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .search-bar button:hover { background-color: #a6e050; }
+
+        /* === Filters === */
+        .filter-bar {
+            max-width: 1100px;
+            margin: 30px auto 0;
+            padding: 0 20px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .filter-bar select {
+            padding: 10px 16px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.08);
+            color: #fff;
+            font-family: 'Lato', sans-serif;
+            font-size: 14px;
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23b8f470' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            padding-right: 36px;
+            min-width: 180px;
+        }
+        .filter-bar select option { background: #1a1a2e; color: #fff; }
+
+        /* === Results === */
+        .results-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 30px 20px 60px;
+        }
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+        .results-header h2 {
+            font-family: 'Maven Pro', sans-serif;
+            font-size: 22px;
+        }
+        .results-count {
+            color: rgba(255,255,255,0.5);
+            font-size: 14px;
+        }
+        .loading {
+            text-align: center;
+            padding: 60px 0;
+            color: rgba(255,255,255,0.5);
+            font-size: 16px;
+        }
+        .loading .spinner {
+            display: inline-block;
+            width: 32px; height: 32px;
+            border: 3px solid rgba(255,255,255,0.15);
+            border-top-color: #b8f470;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-bottom: 12px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .no-results {
+            text-align: center;
+            padding: 60px 0;
+            color: rgba(255,255,255,0.5);
+        }
+        .no-results h3 {
+            font-family: 'Maven Pro', sans-serif;
+            font-size: 20px;
+            margin-bottom: 8px;
+            color: rgba(255,255,255,0.7);
+        }
+
+        /* === Opdracht Card === */
+        .opdracht-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 24px 28px;
+            margin-bottom: 16px;
+            transition: all 0.25s;
+        }
+        .opdracht-card:hover {
+            border-color: rgba(184,244,112,0.3);
+            background: rgba(255,255,255,0.08);
+            transform: translateY(-2px);
+        }
+        .opdracht-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 12px;
+        }
+        .opdracht-titel {
+            font-family: 'Maven Pro', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+            line-height: 1.4;
+        }
+        .opdracht-type {
+            display: inline-block;
+            background: rgba(184,244,112,0.15);
+            color: #b8f470;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .opdracht-dienst {
+            font-size: 15px;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 10px;
+        }
+        .opdracht-dienst strong { color: #b8f470; }
+        .opdracht-beschrijving {
+            font-size: 14px;
+            color: rgba(255,255,255,0.55);
+            line-height: 1.6;
+            margin-bottom: 14px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .opdracht-meta {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .opdracht-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            color: rgba(255,255,255,0.5);
+        }
+        .opdracht-meta-item svg {
+            width: 14px; height: 14px;
+            fill: none;
+            stroke: rgba(255,255,255,0.4);
+            stroke-width: 2;
+        }
+        .opdracht-link {
+            margin-left: auto;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #b8f470;
+            color: #1a1a2e;
+            padding: 8px 18px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 700;
+            font-family: 'Maven Pro', sans-serif;
+            transition: all 0.2s;
+        }
+        .opdracht-link:hover {
+            background: #a6e050;
+            transform: translateY(-1px);
+        }
+
+        /* Badge colors */
+        .status-actief { background: rgba(184,244,112,0.15); color: #b8f470; }
+        .status-verlopen { background: rgba(255,100,100,0.15); color: #ff6464; }
+
+        /* === Footer === */
+        .footer {
+            background: #12122a;
+            padding: 40px;
+            margin-top: 40px;
+            border-top: 1px solid rgba(255,255,255,0.06);
+        }
+        .footer-links {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .footer-links a {
+            font-size: 14px;
+            color: rgba(255,255,255,0.5);
+            transition: color 0.2s;
+        }
+        .footer-links a:hover { color: #b8f470; }
+        .footer-copy {
+            font-size: 14px;
+            color: rgba(255,255,255,0.45);
+        }
+
+        /* === Pagination === */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 32px;
+        }
+        .pagination button {
+            padding: 10px 18px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.05);
+            color: #fff;
+            font-family: 'Maven Pro', sans-serif;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .pagination button:hover:not(:disabled) {
+            border-color: #b8f470;
+            color: #b8f470;
+        }
+        .pagination button:disabled {
+            opacity: 0.3;
+            cursor: default;
+        }
+        .pagination .active {
+            background: #b8f470;
+            color: #1a1a2e;
+            border-color: #b8f470;
+            font-weight: 700;
+        }
+
+        /* === Responsive === */
+        @media (max-width: 768px) {
+            .header { padding: 12px 20px; }
+            .header-nav { display: none; }
+            .header-nav.open { display: block; }
+            .mobile-menu-btn { display: block; }
+            .header-nav.open {
+                position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+                background: rgba(26,26,46,0.98); z-index: 200;
+                display: flex; align-items: center; justify-content: center;
+            }
+            .header-nav.open ul {
+                flex-direction: column;
+                gap: 24px;
+                text-align: center;
+            }
+            .header-nav.open a { font-size: 22px; }
+            .hero { padding: 40px 20px 30px; }
+            .hero h1 { font-size: 28px; }
+            .hero p { font-size: 15px; }
+            .search-bar { flex-direction: column; border-radius: 8px; }
+            .search-bar input, .search-bar button { width: 100%; }
+            .filter-bar { flex-direction: column; align-items: stretch; }
+            .filter-bar select { min-width: 100%; }
+            .opdracht-top { flex-direction: column; }
+            .opdracht-meta { flex-direction: column; gap: 8px; }
+            .opdracht-link { margin-left: 0; align-self: flex-start; }
+            .footer { padding: 24px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+    <a href="/" class="header-logo">
+        <img src="https://primary.jwwb.nl/public/j/q/c/temp-bubpssuhqgoxqtzyfqhe/image-high-aunh7o.png?enable-io=true&enable=upscale&height=70" alt="Feen" title="Feen">
+    </a>
+    <button class="mobile-menu-btn" aria-label="Menu openen" onclick="document.getElementById('mobileNav').classList.add('open')">&#9776;</button>
+    <nav class="header-nav">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/vacature">Vacatures</a></li>
+            <li><a href="/overheidsopdrachten" class="active">Overheidsopdrachten</a></li>
+            <li><a href="/opdrachtgever">Opdrachtgever</a></li>
+            <li><a href="/over-ons">Over Ons</a></li>
+            <li><a href="/contact">Contact</a></li>
+            <li><a href="/blogs">Inzichten</a></li>
+            <li><a href="/inloggen" class="auth-login">Inloggen</a></li>
+            <li><a href="/mijn-sollicitaties" class="auth-portal" style="display:none">Mijn Feen</a></li>
+        </ul>
+    </nav>
+</header>
+<div class="mobile-nav" id="mobileNav" style="position:fixed;inset:0;background:rgba(18,21,42,0.98);z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;opacity:0;pointer-events:none;transition:opacity 0.3s">
+    <button onclick="document.getElementById('mobileNav').classList.remove('open')" style="position:absolute;top:24px;right:24px;background:none;border:none;color:white;font-size:28px;cursor:pointer" aria-label="Sluit menu">&times;</button>
+    <a href="/" style="color:#fff;text-decoration:none;font-size:1.4rem;font-weight:600">Home</a>
+    <a href="/vacature" style="color:#fff;text-decoration:none;font-size:1.4rem;font-weight:600">Vacatures</a>
+    <a href="/overheidsopdrachten" style="color:#b8f470;text-decoration:none;font-size:1.4rem;font-weight:600">Overheidsopdrachten</a>
+    <a href="/opdrachtgever" style="color:#fff;text-decoration:none;font-size:1.4rem;font-weight:600">Opdrachtgever</a>
+    <a href="/over-ons" style="color:#fff;text-decoration:none;font-size:1.4rem;font-weight:600">Over Ons</a>
+    <a href="/contact" style="color:#fff;text-decoration:none;font-size:1.4rem;font-weight:600">Contact</a>
+    <a href="/blogs" style="color:#fff;text-decoration:none;font-size:1.4rem;font-weight:600">Inzichten</a>
+    <a href="/inloggen" class="auth-login" style="color:#fff;text-decoration:none;font-size:1.4rem;font-weight:600">Inloggen</a>
+    <a href="/mijn-sollicitaties" class="auth-portal" style="display:none;color:#fff;text-decoration:none;font-size:1.4rem;font-weight:600">Mijn Feen</a>
+</div>
+<style>.mobile-nav.open { opacity: 1 !important; pointer-events: all !important; }</style>
+
+<!-- Hero -->
+<section class="hero">
+    <h1>Overheids<span>opdrachten</span></h1>
+    <p>Actuele aanbestedingen en overheidsopdrachten in finance &amp; accountancy, rechtstreeks van TenderNed.</p>
+    <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Zoek op titel, organisatie of trefwoord..." aria-label="Zoek opdrachten" onkeydown="if(event.key==='Enter')filterOpdrachten()">
+        <button onclick="filterOpdrachten()">Zoeken</button>
+    </div>
+</section>
+
+<!-- Filters -->
+<div class="filter-bar">
+    <select id="filterType" onchange="filterOpdrachten()">
+        <option value="">Alle typen</option>
+    </select>
+    <select id="filterStatus" onchange="filterOpdrachten()">
+        <option value="">Alle statussen</option>
+        <option value="actief">Actief (deadline niet verstreken)</option>
+        <option value="verlopen">Deadline verstreken</option>
+    </select>
+    <select id="filterSort" onchange="filterOpdrachten()">
+        <option value="datum-nieuw">Nieuwste eerst</option>
+        <option value="datum-oud">Oudste eerst</option>
+        <option value="deadline">Deadline (snel sluitend)</option>
+    </select>
+</div>
+
+<!-- Results -->
+<div class="results-container">
+    <div class="results-header">
+        <h2>Opdrachten</h2>
+        <span class="results-count" id="resultsCount"></span>
+    </div>
+
+    <div id="loadingIndicator" class="loading">
+        <div class="spinner"></div>
+        <p>Opdrachten laden...</p>
+    </div>
+
+    <div id="noResults" class="no-results" style="display:none">
+        <h3>Geen opdrachten gevonden</h3>
+        <p>Probeer andere zoektermen of filters.</p>
+    </div>
+
+    <div id="opdrachtenLijst"></div>
+
+    <div class="pagination" id="pagination" style="display:none"></div>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px">
+        <img src="https://primary.jwwb.nl/public/j/q/c/temp-bubpssuhqgoxqtzyfqhe/image-high-aunh7o.png?enable-io=true&enable=upscale&height=80" alt="Feen" style="height:28px;opacity:0.8">
+        <span class="footer-copy">&copy; 2023 &ndash; 2026 Feen. Alle rechten voorbehouden.</span>
+    </div>
+    <div class="footer-links">
+        <a href="/">Home</a>
+        <a href="/vacature">Vacatures</a>
+        <a href="/overheidsopdrachten">Overheidsopdrachten</a>
+        <a href="/opdrachtgever">Opdrachtgever</a>
+        <a href="/contact">Contact</a>
+        <a href="https://linkedin.com/company/feennl/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://api.whatsapp.com/send?phone=31621670871" target="_blank" rel="noopener">WhatsApp</a>
+    </div>
+</footer>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+
+<script>
+    // ============================================================
+    // OVERHEIDSOPDRACHTEN — Laden en tonen vanuit Firestore
+    // ============================================================
+
+    let alleOpdrachten = [];
+    let gefilterdeOpdrachten = [];
+    const PER_PAGINA = 12;
+    let huidigePagina = 1;
+
+    // Laad opdrachten bij pageload
+    document.addEventListener('DOMContentLoaded', laadOpdrachten);
+
+    async function laadOpdrachten() {
+        const loading = document.getElementById('loadingIndicator');
+        const noResults = document.getElementById('noResults');
+        const lijst = document.getElementById('opdrachtenLijst');
+
+        loading.style.display = '';
+        noResults.style.display = 'none';
+        lijst.innerHTML = '';
+
+        try {
+            const snapshot = await db.collection('overheidsopdrachten').get();
+            alleOpdrachten = [];
+
+            snapshot.forEach(doc => {
+                alleOpdrachten.push({ id: doc.id, ...doc.data() });
+            });
+
+            // Sorteer op publicatieDatum (nieuwste eerst)
+            alleOpdrachten.sort((a, b) => {
+                const dA = a.publicatieDatum || '';
+                const dB = b.publicatieDatum || '';
+                return dB.localeCompare(dA);
+            });
+
+            // Vul type filter
+            vulTypeFilter();
+
+            // Toon
+            loading.style.display = 'none';
+            filterOpdrachten();
+
+        } catch (err) {
+            console.error('Fout bij laden opdrachten:', err);
+            loading.innerHTML = '<p style="color:#ff6464">Fout bij het laden van opdrachten. Probeer het later opnieuw.</p>';
+        }
+    }
+
+    function vulTypeFilter() {
+        const select = document.getElementById('filterType');
+        const types = new Set();
+        alleOpdrachten.forEach(o => {
+            if (o.type && o.type !== 'Onbekend') types.add(o.type);
+        });
+        // Keep existing first option
+        Array.from(types).sort().forEach(t => {
+            const opt = document.createElement('option');
+            opt.value = t;
+            opt.textContent = t;
+            select.appendChild(opt);
+        });
+    }
+
+    function filterOpdrachten() {
+        const zoekTekst = (document.getElementById('searchInput').value || '').toLowerCase().trim();
+        const filterType = document.getElementById('filterType').value;
+        const filterStatus = document.getElementById('filterStatus').value;
+        const filterSort = document.getElementById('filterSort').value;
+        const nu = new Date().toISOString();
+
+        gefilterdeOpdrachten = alleOpdrachten.filter(o => {
+            // Zoektekst
+            if (zoekTekst) {
+                const doorzoek = [
+                    o.titel, o.beschrijving, o.aanbestedendeDienst,
+                    o.type, o.procedure,
+                    ...(Array.isArray(o.cpvCodes) ? o.cpvCodes : [])
+                ].join(' ').toLowerCase();
+                if (!doorzoek.includes(zoekTekst)) return false;
+            }
+
+            // Type filter
+            if (filterType && o.type !== filterType) return false;
+
+            // Status filter
+            if (filterStatus === 'actief' && o.sluitingsDatum && o.sluitingsDatum < nu) return false;
+            if (filterStatus === 'verlopen' && (!o.sluitingsDatum || o.sluitingsDatum >= nu)) return false;
+
+            return true;
+        });
+
+        // Sortering
+        gefilterdeOpdrachten.sort((a, b) => {
+            if (filterSort === 'datum-nieuw') {
+                return (b.publicatieDatum || '').localeCompare(a.publicatieDatum || '');
+            } else if (filterSort === 'datum-oud') {
+                return (a.publicatieDatum || '').localeCompare(b.publicatieDatum || '');
+            } else if (filterSort === 'deadline') {
+                const dA = a.sluitingsDatum || 'zzzz';
+                const dB = b.sluitingsDatum || 'zzzz';
+                return dA.localeCompare(dB);
+            }
+            return 0;
+        });
+
+        huidigePagina = 1;
+        toonOpdrachten();
+    }
+
+    function toonOpdrachten() {
+        const lijst = document.getElementById('opdrachtenLijst');
+        const noResults = document.getElementById('noResults');
+        const countEl = document.getElementById('resultsCount');
+        const nu = new Date().toISOString();
+
+        countEl.textContent = gefilterdeOpdrachten.length + ' opdracht' + (gefilterdeOpdrachten.length !== 1 ? 'en' : '') + ' gevonden';
+
+        if (gefilterdeOpdrachten.length === 0) {
+            lijst.innerHTML = '';
+            noResults.style.display = '';
+            document.getElementById('pagination').style.display = 'none';
+            return;
+        }
+
+        noResults.style.display = 'none';
+
+        // Paginering
+        const start = (huidigePagina - 1) * PER_PAGINA;
+        const paginaItems = gefilterdeOpdrachten.slice(start, start + PER_PAGINA);
+
+        lijst.innerHTML = paginaItems.map(o => {
+            const isVerlopen = o.sluitingsDatum && o.sluitingsDatum < nu;
+            const statusClass = isVerlopen ? 'status-verlopen' : 'status-actief';
+            const statusText = isVerlopen ? 'Verlopen' : 'Actief';
+
+            const pubDatum = o.publicatieDatum ? formatDatum(o.publicatieDatum) : 'Onbekend';
+            const sluitDatum = o.sluitingsDatum ? formatDatum(o.sluitingsDatum) : 'Niet vermeld';
+
+            const beschrijving = o.beschrijving
+                ? escapeHtml(o.beschrijving.substring(0, 300))
+                : 'Geen beschrijving beschikbaar.';
+
+            return `
+                <div class="opdracht-card">
+                    <div class="opdracht-top">
+                        <div class="opdracht-titel">${escapeHtml(o.titel)}</div>
+                        <span class="opdracht-type ${statusClass}">${statusText}</span>
+                    </div>
+                    <div class="opdracht-dienst"><strong>${escapeHtml(o.aanbestedendeDienst)}</strong>${o.type && o.type !== 'Onbekend' ? ' &mdash; ' + escapeHtml(o.type) : ''}</div>
+                    <div class="opdracht-beschrijving">${beschrijving}</div>
+                    <div class="opdracht-meta">
+                        <div class="opdracht-meta-item">
+                            <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                            Gepubliceerd: ${pubDatum}
+                        </div>
+                        <div class="opdracht-meta-item">
+                            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                            Deadline: ${sluitDatum}
+                        </div>
+                        ${o.url ? `<a href="${escapeHtml(o.url)}" target="_blank" rel="noopener" class="opdracht-link">Bekijk op TenderNed &rarr;</a>` : ''}
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        // Paginering renderen
+        renderPaginering();
+    }
+
+    function renderPaginering() {
+        const container = document.getElementById('pagination');
+        const totaalPaginas = Math.ceil(gefilterdeOpdrachten.length / PER_PAGINA);
+
+        if (totaalPaginas <= 1) {
+            container.style.display = 'none';
+            return;
+        }
+
+        container.style.display = 'flex';
+        let html = '';
+
+        html += `<button ${huidigePagina === 1 ? 'disabled' : ''} onclick="gaNaarPagina(${huidigePagina - 1})">&laquo; Vorige</button>`;
+
+        for (let i = 1; i <= totaalPaginas; i++) {
+            if (totaalPaginas > 7 && Math.abs(i - huidigePagina) > 2 && i !== 1 && i !== totaalPaginas) {
+                if (i === huidigePagina - 3 || i === huidigePagina + 3) {
+                    html += `<button disabled>...</button>`;
+                }
+                continue;
+            }
+            html += `<button class="${i === huidigePagina ? 'active' : ''}" onclick="gaNaarPagina(${i})">${i}</button>`;
+        }
+
+        html += `<button ${huidigePagina === totaalPaginas ? 'disabled' : ''} onclick="gaNaarPagina(${huidigePagina + 1})">Volgende &raquo;</button>`;
+
+        container.innerHTML = html;
+    }
+
+    function gaNaarPagina(pagina) {
+        huidigePagina = pagina;
+        toonOpdrachten();
+        window.scrollTo({ top: 300, behavior: 'smooth' });
+    }
+
+    // Helpers
+    function formatDatum(dateStr) {
+        if (!dateStr) return 'Onbekend';
+        try {
+            const d = new Date(dateStr);
+            if (isNaN(d.getTime())) return dateStr;
+            return d.toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' });
+        } catch {
+            return dateStr;
+        }
+    }
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        const div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+    }
+</script>
+
+</body>
+</html>
