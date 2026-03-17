@@ -1,0 +1,41 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Contact berichten — iedereen mag aanmaken, alleen admin mag lezen
+    match /contact-berichten/{doc} {
+      allow create: if true;
+      allow read, update, delete: if request.auth != null
+        && request.auth.token.email == 'omarelazami@hotmail.nl';
+    }
+
+    // Tool gebruik — iedereen mag aanmaken, email update toegestaan, admin leest
+    match /tool-gebruik/{doc} {
+      allow create: if true;
+      allow update: if request.resource.data.diff(resource.data).affectedKeys().hasOnly(['email']);
+      allow read, delete: if request.auth != null
+        && request.auth.token.email == 'omarelazami@hotmail.nl';
+    }
+
+    // Vacatures — admin beheert, ingelogde gebruikers mogen lezen
+    match /vacatures/{doc} {
+      allow read: if true;
+      allow write: if request.auth != null
+        && request.auth.token.email == 'omarelazami@hotmail.nl';
+    }
+
+    // Vacature aanvragen — ingelogde gebruikers mogen aanmaken, admin leest
+    match /vacature-aanvragen/{doc} {
+      allow create: if request.auth != null;
+      allow read, update, delete: if request.auth != null
+        && request.auth.token.email == 'omarelazami@hotmail.nl';
+    }
+
+    // Gebruikers — eigen profiel lezen/schrijven, admin leest alles
+    match /gebruikers/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+      allow read: if request.auth != null
+        && request.auth.token.email == 'omarelazami@hotmail.nl';
+    }
+  }
+}

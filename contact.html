@@ -317,7 +317,7 @@ async function submitContact(e) {
         document.getElementById('contactForm').style.display = 'none';
         document.getElementById('contactSuccess').classList.add('visible');
     } catch(err) {
-        btn.disabled = false; btn.textContent = 'Bericht versturen ?';
+        btn.disabled = false; btn.textContent = 'Bericht versturen \u2192';
         alert('Er ging iets mis. Probeer het opnieuw of neem telefonisch contact op.');
     }
 }
