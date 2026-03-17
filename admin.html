@@ -486,6 +486,8 @@ html { overflow-x: hidden; max-width: 100vw; }
         <button class="sidebar-link" onclick="showAdminPanel('vacatures', this)">📂 Vacatures beheren</button>
         <button class="sidebar-link" onclick="showAdminPanel('reacties', this)">👥 Kandidaat-reacties <span class="badge" id="reactiesBadge">0</span></button>
         <button class="sidebar-link" onclick="showAdminPanel('gebruikers', this)">🧑 Gebruikers</button>
+        <button class="sidebar-link" onclick="showAdminPanel('toolgebruik', this)">🔧 Tool Gebruik <span class="badge" id="toolBadge">0</span></button>
+        <button class="sidebar-link" onclick="showAdminPanel('contactberichten', this)">✉️ Contact Berichten <span class="badge" id="contactBadge">0</span></button>
     </aside>
 
     <!-- MAIN -->
@@ -606,6 +608,54 @@ html { overflow-x: hidden; max-width: 100vw; }
                     </thead>
                     <tbody id="gebruikersTbody">
                         <tr><td colspan="5" class="loading-text">Laden...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ===== TOOL GEBRUIK ===== -->
+        <div class="admin-panel" id="panel-toolgebruik">
+            <div class="section-header">
+                <h2>🔧 Tool Gebruik</h2>
+                <span class="count" id="toolGebruikCount"></span>
+            </div>
+            <div class="table-card">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Datum</th>
+                            <th>Type</th>
+                            <th>Details</th>
+                            <th>E-mail</th>
+                        </tr>
+                    </thead>
+                    <tbody id="toolGebruikTbody">
+                        <tr><td colspan="4" class="loading-text">Laden...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ===== CONTACT BERICHTEN ===== -->
+        <div class="admin-panel" id="panel-contactberichten">
+            <div class="section-header">
+                <h2>✉️ Contact Berichten</h2>
+                <span class="count" id="contactBerichtenCount"></span>
+            </div>
+            <div class="table-card">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Datum</th>
+                            <th>Naam</th>
+                            <th>E-mail</th>
+                            <th>Onderwerp</th>
+                            <th>Bericht</th>
+                            <th>Contact</th>
+                        </tr>
+                    </thead>
+                    <tbody id="contactBerichtenTbody">
+                        <tr><td colspan="6" class="loading-text">Laden...</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -793,6 +843,8 @@ function showAdminPanel(name, btn) {
     if (name === 'vacatures') loadVacatures();
     if (name === 'reacties') loadReacties();
     if (name === 'gebruikers') loadGebruikers();
+    if (name === 'toolgebruik') loadToolGebruik();
+    if (name === 'contactberichten') loadContactBerichten();
 }
 
 // ===== SEED DEMO VACATURES =====
@@ -1162,16 +1214,20 @@ async function seedDemoVacatures() {
 // ===== DASHBOARD =====
 async function loadDashboard() {
     try {
-        const [aanvragenSnap, vacSnap, gebruikersSnap] = await Promise.all([
+        const [aanvragenSnap, vacSnap, gebruikersSnap, toolSnap, contactSnap] = await Promise.all([
             db.collection('vacature-aanvragen').get(),
             db.collection('vacatures').get(),
-            db.collection('gebruikers').get()
+            db.collection('gebruikers').get(),
+            db.collection('tool-gebruik').get(),
+            db.collection('contact-berichten').get()
         ]);
 
         document.getElementById('statAanvragen').textContent = aanvragenSnap.size;
         document.getElementById('statVacatures').textContent = vacSnap.size;
         document.getElementById('statGebruikers').textContent = gebruikersSnap.size;
         document.getElementById('aanvragenBadge').textContent = aanvragenSnap.docs.filter(d => d.data().status === 'nieuw').length;
+        document.getElementById('toolBadge').textContent = toolSnap.docs.filter(d => d.data().email).length;
+        document.getElementById('contactBadge').textContent = contactSnap.size;
 
         let reactieCount = 0;
         for (const vDoc of vacSnap.docs) {
@@ -1950,6 +2006,81 @@ function esc(s) {
     var d = document.createElement('div');
     d.textContent = s;
     return d.innerHTML;
+}
+
+// ===== TOOL GEBRUIK =====
+async function loadToolGebruik() {
+    const tbody = document.getElementById('toolGebruikTbody');
+    tbody.innerHTML = '<tr><td colspan="4" class="loading-text">Laden...</td></tr>';
+    try {
+        const snap = await db.collection('tool-gebruik').get();
+        const docs = snap.docs.sort((a, b) => {
+            const ta = a.data().aangemaakt ? a.data().aangemaakt.toMillis() : 0;
+            const tb = b.data().aangemaakt ? b.data().aangemaakt.toMillis() : 0;
+            return tb - ta;
+        });
+        document.getElementById('toolGebruikCount').textContent = snap.size + ' resultaten';
+        document.getElementById('toolBadge').textContent = snap.docs.filter(d => d.data().email).length;
+        tbody.innerHTML = '';
+        if (snap.empty) {
+            tbody.innerHTML = '<tr><td colspan="4" class="empty"><div class="icon">🔧</div>Nog geen tool gebruik</td></tr>';
+            return;
+        }
+        docs.forEach(doc => {
+            const d = doc.data();
+            let details = '';
+            if (d.type === 'rekentool') {
+                details = esc(d.functie || '') + ' · ' + (d.medewerkers || 0) + ' mdw · €' + (d.uurloon || 0) + '/u · ' + (d.uren || 0) + ' u/mnd'
+                    + '<br><strong style="color:#1a5e1a">Besparing: €' + (d.besparingPerMaand || 0).toLocaleString('nl-NL', {minimumFractionDigits:2}) + '/mnd</strong>';
+            } else if (d.type === 'checklist') {
+                details = 'Score: ' + (d.score || 0) + '/' + (d.maxScore || 15) + ' — Fase ' + (d.fase || '?') + ': ' + esc(d.faseTitel || '');
+            }
+            const row = document.createElement('tr');
+            row.innerHTML = '<td>' + fmtDateTime(d.aangemaakt) + '</td>'
+                + '<td><span class="status-badge" style="background:' + (d.type === 'rekentool' ? '#e3f2fd;color:#1565c0' : '#fce4ec;color:#c62828') + '">' + esc(d.type) + '</span></td>'
+                + '<td>' + details + '</td>'
+                + '<td>' + (d.email ? '<a href="mailto:' + esc(d.email) + '" style="color:var(--accent-dark);font-weight:600">' + esc(d.email) + '</a>' : '<span style="color:var(--text-muted);">—</span>') + '</td>';
+            tbody.appendChild(row);
+        });
+    } catch(e) {
+        console.error('Tool gebruik laden mislukt:', e);
+        tbody.innerHTML = '<tr><td colspan="4" class="empty">Fout bij laden.</td></tr>';
+    }
+}
+
+// ===== CONTACT BERICHTEN =====
+async function loadContactBerichten() {
+    const tbody = document.getElementById('contactBerichtenTbody');
+    tbody.innerHTML = '<tr><td colspan="6" class="loading-text">Laden...</td></tr>';
+    try {
+        const snap = await db.collection('contact-berichten').get();
+        const docs = snap.docs.sort((a, b) => {
+            const ta = a.data().aangemaakt ? a.data().aangemaakt.toMillis() : 0;
+            const tb = b.data().aangemaakt ? b.data().aangemaakt.toMillis() : 0;
+            return tb - ta;
+        });
+        document.getElementById('contactBerichtenCount').textContent = snap.size + ' berichten';
+        document.getElementById('contactBadge').textContent = snap.size;
+        tbody.innerHTML = '';
+        if (snap.empty) {
+            tbody.innerHTML = '<tr><td colspan="6" class="empty"><div class="icon">✉️</div>Nog geen berichten</td></tr>';
+            return;
+        }
+        docs.forEach(doc => {
+            const d = doc.data();
+            const row = document.createElement('tr');
+            row.innerHTML = '<td style="white-space:nowrap">' + fmtDateTime(d.aangemaakt) + '</td>'
+                + '<td><strong>' + esc(d.naam) + '</strong></td>'
+                + '<td><a href="mailto:' + esc(d.email) + '" style="color:var(--accent-dark)">' + esc(d.email) + '</a></td>'
+                + '<td>' + esc(d.onderwerp) + '</td>'
+                + '<td style="max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="' + esc(d.bericht) + '">' + esc(d.bericht) + '</td>'
+                + '<td>' + buildContactBtns(d.email, d.telefoon) + '</td>';
+            tbody.appendChild(row);
+        });
+    } catch(e) {
+        console.error('Contact berichten laden mislukt:', e);
+        tbody.innerHTML = '<tr><td colspan="6" class="empty">Fout bij laden.</td></tr>';
+    }
 }
 </script>
 

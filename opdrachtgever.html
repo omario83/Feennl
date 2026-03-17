@@ -246,6 +246,18 @@
             .check-card { padding: 28px 20px; }
             .check-card h4 { font-size: 1.1rem; }
         }
+        /* EMAIL PROMPT */
+        .email-prompt{background:linear-gradient(135deg,#f0fce0,#e8f7d0);border:2px solid var(--accent);border-radius:14px;padding:32px;margin-top:24px;text-align:center;animation:fadeInUp .5s ease}
+        .email-prompt h4{font-size:1.2rem;font-weight:700;color:var(--navy);margin-bottom:8px}
+        .email-prompt p{font-size:.95rem;color:var(--text-muted);margin-bottom:18px}
+        .email-prompt-form{display:flex;gap:10px;max-width:480px;margin:0 auto 14px}
+        .email-prompt-form input{flex:1;padding:12px 16px;border:1px solid #dfe2ee;border-radius:8px;font-size:.95rem;font-family:inherit}
+        .email-prompt-form button{background:var(--accent);color:var(--navy);border:none;padding:12px 24px;border-radius:8px;font-weight:700;font-size:.9rem;cursor:pointer;white-space:nowrap;transition:all .2s}
+        .email-prompt-form button:hover{background:var(--accent-dark);transform:translateY(-1px)}
+        .email-prompt .alt-links{font-size:.85rem;color:var(--text-muted)}
+        .email-prompt .alt-links a{color:var(--accent-dark);font-weight:600;text-decoration:underline;margin:0 6px}
+        .email-prompt-success{color:#1a5e1a;font-weight:600;font-size:1rem;display:none}
+        @keyframes fadeInUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
     </style>
 </head>
 <body>
@@ -479,10 +491,6 @@
                     </div>
                 </div>
             </div>
-                        <div class="check-option" onclick="checkAnswer(8, 0, this)">Valt mee</div>
-                    </div>
-                </div>
-            </div>
 
             <div class="check-result" id="checkResult"></div>
         </div>
@@ -547,7 +555,7 @@
                             </div>
                         </div>
                         <div class="form-group full">
-                            <button class="calc-button" onclick="submitVacature()">?? Vacature aanmelden &rarr;</button>
+                            <button class="calc-button" onclick="submitVacature()">📋 Vacature aanmelden &rarr;</button>
                         </div>
                     </div>
                 </div>
@@ -721,6 +729,7 @@ function resetSlideTimer() { clearInterval(slideInterval); slideInterval = setIn
 resetSlideTimer();
 
 // ===== REKENTOOL =====
+var lastToolDocId = null;
 function berekenKosten() {
     var functie = document.getElementById('calc-functie').value;
     var medewerkers = parseInt(document.getElementById('calc-medewerkers').value);
@@ -735,7 +744,21 @@ function berekenKosten() {
     document.getElementById('resultAmount').textContent = '€ ' + feen.toLocaleString('nl-NL', {minimumFractionDigits:2,maximumFractionDigits:2}) + ' per maand';
     var box = document.getElementById('resultBox');
     box.classList.add('visible');
+    // Show email prompt
+    showEmailPrompt(box, 'rekentool');
     box.scrollIntoView({ behavior:'smooth', block:'center' });
+    // Save to Firestore
+    try {
+        db.collection('tool-gebruik').add({
+            type: 'rekentool',
+            functie: functie,
+            medewerkers: medewerkers,
+            uurloon: uurloon,
+            uren: uren,
+            besparingPerMaand: Math.round(save * 100) / 100,
+            aangemaakt: firebase.firestore.FieldValue.serverTimestamp()
+        }).then(function(ref) { lastToolDocId = ref.id; });
+    } catch(e) { console.log('Tool tracking error:', e); }
 }
 
 // ===== CHECKLIST =====
@@ -770,7 +793,20 @@ function showCheckResult() {
         + '<div class="score-cta"><p>Benieuwd wat deze score voor uw organisatie betekent?</p>'
         + '<a href="#" class="btn-cta" onclick="showPanel(\'intake\'); return false;">Boek een vrijblijvend kennismakingsgesprek &rarr;</a></div></div>';
     document.getElementById('checkResult').classList.add('visible');
+    // Show email prompt
+    showEmailPrompt(document.getElementById('checkResult'), 'checklist');
     document.getElementById('checkResult').scrollIntoView({ behavior:'smooth', block:'center' });
+    // Save to Firestore
+    try {
+        db.collection('tool-gebruik').add({
+            type: 'checklist',
+            score: total,
+            maxScore: maxScore,
+            fase: fase,
+            faseTitel: titel,
+            aangemaakt: firebase.firestore.FieldValue.serverTimestamp()
+        }).then(function(ref) { lastToolDocId = ref.id; });
+    } catch(e) { console.log('Tool tracking error:', e); }
 }
 
 // ===== VACATURE FORM =====
@@ -816,7 +852,7 @@ async function submitVacature() {
         document.getElementById('vacForm').style.display = 'none';
         document.getElementById('vacSuccess').classList.add('visible');
         document.getElementById('vacSuccess').scrollIntoView({ behavior:'smooth', block:'center' });
-    } catch(err) { btn.disabled = false; btn.textContent = '?? Vacature aanmelden ?'; alert('Er ging iets mis.'); }
+    } catch(err) { btn.disabled = false; btn.textContent = '📋 Vacature aanmelden →'; alert('Er ging iets mis.'); }
 }
 
 // ===== INTAKE =====
@@ -837,6 +873,34 @@ function submitIntake() {
     document.getElementById('intakeSuccess').classList.add('visible');
     document.getElementById('intakeSuccess').scrollIntoView({ behavior:'smooth', block:'center' });
 }
+// ===== EMAIL PROMPT NA TOOL GEBRUIK =====
+function showEmailPrompt(container, toolType) {
+    var existing = container.querySelector('.email-prompt');
+    if (existing) existing.remove();
+    var div = document.createElement('div');
+    div.className = 'email-prompt';
+    div.innerHTML = '<h4>Direct de juiste professional vinden?</h4>'
+        + '<p>Laat uw e-mailadres achter en wij nemen binnen 24 uur contact met u op.</p>'
+        + '<div class="email-prompt-form" id="emailPromptForm-' + toolType + '">'
+        + '<input type="email" placeholder="uw@email.nl" id="toolEmail-' + toolType + '">'
+        + '<button onclick="submitToolEmail(\'' + toolType + '\')">Verstuur</button>'
+        + '</div>'
+        + '<div class="email-prompt-success" id="emailSuccess-' + toolType + '">✓ Bedankt! Wij nemen snel contact met u op.</div>'
+        + '<div class="alt-links">Of <a href="/registreren">maak een account aan</a> om direct een professional te vinden.</div>';
+    container.appendChild(div);
+}
+function submitToolEmail(toolType) {
+    var input = document.getElementById('toolEmail-' + toolType);
+    var email = input.value.trim();
+    if (!email || email.indexOf('@') < 1) { input.style.borderColor = '#f44336'; return; }
+    document.getElementById('emailPromptForm-' + toolType).style.display = 'none';
+    document.getElementById('emailSuccess-' + toolType).style.display = 'block';
+    // Update the Firestore doc with email
+    if (lastToolDocId) {
+        try { db.collection('tool-gebruik').doc(lastToolDocId).update({ email: email }); } catch(e) {}
+    }
+}
+
 </script>
 <!-- FIREBASE SDK -->
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
