@@ -184,6 +184,25 @@ html { overflow-x: hidden; max-width: 100vw; }
         .status-contact { background: #f4ecf7; color: #9b59b6; }
         .status-actief { background: #eafaf1; color: var(--success); }
         .status-afgewezen { background: #fef2f2; color: var(--danger); }
+        .status-lead { background: #e8eaf6; color: #3949ab; }
+        .status-gesprek { background: #fff3e0; color: #ef6c00; }
+        .status-voorstel { background: #f3e5f5; color: #7b1fa2; }
+        .status-klant { background: #e8f5e9; color: #2e7d32; }
+        .status-verloren { background: #fce4ec; color: #c62828; }
+
+        .pipeline-bar { display: flex; gap: 6px; margin-bottom: 24px; flex-wrap: wrap; }
+        .pipeline-step { flex: 1; min-width: 90px; text-align: center; padding: 12px 6px; border-radius: 10px; background: white; border: 1.5px solid var(--border); transition: border-color 0.2s; cursor: pointer; }
+        .pipeline-step:hover { border-color: var(--accent); }
+        .pipeline-step .pipe-count { font-size: 1.3rem; font-weight: 800; color: var(--navy); }
+        .pipeline-step .pipe-label { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.3px; margin-top: 2px; }
+        .pipeline-step.active { border-color: var(--accent); background: rgba(184,244,112,0.08); }
+
+        .btn-action { padding: 4px 10px; border: none; border-radius: 5px; font-size: 0.75rem; cursor: pointer; font-family: inherit; font-weight: 600; transition: opacity 0.2s; }
+        .btn-action:hover { opacity: 0.8; }
+        .btn-lead { background: var(--accent); color: var(--navy); }
+        .btn-delete { background: #fce4ec; color: var(--danger); }
+        .btn-view { background: #e3f2fd; color: #1565c0; }
+        .action-btns { display: flex; gap: 4px; flex-wrap: nowrap; }
 
         .btn-sm {
             padding: 5px 12px;
@@ -482,6 +501,7 @@ html { overflow-x: hidden; max-width: 100vw; }
     <!-- SIDEBAR -->
     <aside class="sidebar">
         <button class="sidebar-link active" onclick="showAdminPanel('dashboard', this)">📊 Dashboard</button>
+        <button class="sidebar-link" onclick="showAdminPanel('opdrachtgevers', this)">🏢 Opdrachtgevers <span class="badge" id="opdrachtgeversBadge">0</span></button>
         <button class="sidebar-link" onclick="showAdminPanel('aanvragen', this)">📋 Vacature-aanvragen <span class="badge" id="aanvragenBadge">0</span></button>
         <button class="sidebar-link" onclick="showAdminPanel('vacatures', this)">📂 Vacatures beheren</button>
         <button class="sidebar-link" onclick="showAdminPanel('reacties', this)">👥 Kandidaat-reacties <span class="badge" id="reactiesBadge">0</span></button>
@@ -515,6 +535,10 @@ html { overflow-x: hidden; max-width: 100vw; }
                 <div class="stat-box">
                     <div class="stat-label">Geregistreerde gebruikers</div>
                     <div class="stat-value" id="statGebruikers">—</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Opdrachtgevers (leads)</div>
+                    <div class="stat-value" id="statOpdrachtgevers">—</div>
                 </div>
             </div>
             <div class="table-card">
@@ -613,6 +637,44 @@ html { overflow-x: hidden; max-width: 100vw; }
             </div>
         </div>
 
+        <!-- ===== OPDRACHTGEVERS (CRM) ===== -->
+        <div class="admin-panel" id="panel-opdrachtgevers">
+            <div class="section-header">
+                <h2>🏢 Opdrachtgevers</h2>
+                <div>
+                    <span class="count" id="opdrachtgeversCount"></span>
+                    <button class="btn-sm" onclick="showNewOpdrachtgeverModal()" style="background:var(--accent);color:var(--navy);font-weight:700;border:none;padding:10px 20px;border-radius:8px;margin-left:12px;">+ Nieuwe opdrachtgever</button>
+                </div>
+            </div>
+            <div class="pipeline-bar" id="pipelineBar">
+                <div class="pipeline-step active" onclick="filterOpdrachtgevers('alle')"><div class="pipe-count" id="pipeAlle">0</div><div class="pipe-label">Alle</div></div>
+                <div class="pipeline-step" onclick="filterOpdrachtgevers('lead')"><div class="pipe-count" id="pipeLead">0</div><div class="pipe-label">Lead</div></div>
+                <div class="pipeline-step" onclick="filterOpdrachtgevers('contact')"><div class="pipe-count" id="pipeContact">0</div><div class="pipe-label">Contact</div></div>
+                <div class="pipeline-step" onclick="filterOpdrachtgevers('gesprek')"><div class="pipe-count" id="pipeGesprek">0</div><div class="pipe-label">Gesprek</div></div>
+                <div class="pipeline-step" onclick="filterOpdrachtgevers('voorstel')"><div class="pipe-count" id="pipeVoorstel">0</div><div class="pipe-label">Voorstel</div></div>
+                <div class="pipeline-step" onclick="filterOpdrachtgevers('klant')"><div class="pipe-count" id="pipeKlant">0</div><div class="pipe-label">Klant</div></div>
+                <div class="pipeline-step" onclick="filterOpdrachtgevers('verloren')"><div class="pipe-count" id="pipeVerloren">0</div><div class="pipe-label">Verloren</div></div>
+            </div>
+            <div class="table-card">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Bedrijf / Contact</th>
+                            <th>E-mail</th>
+                            <th>Telefoon</th>
+                            <th>Bron</th>
+                            <th>Status</th>
+                            <th>Datum</th>
+                            <th>Acties</th>
+                        </tr>
+                    </thead>
+                    <tbody id="opdrachtgeversTbody">
+                        <tr><td colspan="7" class="loading-text">Laden...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
         <!-- ===== TOOL GEBRUIK ===== -->
         <div class="admin-panel" id="panel-toolgebruik">
             <div class="section-header">
@@ -627,10 +689,11 @@ html { overflow-x: hidden; max-width: 100vw; }
                             <th>Type</th>
                             <th>Details</th>
                             <th>E-mail</th>
+                            <th>Acties</th>
                         </tr>
                     </thead>
                     <tbody id="toolGebruikTbody">
-                        <tr><td colspan="4" class="loading-text">Laden...</td></tr>
+                        <tr><td colspan="5" class="loading-text">Laden...</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -652,10 +715,11 @@ html { overflow-x: hidden; max-width: 100vw; }
                             <th>Onderwerp</th>
                             <th>Bericht</th>
                             <th>Contact</th>
+                            <th>Acties</th>
                         </tr>
                     </thead>
                     <tbody id="contactBerichtenTbody">
-                        <tr><td colspan="6" class="loading-text">Laden...</td></tr>
+                        <tr><td colspan="7" class="loading-text">Laden...</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -762,6 +826,27 @@ html { overflow-x: hidden; max-width: 100vw; }
     </div>
 </div>
 
+<!-- NEW OPDRACHTGEVER MODAL -->
+<div class="modal-overlay" id="newOgModal">
+    <div class="modal" style="max-width:540px;">
+        <button class="modal-close" onclick="document.getElementById('newOgModal').classList.remove('show')">&times;</button>
+        <h3>Nieuwe opdrachtgever aanmaken</h3>
+        <form id="newOgForm" onsubmit="createOpdrachtgever(event)">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px;">
+                <div><label style="font-size:0.82rem;font-weight:600;display:block;margin-bottom:4px;">Bedrijfsnaam</label><input id="og-bedrijf" style="width:100%;padding:10px;border:1px solid var(--border);border-radius:6px;font-family:inherit;"></div>
+                <div><label style="font-size:0.82rem;font-weight:600;display:block;margin-bottom:4px;">Contactpersoon</label><input id="og-contact" style="width:100%;padding:10px;border:1px solid var(--border);border-radius:6px;font-family:inherit;"></div>
+                <div><label style="font-size:0.82rem;font-weight:600;display:block;margin-bottom:4px;">E-mailadres *</label><input id="og-email" type="email" required style="width:100%;padding:10px;border:1px solid var(--border);border-radius:6px;font-family:inherit;"></div>
+                <div><label style="font-size:0.82rem;font-weight:600;display:block;margin-bottom:4px;">Telefoon</label><input id="og-telefoon" style="width:100%;padding:10px;border:1px solid var(--border);border-radius:6px;font-family:inherit;"></div>
+            </div>
+            <div style="margin-top:12px;">
+                <label style="font-size:0.82rem;font-weight:600;display:block;margin-bottom:4px;">Notitie</label>
+                <textarea id="og-notitie" rows="3" placeholder="Eerste notitie of context..." style="width:100%;padding:10px;border:1px solid var(--border);border-radius:6px;font-family:inherit;resize:vertical;"></textarea>
+            </div>
+            <button type="submit" id="og-submit" style="margin-top:16px;width:100%;padding:14px;background:var(--accent);color:var(--navy);border:none;border-radius:8px;font-size:1rem;font-weight:700;font-family:inherit;cursor:pointer;">Opdrachtgever aanmaken</button>
+        </form>
+    </div>
+</div>
+
 </div><!-- /admin-app -->
 
 <!-- FIREBASE SDK -->
@@ -843,6 +928,7 @@ function showAdminPanel(name, btn) {
     if (name === 'vacatures') loadVacatures();
     if (name === 'reacties') loadReacties();
     if (name === 'gebruikers') loadGebruikers();
+    if (name === 'opdrachtgevers') loadOpdrachtgevers();
     if (name === 'toolgebruik') loadToolGebruik();
     if (name === 'contactberichten') loadContactBerichten();
 }
@@ -1214,20 +1300,23 @@ async function seedDemoVacatures() {
 // ===== DASHBOARD =====
 async function loadDashboard() {
     try {
-        const [aanvragenSnap, vacSnap, gebruikersSnap, toolSnap, contactSnap] = await Promise.all([
+        const [aanvragenSnap, vacSnap, gebruikersSnap, toolSnap, contactSnap, ogSnap] = await Promise.all([
             db.collection('vacature-aanvragen').get(),
             db.collection('vacatures').get(),
             db.collection('gebruikers').get(),
             db.collection('tool-gebruik').get(),
-            db.collection('contact-berichten').get()
+            db.collection('contact-berichten').get(),
+            db.collection('opdrachtgevers').get()
         ]);
 
         document.getElementById('statAanvragen').textContent = aanvragenSnap.size;
         document.getElementById('statVacatures').textContent = vacSnap.size;
         document.getElementById('statGebruikers').textContent = gebruikersSnap.size;
+        document.getElementById('statOpdrachtgevers').textContent = ogSnap.size;
         document.getElementById('aanvragenBadge').textContent = aanvragenSnap.docs.filter(d => d.data().status === 'nieuw').length;
         document.getElementById('toolBadge').textContent = toolSnap.docs.filter(d => d.data().email).length;
         document.getElementById('contactBadge').textContent = contactSnap.size;
+        document.getElementById('opdrachtgeversBadge').textContent = ogSnap.docs.filter(d => d.data().status === 'lead').length || '';
 
         let reactieCount = 0;
         for (const vDoc of vacSnap.docs) {
@@ -2011,7 +2100,7 @@ function esc(s) {
 // ===== TOOL GEBRUIK =====
 async function loadToolGebruik() {
     const tbody = document.getElementById('toolGebruikTbody');
-    tbody.innerHTML = '<tr><td colspan="4" class="loading-text">Laden...</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="5" class="loading-text">Laden...</td></tr>';
     try {
         const snap = await db.collection('tool-gebruik').get();
         const docs = snap.docs.sort((a, b) => {
@@ -2023,7 +2112,7 @@ async function loadToolGebruik() {
         document.getElementById('toolBadge').textContent = snap.docs.filter(d => d.data().email).length;
         tbody.innerHTML = '';
         if (snap.empty) {
-            tbody.innerHTML = '<tr><td colspan="4" class="empty"><div class="icon">🔧</div>Nog geen tool gebruik</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="5" class="empty"><div class="icon">🔧</div>Nog geen tool gebruik</td></tr>';
             return;
         }
         docs.forEach(doc => {
@@ -2035,23 +2124,84 @@ async function loadToolGebruik() {
             } else if (d.type === 'checklist') {
                 details = 'Score: ' + (d.score || 0) + '/' + (d.maxScore || 15) + ' — Fase ' + (d.fase || '?') + ': ' + esc(d.faseTitel || '');
             }
+            const hasEmail = d.email ? true : false;
+            let actionsHtml = '<div class="action-btns">';
+            if (hasEmail) {
+                actionsHtml += '<button class="btn-action btn-lead" onclick="createLeadFromTool(\'' + doc.id + '\')" title="Opdrachtgever aanmaken">➕ Lead</button>';
+            }
+            actionsHtml += '<button class="btn-action btn-delete" onclick="deleteToolGebruik(\'' + doc.id + '\')" title="Verwijderen">🗑</button>';
+            actionsHtml += '</div>';
+
             const row = document.createElement('tr');
             row.innerHTML = '<td>' + fmtDateTime(d.aangemaakt) + '</td>'
                 + '<td><span class="status-badge" style="background:' + (d.type === 'rekentool' ? '#e3f2fd;color:#1565c0' : '#fce4ec;color:#c62828') + '">' + esc(d.type) + '</span></td>'
                 + '<td>' + details + '</td>'
-                + '<td>' + (d.email ? '<a href="mailto:' + esc(d.email) + '" style="color:var(--accent-dark);font-weight:600">' + esc(d.email) + '</a>' : '<span style="color:var(--text-muted);">—</span>') + '</td>';
+                + '<td>' + (d.email ? '<a href="mailto:' + esc(d.email) + '" style="color:var(--accent-dark);font-weight:600">' + esc(d.email) + '</a>' : '<span style="color:var(--text-muted);">—</span>') + '</td>'
+                + '<td>' + actionsHtml + '</td>';
             tbody.appendChild(row);
         });
     } catch(e) {
         console.error('Tool gebruik laden mislukt:', e);
-        tbody.innerHTML = '<tr><td colspan="4" class="empty">Fout bij laden.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="5" class="empty">Fout bij laden.</td></tr>';
     }
+}
+
+async function deleteToolGebruik(docId) {
+    if (!confirm('Dit tool-gebruik item verwijderen?')) return;
+    await db.collection('tool-gebruik').doc(docId).delete();
+    loadToolGebruik();
+}
+
+async function createLeadFromTool(docId) {
+    const doc = await db.collection('tool-gebruik').doc(docId).get();
+    if (!doc.exists) { alert('Item niet gevonden.'); return; }
+    const d = doc.data();
+    if (!d.email) { alert('Geen e-mail beschikbaar.'); return; }
+
+    // Check if opdrachtgever with this email already exists
+    const existing = await db.collection('opdrachtgevers').where('email', '==', d.email).get();
+    if (!existing.empty) {
+        alert('Er bestaat al een opdrachtgever met dit e-mailadres (' + d.email + ').\nJe kunt deze terugvinden in het Opdrachtgevers panel.');
+        return;
+    }
+
+    let notitie = 'Aangemaakt vanuit ' + (d.type || 'tool') + '-gebruik.';
+    if (d.type === 'rekentool') {
+        notitie += ' Functie: ' + (d.functie || '—') + ', ' + (d.medewerkers || 0) + ' medewerkers, besparing €' + (d.besparingPerMaand || 0).toFixed(2) + '/mnd.';
+    } else if (d.type === 'checklist') {
+        notitie += ' Score: ' + (d.score || 0) + '/' + (d.maxScore || 15) + ', Fase: ' + (d.faseTitel || '—') + '.';
+    }
+
+    await db.collection('opdrachtgevers').add({
+        bedrijf: '',
+        contactpersoon: '',
+        email: d.email,
+        telefoon: '',
+        bron: 'tool',
+        bronId: docId,
+        status: 'lead',
+        aangemaakt: firebase.firestore.FieldValue.serverTimestamp(),
+        laatstBijgewerkt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    // Add initial note
+    const ogSnap = await db.collection('opdrachtgevers').where('email', '==', d.email).get();
+    if (!ogSnap.empty) {
+        await ogSnap.docs[0].ref.collection('notities').add({
+            tekst: notitie,
+            auteur: ADMIN_EMAIL,
+            aangemaakt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+    }
+
+    alert('✓ Lead aangemaakt! Te vinden onder Opdrachtgevers.');
+    loadToolGebruik();
 }
 
 // ===== CONTACT BERICHTEN =====
 async function loadContactBerichten() {
     const tbody = document.getElementById('contactBerichtenTbody');
-    tbody.innerHTML = '<tr><td colspan="6" class="loading-text">Laden...</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="7" class="loading-text">Laden...</td></tr>';
     try {
         const snap = await db.collection('contact-berichten').get();
         const docs = snap.docs.sort((a, b) => {
@@ -2063,24 +2213,398 @@ async function loadContactBerichten() {
         document.getElementById('contactBadge').textContent = snap.size;
         tbody.innerHTML = '';
         if (snap.empty) {
-            tbody.innerHTML = '<tr><td colspan="6" class="empty"><div class="icon">✉️</div>Nog geen berichten</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="7" class="empty"><div class="icon">✉️</div>Nog geen berichten</td></tr>';
             return;
         }
         docs.forEach(doc => {
             const d = doc.data();
+            let actionsHtml = '<div class="action-btns">';
+            actionsHtml += '<button class="btn-action btn-lead" onclick="createLeadFromContact(\'' + doc.id + '\')" title="Opdrachtgever aanmaken">➕ Lead</button>';
+            actionsHtml += '<button class="btn-action btn-delete" onclick="deleteContactBericht(\'' + doc.id + '\')" title="Verwijderen">🗑</button>';
+            actionsHtml += '</div>';
+
             const row = document.createElement('tr');
             row.innerHTML = '<td style="white-space:nowrap">' + fmtDateTime(d.aangemaakt) + '</td>'
                 + '<td><strong>' + esc(d.naam) + '</strong></td>'
                 + '<td><a href="mailto:' + esc(d.email) + '" style="color:var(--accent-dark)">' + esc(d.email) + '</a></td>'
                 + '<td>' + esc(d.onderwerp) + '</td>'
                 + '<td style="max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="' + esc(d.bericht) + '">' + esc(d.bericht) + '</td>'
-                + '<td>' + buildContactBtns(d.email, d.telefoon) + '</td>';
+                + '<td>' + buildContactBtns(d.email, d.telefoon) + '</td>'
+                + '<td>' + actionsHtml + '</td>';
             tbody.appendChild(row);
         });
     } catch(e) {
         console.error('Contact berichten laden mislukt:', e);
-        tbody.innerHTML = '<tr><td colspan="6" class="empty">Fout bij laden.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="7" class="empty">Fout bij laden.</td></tr>';
     }
+}
+
+async function deleteContactBericht(docId) {
+    if (!confirm('Dit contactbericht verwijderen?')) return;
+    await db.collection('contact-berichten').doc(docId).delete();
+    loadContactBerichten();
+}
+
+async function createLeadFromContact(docId) {
+    const doc = await db.collection('contact-berichten').doc(docId).get();
+    if (!doc.exists) { alert('Bericht niet gevonden.'); return; }
+    const d = doc.data();
+
+    // Check if opdrachtgever with this email already exists
+    if (d.email) {
+        const existing = await db.collection('opdrachtgevers').where('email', '==', d.email).get();
+        if (!existing.empty) {
+            alert('Er bestaat al een opdrachtgever met dit e-mailadres (' + d.email + ').\nJe kunt deze terugvinden in het Opdrachtgevers panel.');
+            return;
+        }
+    }
+
+    const notitie = 'Aangemaakt vanuit contactformulier.\nOnderwerp: ' + (d.onderwerp || '—') + '\nBericht: ' + (d.bericht || '—');
+
+    const ogRef = await db.collection('opdrachtgevers').add({
+        bedrijf: '',
+        contactpersoon: d.naam || '',
+        email: d.email || '',
+        telefoon: d.telefoon || '',
+        bron: 'contact',
+        bronId: docId,
+        status: 'lead',
+        aangemaakt: firebase.firestore.FieldValue.serverTimestamp(),
+        laatstBijgewerkt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    await ogRef.collection('notities').add({
+        tekst: notitie,
+        auteur: ADMIN_EMAIL,
+        aangemaakt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    alert('✓ Lead aangemaakt! Te vinden onder Opdrachtgevers.');
+    loadContactBerichten();
+}
+
+// ===== OPDRACHTGEVERS (CRM) =====
+let allOpdrachtgevers = [];
+let currentOgFilter = 'alle';
+
+async function loadOpdrachtgevers() {
+    const tbody = document.getElementById('opdrachtgeversTbody');
+    tbody.innerHTML = '<tr><td colspan="7" class="loading-text">Laden...</td></tr>';
+    try {
+        const snap = await db.collection('opdrachtgevers').get();
+        allOpdrachtgevers = snap.docs.sort((a, b) => {
+            const ta = a.data().aangemaakt ? a.data().aangemaakt.toMillis() : 0;
+            const tb = b.data().aangemaakt ? b.data().aangemaakt.toMillis() : 0;
+            return tb - ta;
+        });
+        document.getElementById('opdrachtgeversCount').textContent = snap.size + ' opdrachtgevers';
+        document.getElementById('opdrachtgeversBadge').textContent = snap.docs.filter(d => d.data().status === 'lead').length || '';
+
+        // Pipeline counts
+        const counts = { lead: 0, contact: 0, gesprek: 0, voorstel: 0, klant: 0, verloren: 0 };
+        snap.docs.forEach(d => { const s = d.data().status || 'lead'; if (counts[s] !== undefined) counts[s]++; });
+        document.getElementById('pipeAlle').textContent = snap.size;
+        document.getElementById('pipeLead').textContent = counts.lead;
+        document.getElementById('pipeContact').textContent = counts.contact;
+        document.getElementById('pipeGesprek').textContent = counts.gesprek;
+        document.getElementById('pipeVoorstel').textContent = counts.voorstel;
+        document.getElementById('pipeKlant').textContent = counts.klant;
+        document.getElementById('pipeVerloren').textContent = counts.verloren;
+
+        renderOpdrachtgevers();
+    } catch(e) {
+        console.error('Opdrachtgevers laden mislukt:', e);
+        tbody.innerHTML = '<tr><td colspan="7" class="empty">Fout bij laden.</td></tr>';
+    }
+}
+
+function filterOpdrachtgevers(status) {
+    currentOgFilter = status;
+    document.querySelectorAll('.pipeline-step').forEach(s => s.classList.remove('active'));
+    event.currentTarget.classList.add('active');
+    renderOpdrachtgevers();
+}
+
+function renderOpdrachtgevers() {
+    const tbody = document.getElementById('opdrachtgeversTbody');
+    tbody.innerHTML = '';
+
+    const filtered = currentOgFilter === 'alle'
+        ? allOpdrachtgevers
+        : allOpdrachtgevers.filter(d => (d.data().status || 'lead') === currentOgFilter);
+
+    if (filtered.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" class="empty"><div class="icon">🏢</div>' + (currentOgFilter === 'alle' ? 'Nog geen opdrachtgevers' : 'Geen opdrachtgevers met status "' + currentOgFilter + '"') + '</td></tr>';
+        return;
+    }
+
+    filtered.forEach(doc => {
+        const d = doc.data();
+        const naam = d.contactpersoon || d.bedrijf || d.email || '—';
+        const bronLabels = { tool: '🔧 Tool', contact: '✉️ Contact', aanvraag: '📋 Aanvraag', handmatig: '✍️ Handmatig' };
+        const contactHtml = buildContactBtns(d.email, d.telefoon);
+
+        const row = document.createElement('tr');
+        row.innerHTML = '<td><a class="clickable-name" onclick="openOpdrachtgeverKaart(\'' + doc.id + '\')">' + esc(naam) + '</a>'
+            + (d.bedrijf && d.contactpersoon ? '<br><span style="color:var(--text-muted);font-size:0.78rem">' + esc(d.bedrijf) + '</span>' : '') + '</td>'
+            + '<td>' + (d.email ? '<a href="mailto:' + esc(d.email) + '" style="color:var(--accent-dark)">' + esc(d.email) + '</a>' : '—') + '</td>'
+            + '<td>' + esc(d.telefoon || '—') + '</td>'
+            + '<td><span class="status-badge" style="font-size:0.7rem">' + (bronLabels[d.bron] || d.bron || '—') + '</span></td>'
+            + '<td><select class="fase-select" onchange="updateOpdrachtgeverStatus(\'' + doc.id + '\', this.value)">' + ogStatusOptions(d.status || 'lead') + '</select></td>'
+            + '<td>' + fmtDate(d.aangemaakt) + '</td>'
+            + '<td><div class="action-btns">'
+            + '<button class="btn-action btn-view" onclick="openOpdrachtgeverKaart(\'' + doc.id + '\')" title="Bekijken">👁</button>'
+            + '<button class="btn-action btn-delete" onclick="deleteOpdrachtgever(\'' + doc.id + '\')" title="Verwijderen">🗑</button>'
+            + '</div></td>';
+        tbody.appendChild(row);
+    });
+}
+
+function ogStatusOptions(current) {
+    const opts = ['lead', 'contact', 'gesprek', 'voorstel', 'klant', 'verloren'];
+    return opts.map(s => '<option value="' + s + '"' + (s === current ? ' selected' : '') + '>' + s.charAt(0).toUpperCase() + s.slice(1) + '</option>').join('');
+}
+
+async function updateOpdrachtgeverStatus(docId, status) {
+    await db.collection('opdrachtgevers').doc(docId).update({
+        status: status,
+        laatstBijgewerkt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    // Add a note about the status change
+    await db.collection('opdrachtgevers').doc(docId).collection('notities').add({
+        tekst: 'Status gewijzigd naar "' + status + '"',
+        auteur: ADMIN_EMAIL,
+        aangemaakt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+}
+
+async function deleteOpdrachtgever(docId) {
+    if (!confirm('Deze opdrachtgever verwijderen? Dit kan niet ongedaan worden gemaakt.')) return;
+    await db.collection('opdrachtgevers').doc(docId).delete();
+    loadOpdrachtgevers();
+}
+
+function showNewOpdrachtgeverModal() {
+    document.getElementById('og-bedrijf').value = '';
+    document.getElementById('og-contact').value = '';
+    document.getElementById('og-email').value = '';
+    document.getElementById('og-telefoon').value = '';
+    document.getElementById('og-notitie').value = '';
+    document.getElementById('newOgModal').classList.add('show');
+}
+
+async function createOpdrachtgever(e) {
+    e.preventDefault();
+    const btn = document.getElementById('og-submit');
+    btn.disabled = true; btn.textContent = 'Aanmaken...';
+
+    const email = document.getElementById('og-email').value.trim();
+
+    // Check duplicate
+    if (email) {
+        const existing = await db.collection('opdrachtgevers').where('email', '==', email).get();
+        if (!existing.empty) {
+            alert('Er bestaat al een opdrachtgever met dit e-mailadres.');
+            btn.disabled = false; btn.textContent = 'Opdrachtgever aanmaken';
+            return;
+        }
+    }
+
+    const ogRef = await db.collection('opdrachtgevers').add({
+        bedrijf: document.getElementById('og-bedrijf').value.trim(),
+        contactpersoon: document.getElementById('og-contact').value.trim(),
+        email: email,
+        telefoon: document.getElementById('og-telefoon').value.trim(),
+        bron: 'handmatig',
+        bronId: '',
+        status: 'lead',
+        aangemaakt: firebase.firestore.FieldValue.serverTimestamp(),
+        laatstBijgewerkt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    const notitie = document.getElementById('og-notitie').value.trim();
+    if (notitie) {
+        await ogRef.collection('notities').add({
+            tekst: notitie,
+            auteur: ADMIN_EMAIL,
+            aangemaakt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+    }
+
+    btn.disabled = false; btn.textContent = 'Opdrachtgever aanmaken';
+    document.getElementById('newOgModal').classList.remove('show');
+    loadOpdrachtgevers();
+}
+
+// ===== OPDRACHTGEVER KAART =====
+async function openOpdrachtgeverKaart(docId) {
+    currentKkType = 'opdrachtgever';
+    currentKkDocId = docId;
+    currentKkUserId = null;
+
+    const doc = await db.collection('opdrachtgevers').doc(docId).get();
+    if (!doc.exists) { alert('Opdrachtgever niet gevonden.'); return; }
+    const d = doc.data();
+    const naam = d.contactpersoon || d.bedrijf || d.email || '—';
+
+    document.getElementById('kkAvatar').textContent = getInitials(naam);
+    document.getElementById('kkNaam').textContent = naam;
+    const statusLabels = { lead: 'Lead', contact: 'Contact gelegd', gesprek: 'In gesprek', voorstel: 'Voorstel', klant: 'Klant', verloren: 'Verloren' };
+    document.getElementById('kkSubtitle').textContent = 'Opdrachtgever • ' + (statusLabels[d.status] || d.status || 'Lead') + (d.bedrijf ? ' • ' + d.bedrijf : '');
+
+    document.getElementById('kkContactBar').innerHTML =
+        (d.email ? '<a class="kk-contact-btn" href="mailto:' + esc(d.email) + '">✉️ E-mail sturen</a>' : '')
+        + (d.telefoon ? '<a class="kk-contact-btn" href="tel:' + esc(d.telefoon) + '">📞 Bellen</a>' : '')
+        + (d.telefoon ? '<a class="kk-contact-btn" href="https://api.whatsapp.com/send?phone=' + esc(d.telefoon.replace(/\s/g,'').replace('+','').replace(/^0/,'31')) + '" target="_blank" rel="noopener">💬 WhatsApp</a>' : '');
+
+    // Overzicht tab
+    const bronLabels = { tool: '🔧 Via tool-gebruik', contact: '✉️ Via contactformulier', aanvraag: '📋 Via vacature-aanvraag', handmatig: '✍️ Handmatig aangemaakt' };
+    document.getElementById('kkTab-overzicht').innerHTML =
+        '<div class="kk-grid">'
+        + kkField('Bedrijf', d.bedrijf)
+        + kkField('Contactpersoon', d.contactpersoon)
+        + kkField('E-mail', d.email)
+        + kkField('Telefoon', d.telefoon)
+        + kkField('Status', '<span class="status-badge status-' + (d.status || 'lead') + '">' + (statusLabels[d.status] || 'Lead') + '</span>')
+        + kkField('Bron', bronLabels[d.bron] || d.bron || '—')
+        + kkField('Aangemaakt', fmtDate(d.aangemaakt))
+        + kkField('Laatst bijgewerkt', fmtDate(d.laatstBijgewerkt))
+        + '</div>'
+        + '<div style="margin-top:20px;display:flex;gap:8px;flex-wrap:wrap;">'
+        + '<button class="btn-sm" style="background:var(--accent);color:var(--navy);border:none;font-weight:700;" onclick="editOpdrachtgever(\'' + docId + '\')">✏️ Bewerken</button>'
+        + '</div>';
+
+    // Activiteit tab — show timeline from notities
+    await loadOgActiviteit(docId, d);
+
+    // Documenten tab
+    document.getElementById('kkTab-documenten').innerHTML = '<p style="color:var(--text-muted);">Geen documenten beschikbaar voor opdrachtgevers.</p>';
+
+    // Notities tab
+    await loadKkNotities('opdrachtgevers', docId);
+
+    // Sollicitaties tab — show linked vacature-aanvragen
+    await loadOgLinkedItems(docId, d);
+
+    switchKkTab('overzicht', document.querySelector('.kk-tab'));
+    document.getElementById('kkOverlay').classList.add('show');
+}
+
+async function loadOgActiviteit(docId, ogData) {
+    const el = document.getElementById('kkTab-activiteit');
+    el.innerHTML = '<p style="color:var(--text-muted);">Laden...</p>';
+
+    const events = [];
+
+    if (ogData.aangemaakt) {
+        const bronLabels = { tool: 'via tool-gebruik', contact: 'via contactformulier', aanvraag: 'via vacature-aanvraag', handmatig: 'handmatig' };
+        events.push({ date: ogData.aangemaakt, text: 'Opdrachtgever aangemaakt (' + (bronLabels[ogData.bron] || '') + ')' });
+    }
+
+    // Load notities as activity
+    const notSnap = await db.collection('opdrachtgevers').doc(docId).collection('notities').get();
+    notSnap.docs.forEach(doc => {
+        const n = doc.data();
+        events.push({ date: n.aangemaakt, text: n.tekst });
+    });
+
+    events.sort((a, b) => {
+        const ta = a.date ? a.date.toMillis() : 0;
+        const tb = b.date ? b.date.toMillis() : 0;
+        return tb - ta;
+    });
+
+    if (events.length === 0) {
+        el.innerHTML = '<p style="color:var(--text-muted);">Nog geen activiteit.</p>';
+        return;
+    }
+
+    el.innerHTML = '<div class="kk-timeline">' + events.map(e =>
+        '<div class="kk-event"><div class="event-date">' + fmtDateTime(e.date) + '</div><div class="event-text">' + esc(e.text) + '</div></div>'
+    ).join('') + '</div>';
+}
+
+async function loadOgLinkedItems(docId, ogData) {
+    const el = document.getElementById('kkTab-sollicitaties');
+    el.innerHTML = '<p style="color:var(--text-muted);">Gekoppelde items laden...</p>';
+
+    let html = '<h4 style="margin-bottom:12px;font-size:0.9rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;">Gekoppelde items</h4>';
+    let itemCount = 0;
+
+    // Check if there's a linked vacature-aanvraag by email
+    if (ogData.email) {
+        const aanvSnap = await db.collection('vacature-aanvragen').where('email', '==', ogData.email).get();
+        if (!aanvSnap.empty) {
+            html += '<table style="width:100%;margin-bottom:16px;"><thead><tr><th>Type</th><th>Functie</th><th>Bedrijf</th><th>Status</th><th>Datum</th></tr></thead><tbody>';
+            aanvSnap.docs.forEach(aDoc => {
+                const a = aDoc.data();
+                html += '<tr><td><span class="status-badge status-nieuw">Aanvraag</span></td><td>' + esc(a.functie || '—') + '</td><td>' + esc(a.bedrijf || '—') + '</td><td><span class="status-badge status-' + esc(a.status || 'nieuw') + '">' + esc(a.status || 'nieuw') + '</span></td><td>' + fmtDate(a.aangemaakt) + '</td></tr>';
+                itemCount++;
+            });
+            html += '</tbody></table>';
+        }
+    }
+
+    // Check linked bron-document
+    if (ogData.bronId && ogData.bron === 'tool') {
+        const toolDoc = await db.collection('tool-gebruik').doc(ogData.bronId).get();
+        if (toolDoc.exists) {
+            const t = toolDoc.data();
+            html += '<div style="background:#f8f9fb;padding:16px;border-radius:8px;margin-bottom:12px;">';
+            html += '<strong>🔧 Oorspronkelijk tool-gebruik:</strong><br>';
+            if (t.type === 'rekentool') {
+                html += 'Rekentool — ' + esc(t.functie || '') + ', ' + (t.medewerkers || 0) + ' medewerkers, besparing €' + (t.besparingPerMaand || 0).toFixed(2) + '/mnd';
+            } else {
+                html += 'Checklist — Score: ' + (t.score || 0) + '/' + (t.maxScore || 15);
+            }
+            html += '</div>';
+            itemCount++;
+        }
+    }
+
+    if (ogData.bronId && ogData.bron === 'contact') {
+        const ctDoc = await db.collection('contact-berichten').doc(ogData.bronId).get();
+        if (ctDoc.exists) {
+            const c = ctDoc.data();
+            html += '<div style="background:#f8f9fb;padding:16px;border-radius:8px;margin-bottom:12px;">';
+            html += '<strong>✉️ Oorspronkelijk contactbericht:</strong><br>';
+            html += 'Onderwerp: ' + esc(c.onderwerp || '—') + '<br>';
+            html += '<em>' + esc(c.bericht || '—') + '</em>';
+            html += '</div>';
+            itemCount++;
+        }
+    }
+
+    if (itemCount === 0) {
+        html += '<p style="color:var(--text-muted);">Geen gekoppelde items gevonden.</p>';
+    }
+
+    el.innerHTML = html;
+}
+
+async function editOpdrachtgever(docId) {
+    const doc = await db.collection('opdrachtgevers').doc(docId).get();
+    if (!doc.exists) return;
+    const d = doc.data();
+
+    const bedrijf = prompt('Bedrijfsnaam:', d.bedrijf || '');
+    if (bedrijf === null) return;
+    const contact = prompt('Contactpersoon:', d.contactpersoon || '');
+    if (contact === null) return;
+    const email = prompt('E-mailadres:', d.email || '');
+    if (email === null) return;
+    const telefoon = prompt('Telefoon:', d.telefoon || '');
+    if (telefoon === null) return;
+
+    await db.collection('opdrachtgevers').doc(docId).update({
+        bedrijf: bedrijf,
+        contactpersoon: contact,
+        email: email,
+        telefoon: telefoon,
+        laatstBijgewerkt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    openOpdrachtgeverKaart(docId);
 }
 </script>
 
