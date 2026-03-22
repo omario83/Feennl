@@ -1,8 +1,10 @@
 // ============================================================
 // FIREBASE CLOUD FUNCTIONS — Feen
-// 1. sendContactEmail:    E-mail bij nieuw contactbericht
-// 2. sendToolUsageEmail:  E-mail bij elk tool-gebruik (rekentool/checklist)
-// 3. sendToolLeadEmail:   E-mail als iemand e-mail achterlaat na tool-gebruik
+// 1. sendContactEmail:        E-mail bij nieuw contactbericht
+// 2. sendToolUsageEmail:      E-mail bij elk tool-gebruik (rekentool/checklist)
+// 3. sendToolLeadEmail:       E-mail als iemand e-mail achterlaat na tool-gebruik
+// 4. sendSollicitatieEmail:   E-mail als iemand solliciteert op een vacature
+// 5. sendVacatureAanvraagEmail: E-mail als opdrachtgever vacature aanmeldt
 // ============================================================
 
 const functions = require("firebase-functions");
@@ -158,5 +160,107 @@ exports.sendToolLeadEmail = functions
       functions.logger.info(`Tool lead e-mail verstuurd voor ${change.after.id}`);
     } catch (err) {
       functions.logger.error("Tool lead e-mail mislukt:", err.message);
+    }
+  });
+
+// ── 4. Sollicitatie op vacature → melding ─────────────────
+exports.sendSollicitatieEmail = functions
+  .region("europe-west1")
+  .firestore.document("vacatures/{vacId}/reacties/{docId}")
+  .onCreate(async (snap, context) => {
+    const d = snap.data();
+    const transporter = getTransporter();
+
+    // Haal vacature-info op
+    let vacTitel = "Onbekende vacature";
+    try {
+      const vacDoc = await admin.firestore().collection("vacatures").doc(context.params.vacId).get();
+      if (vacDoc.exists) {
+        const v = vacDoc.data();
+        vacTitel = v.functie || v.titel || "Vacature";
+      }
+    } catch (_) {}
+
+    const cvHtml = d.cvUrl
+      ? `<a href="${d.cvUrl}" style="color:#b8f470;">📎 ${d.cvNaam || "Download CV"}</a>`
+      : "<em>Geen CV bijgevoegd</em>";
+
+    const mailOptions = {
+      from: smtpFrom(),
+      to: "omar@feennl.nl",
+      replyTo: d.email || undefined,
+      subject: `[Feen Sollicitatie] ${d.naam || "Kandidaat"} — ${vacTitel}`,
+      html: `
+        <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;">
+          <div style="background:#1a1f3a;padding:20px;border-radius:8px 8px 0 0;">
+            <h2 style="color:#b8f470;margin:0;">Nieuwe sollicitatie via Feen.nl</h2>
+          </div>
+          <div style="background:#fff;padding:24px;border:1px solid #e0e0e0;border-radius:0 0 8px 8px;">
+            <table style="width:100%;border-collapse:collapse;">
+              <tr><td style="padding:8px 0;font-weight:bold;color:#666;width:120px;">Vacature:</td><td style="padding:8px 0;"><strong>${vacTitel}</strong></td></tr>
+              <tr><td style="padding:8px 0;font-weight:bold;color:#666;">Naam:</td><td style="padding:8px 0;">${d.naam || "—"}</td></tr>
+              <tr><td style="padding:8px 0;font-weight:bold;color:#666;">E-mail:</td><td style="padding:8px 0;"><a href="mailto:${d.email || ""}">${d.email || "—"}</a></td></tr>
+              <tr><td style="padding:8px 0;font-weight:bold;color:#666;">CV:</td><td style="padding:8px 0;">${cvHtml}</td></tr>
+            </table>
+            <hr style="border:none;border-top:1px solid #eee;margin:16px 0;">
+            <p style="color:#999;font-size:13px;">Bekijk alle sollicitaties in je <a href="https://feennl.nl/admin" style="color:#b8f470;">admin panel</a>.</p>
+          </div>
+        </div>`,
+    };
+
+    try {
+      await transporter.sendMail(mailOptions);
+      functions.logger.info(`Sollicitatie e-mail verstuurd voor ${snap.id}`);
+    } catch (err) {
+      functions.logger.error("Sollicitatie e-mail mislukt:", err.message);
+    }
+  });
+
+// ── 5. Vacature-aanvraag van opdrachtgever → melding ──────
+exports.sendVacatureAanvraagEmail = functions
+  .region("europe-west1")
+  .firestore.document("vacature-aanvragen/{docId}")
+  .onCreate(async (snap) => {
+    const d = snap.data();
+    const transporter = getTransporter();
+
+    const bijlageHtml = d.bestandUrl
+      ? `<a href="${d.bestandUrl}" style="color:#b8f470;">📎 ${d.bestandNaam || "Download bijlage"}</a>`
+      : "<em>Geen bijlage</em>";
+
+    const mailOptions = {
+      from: smtpFrom(),
+      to: "omar@feennl.nl",
+      replyTo: d.email || undefined,
+      subject: `[Feen Vacature] Nieuwe aanmelding — ${d.bedrijf || "Onbekend bedrijf"}`,
+      html: `
+        <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;">
+          <div style="background:#1a1f3a;padding:20px;border-radius:8px 8px 0 0;">
+            <h2 style="color:#b8f470;margin:0;">Nieuwe vacature-aanmelding via Feen.nl</h2>
+          </div>
+          <div style="background:#fff;padding:24px;border:1px solid #e0e0e0;border-radius:0 0 8px 8px;">
+            <table style="width:100%;border-collapse:collapse;">
+              <tr><td style="padding:8px 0;font-weight:bold;color:#666;width:140px;">Bedrijf:</td><td style="padding:8px 0;"><strong>${d.bedrijf || "—"}</strong></td></tr>
+              <tr><td style="padding:8px 0;font-weight:bold;color:#666;">Contactpersoon:</td><td style="padding:8px 0;">${d.contactpersoon || "—"}</td></tr>
+              <tr><td style="padding:8px 0;font-weight:bold;color:#666;">E-mail:</td><td style="padding:8px 0;"><a href="mailto:${d.email || ""}">${d.email || "—"}</a></td></tr>
+              <tr><td style="padding:8px 0;font-weight:bold;color:#666;">Telefoon:</td><td style="padding:8px 0;">${d.telefoon || "—"}</td></tr>
+              <tr><td style="padding:8px 0;font-weight:bold;color:#666;">Functie:</td><td style="padding:8px 0;">${d.functie || "—"}</td></tr>
+              <tr><td style="padding:8px 0;font-weight:bold;color:#666;">Aantal:</td><td style="padding:8px 0;">${d.aantal || "—"}</td></tr>
+              <tr><td style="padding:8px 0;font-weight:bold;color:#666;">Bijlage:</td><td style="padding:8px 0;">${bijlageHtml}</td></tr>
+            </table>
+            <hr style="border:none;border-top:1px solid #eee;margin:16px 0;">
+            <p style="color:#333;line-height:1.6;"><strong>Toelichting:</strong></p>
+            <p style="color:#333;line-height:1.6;white-space:pre-wrap;">${d.toelichting || "Geen toelichting"}</p>
+            <hr style="border:none;border-top:1px solid #eee;margin:16px 0;">
+            <p style="color:#999;font-size:13px;">Bekijk de aanvraag in je <a href="https://feennl.nl/admin" style="color:#b8f470;">admin panel</a>.</p>
+          </div>
+        </div>`,
+    };
+
+    try {
+      await transporter.sendMail(mailOptions);
+      functions.logger.info(`Vacature-aanvraag e-mail verstuurd voor ${snap.id}`);
+    } catch (err) {
+      functions.logger.error("Vacature-aanvraag e-mail mislukt:", err.message);
     }
   });
