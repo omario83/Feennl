@@ -1,7 +1,8 @@
 // ============================================================
 // FIREBASE CLOUD FUNCTIONS — Feen
-// 1. sendContactEmail: E-mail notificatie bij nieuw contactbericht
-// 2. sendToolLeadEmail: E-mail notificatie bij tool-gebruik met e-mail
+// 1. sendContactEmail:    E-mail bij nieuw contactbericht
+// 2. sendToolUsageEmail:  E-mail bij elk tool-gebruik (rekentool/checklist)
+// 3. sendToolLeadEmail:   E-mail als iemand e-mail achterlaat na tool-gebruik
 // ============================================================
 
 const functions = require("firebase-functions");
@@ -25,10 +26,28 @@ function getTransporter() {
   });
 }
 
-/**
- * Trigger: nieuw document in 'contact-berichten'
- * Stuurt een e-mail naar omar@feennl.nl met het contactbericht
- */
+function smtpFrom() {
+  return `"Feen Website" <${(functions.config().smtp || {}).user || "noreply@feennl.nl"}>`;
+}
+
+function toolDetails(d) {
+  if (d.type === "rekentool") {
+    return `<strong>Rekentool resultaat:</strong><br>
+      Functie: ${d.functie || "—"}<br>
+      Medewerkers: ${d.medewerkers || 0}<br>
+      Uurloon: &euro;${d.uurloon || 0}<br>
+      Uren/maand: ${d.uren || 0}<br>
+      <strong style="color:#1a5e1a;">Besparing: &euro;${(d.besparingPerMaand || 0).toFixed(2)}/maand</strong>`;
+  }
+  if (d.type === "checklist") {
+    return `<strong>Checklist resultaat:</strong><br>
+      Score: ${d.score || 0}/${d.maxScore || 15}<br>
+      Fase ${d.fase || "?"}: ${d.faseTitel || ""}`;
+  }
+  return "";
+}
+
+// ── 1. Contactbericht → mail ──────────────────────────────
 exports.sendContactEmail = functions
   .region("europe-west1")
   .firestore.document("contact-berichten/{docId}")
@@ -37,7 +56,7 @@ exports.sendContactEmail = functions
     const transporter = getTransporter();
 
     const mailOptions = {
-      from: `"Feen Website" <${(functions.config().smtp || {}).user || "noreply@feennl.nl"}>`,
+      from: smtpFrom(),
       to: "omar@feennl.nl",
       replyTo: d.email || undefined,
       subject: `[Feen Contact] ${d.onderwerp || "Nieuw bericht"}`,
@@ -56,22 +75,52 @@ exports.sendContactEmail = functions
             <hr style="border:none;border-top:1px solid #eee;margin:16px 0;">
             <p style="color:#333;line-height:1.6;white-space:pre-wrap;">${d.bericht || "Geen bericht"}</p>
           </div>
-        </div>
-      `,
+        </div>`,
     };
 
     try {
       await transporter.sendMail(mailOptions);
       functions.logger.info(`Contact e-mail verstuurd voor ${snap.id}`);
     } catch (err) {
-      functions.logger.error("E-mail versturen mislukt:", err.message);
+      functions.logger.error("Contact e-mail mislukt:", err.message);
     }
   });
 
-/**
- * Trigger: nieuw/bijgewerkt document in 'tool-gebruik' met e-mail
- * Stuurt een notificatie naar omar@feennl.nl
- */
+// ── 2. Elk tool-gebruik → melding ─────────────────────────
+exports.sendToolUsageEmail = functions
+  .region("europe-west1")
+  .firestore.document("tool-gebruik/{docId}")
+  .onCreate(async (snap) => {
+    const d = snap.data();
+    const transporter = getTransporter();
+    const typeName = d.type === "rekentool" ? "Rekentool" : "Checklist";
+
+    const mailOptions = {
+      from: smtpFrom(),
+      to: "omar@feennl.nl",
+      subject: `[Feen Tool] Iemand heeft de ${typeName} gebruikt`,
+      html: `
+        <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;">
+          <div style="background:#1a1f3a;padding:20px;border-radius:8px 8px 0 0;">
+            <h2 style="color:#b8f470;margin:0;">${typeName} gebruikt op Feen.nl</h2>
+          </div>
+          <div style="background:#fff;padding:24px;border:1px solid #e0e0e0;border-radius:0 0 8px 8px;">
+            <p style="line-height:1.8;color:#333;">${toolDetails(d)}</p>
+            <hr style="border:none;border-top:1px solid #eee;margin:16px 0;">
+            <p style="color:#999;font-size:13px;">Bekijk de details in je <a href="https://feennl.nl/admin" style="color:#b8f470;">admin panel</a>.</p>
+          </div>
+        </div>`,
+    };
+
+    try {
+      await transporter.sendMail(mailOptions);
+      functions.logger.info(`Tool usage e-mail verstuurd voor ${snap.id}`);
+    } catch (err) {
+      functions.logger.error("Tool usage e-mail mislukt:", err.message);
+    }
+  });
+
+// ── 3. E-mail achtergelaten na tool → lead melding ────────
 exports.sendToolLeadEmail = functions
   .region("europe-west1")
   .firestore.document("tool-gebruik/{docId}")
@@ -84,37 +133,25 @@ exports.sendToolLeadEmail = functions
 
     const d = after;
     const transporter = getTransporter();
-
-    let details = "";
-    if (d.type === "rekentool") {
-      details = `<strong>Rekentool resultaat:</strong><br>
-        Functie: ${d.functie || "—"}<br>
-        Medewerkers: ${d.medewerkers || 0}<br>
-        Uurloon: €${d.uurloon || 0}<br>
-        Uren/maand: ${d.uren || 0}<br>
-        <strong style="color:#1a5e1a;">Besparing: €${(d.besparingPerMaand || 0).toFixed(2)}/maand</strong>`;
-    } else if (d.type === "checklist") {
-      details = `<strong>Checklist resultaat:</strong><br>
-        Score: ${d.score || 0}/${d.maxScore || 15}<br>
-        Fase ${d.fase || "?"}: ${d.faseTitel || ""}`;
-    }
+    const typeName = d.type === "rekentool" ? "Rekentool" : "Checklist";
 
     const mailOptions = {
-      from: `"Feen Website" <${(functions.config().smtp || {}).user || "noreply@feennl.nl"}>`,
+      from: smtpFrom(),
       to: "omar@feennl.nl",
-      subject: `[Feen Lead] ${d.type === "rekentool" ? "Rekentool" : "Checklist"} — ${d.email}`,
+      replyTo: d.email,
+      subject: `[Feen Lead] ${typeName} — ${d.email}`,
       html: `
         <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;">
           <div style="background:#1a1f3a;padding:20px;border-radius:8px 8px 0 0;">
-            <h2 style="color:#b8f470;margin:0;">Nieuwe lead via ${d.type === "rekentool" ? "Rekentool" : "Checklist"}</h2>
+            <h2 style="color:#b8f470;margin:0;">Nieuwe lead via ${typeName}</h2>
           </div>
           <div style="background:#fff;padding:24px;border:1px solid #e0e0e0;border-radius:0 0 8px 8px;">
             <p style="font-size:16px;"><strong>E-mail:</strong> <a href="mailto:${d.email}">${d.email}</a></p>
             <hr style="border:none;border-top:1px solid #eee;margin:16px 0;">
-            <p style="line-height:1.8;color:#333;">${details}</p>
+            <p style="line-height:1.8;color:#333;">${toolDetails(d)}</p>
+            <p style="color:#999;font-size:13px;margin-top:16px;">Maak deze lead aan als opdrachtgever in je <a href="https://feennl.nl/admin" style="color:#b8f470;">admin panel</a>.</p>
           </div>
-        </div>
-      `,
+        </div>`,
     };
 
     try {
@@ -123,63 +160,4 @@ exports.sendToolLeadEmail = functions
     } catch (err) {
       functions.logger.error("Tool lead e-mail mislukt:", err.message);
     }
-  });
-
-/**
- * HTTP trigger — handmatig de sync uitvoeren (voor testen)
- * Aanroepen via: https://europe-west1-feen-3c09a.cloudfunctions.net/manualFetchTenderNed
- */
-exports.manualFetchTenderNed = functions
-  .region("europe-west1")
-  .https.onRequest(async (req, res) => {
-    // Alleen admin mag dit aanroepen
-    const authHeader = req.headers.authorization;
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      res.status(401).json({ error: "Niet geautoriseerd" });
-      return;
-    }
-
-    try {
-      const token = authHeader.split("Bearer ")[1];
-      const decoded = await admin.auth().verifyIdToken(token);
-
-      if (decoded.email !== "omarelazami@hotmail.nl") {
-        res.status(403).json({ error: "Geen admin rechten" });
-        return;
-      }
-    } catch (err) {
-      res.status(401).json({ error: "Ongeldig token" });
-      return;
-    }
-
-    functions.logger.info("Handmatige TenderNed sync gestart door admin");
-
-    let totalOpgeslagen = 0;
-    const gezienIds = new Set();
-
-    for (const zoekterm of ZOEKTERMEN) {
-      try {
-        const publicaties = await fetchPublicaties(zoekterm);
-
-        for (const pub of publicaties) {
-          const parsed = parsePublicatie(pub);
-          if (!parsed.publicatieId || gezienIds.has(parsed.publicatieId)) continue;
-          gezienIds.add(parsed.publicatieId);
-
-          await db
-            .collection("overheidsopdrachten")
-            .doc(parsed.publicatieId)
-            .set(parsed);
-
-          totalOpgeslagen++;
-        }
-      } catch (err) {
-        functions.logger.error(`Fout bij zoekterm "${zoekterm}":`, err.message);
-      }
-    }
-
-    res.json({
-      success: true,
-      message: `${totalOpgeslagen} opdrachten opgeslagen/bijgewerkt`,
-    });
   });
