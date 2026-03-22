@@ -11,23 +11,22 @@ const nodemailer = require("nodemailer");
 
 admin.initializeApp();
 
-// SMTP configuratie via Firebase environment config
-// Stel in met: firebase functions:config:set smtp.host="mail.feennl.nl" smtp.port="587" smtp.user="omar@feennl.nl" smtp.pass="JOUW_WACHTWOORD"
+// SMTP configuratie via .env bestand in functions/
 function getTransporter() {
-  const config = functions.config().smtp || {};
+  const port = parseInt(process.env.SMTP_PORT || "465");
   return nodemailer.createTransport({
-    host: config.host || "smtp.example.com",
-    port: parseInt(config.port || "587"),
-    secure: config.port === "465",
+    host: process.env.SMTP_HOST || "smtp.hostinger.com",
+    port,
+    secure: port === 465,
     auth: {
-      user: config.user || "",
-      pass: config.pass || "",
+      user: process.env.SMTP_USER || "",
+      pass: process.env.SMTP_PASS || "",
     },
   });
 }
 
 function smtpFrom() {
-  return `"Feen Website" <${(functions.config().smtp || {}).user || "noreply@feennl.nl"}>`;
+  return `"Feen Website" <${process.env.SMTP_USER || "noreply@feennl.nl"}>`;
 }
 
 function toolDetails(d) {
