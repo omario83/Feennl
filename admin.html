@@ -958,7 +958,6 @@ html { overflow-x: hidden; max-width: 100vw; }
                     <option value="alle">Alle statussen</option>
                     <option value="lead">🎯 Lead</option>
                     <option value="contact">📞 Contact gelegd</option>
-                    <option value="gesprek">💬 In gesprek</option>
                     <option value="voorstel">📄 Voorstel verstuurd</option>
                     <option value="onderhandeling">🤝 Onderhandeling</option>
                     <option value="actief">✅ Actieve opdracht</option>
@@ -1149,7 +1148,6 @@ html { overflow-x: hidden; max-width: 100vw; }
                         <option value="">— Niet wijzigen —</option>
                         <option value="lead">Lead</option>
                         <option value="contact">Contact gelegd</option>
-                        <option value="gesprek">In gesprek</option>
                         <option value="voorstel">Voorstel verstuurd</option>
                         <option value="onderhandeling">Onderhandeling</option>
                         <option value="actief">Actieve opdracht</option>
@@ -2859,7 +2857,6 @@ function ogStatusOptions(current) {
     const opts = [
         { v: 'lead', l: '🎯 Lead' },
         { v: 'contact', l: '📞 Contact gelegd' },
-        { v: 'gesprek', l: '💬 In gesprek' },
         { v: 'voorstel', l: '📄 Voorstel verstuurd' },
         { v: 'onderhandeling', l: '🤝 Onderhandeling' },
         { v: 'actief', l: '✅ Actieve opdracht' },
@@ -2895,7 +2892,7 @@ async function updateOgStatusFromKaart(docId, newStatus) {
         aangemaakt: firebase.firestore.FieldValue.serverTimestamp()
     });
     // Update subtitle in modal
-    const statusLabels = { lead: 'Lead', contact: 'Contact gelegd', gesprek: 'In gesprek', voorstel: 'Voorstel', onderhandeling: 'Onderhandeling', actief: 'Actieve opdracht', klant: 'Klant', verloren: 'Verloren' };
+    const statusLabels = { lead: 'Lead', contact: 'Contact gelegd', voorstel: 'Voorstel', onderhandeling: 'Onderhandeling', actief: 'Actieve opdracht', klant: 'Klant', verloren: 'Verloren' };
     const doc = await db.collection('opdrachtgevers').doc(docId).get();
     if (doc.exists) {
         const d = doc.data();
@@ -2974,7 +2971,7 @@ async function openOpdrachtgeverKaart(docId) {
 
     document.getElementById('kkAvatar').textContent = getInitials(naam);
     document.getElementById('kkNaam').textContent = naam;
-    const statusLabels = { lead: 'Lead', contact: 'Contact gelegd', gesprek: 'In gesprek', voorstel: 'Voorstel', onderhandeling: 'Onderhandeling', actief: 'Actieve opdracht', klant: 'Klant', verloren: 'Verloren' };
+    const statusLabels = { lead: 'Lead', contact: 'Contact gelegd', voorstel: 'Voorstel', onderhandeling: 'Onderhandeling', actief: 'Actieve opdracht', klant: 'Klant', verloren: 'Verloren' };
     document.getElementById('kkSubtitle').textContent = 'Opdrachtgever • ' + (statusLabels[d.status] || d.status || 'Lead') + (d.bedrijf ? ' • ' + d.bedrijf : '');
 
     document.getElementById('kkContactBar').innerHTML =
@@ -3257,7 +3254,6 @@ async function editOpdrachtgever(docId) {
 const CRM_FASES = [
     { id: 'lead', label: 'Lead', color: '#3949ab', icon: '🎯' },
     { id: 'contact', label: 'Contact gelegd', color: '#ef6c00', icon: '📞' },
-    { id: 'gesprek', label: 'In gesprek', color: '#7b1fa2', icon: '💬' },
     { id: 'voorstel', label: 'Voorstel verstuurd', color: '#00838f', icon: '📄' },
     { id: 'onderhandeling', label: 'Onderhandeling', color: '#f57f17', icon: '🤝' },
     { id: 'actief', label: 'Actieve opdracht', color: '#2e7d32', icon: '✅' },
