@@ -384,6 +384,64 @@ html { overflow-x: hidden; max-width: 100vw; }
         .kk-contact-btn:hover { border-color: var(--accent); background: rgba(184,244,112,0.1); }
 
         /* TABS */
+        /* OG Card list */
+        .og-card-list { display: flex; flex-direction: column; gap: 8px; }
+        .og-card {
+            background: white; border-radius: 12px; padding: 16px 20px;
+            box-shadow: 0 1px 4px rgba(26,31,58,0.06); display: flex;
+            align-items: center; gap: 16px; cursor: pointer;
+            transition: all 0.2s; border: 1.5px solid transparent;
+        }
+        .og-card:hover { box-shadow: 0 4px 16px rgba(26,31,58,0.1); border-color: var(--border); }
+        .og-card-avatar {
+            width: 42px; height: 42px; border-radius: 50%; background: var(--navy);
+            color: white; display: flex; align-items: center; justify-content: center;
+            font-size: 0.9rem; font-weight: 800; flex-shrink: 0;
+        }
+        .og-card-info { flex: 1; min-width: 0; }
+        .og-card-name { font-weight: 700; font-size: 0.92rem; color: var(--navy); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .og-card-sub { font-size: 0.78rem; color: var(--text-muted); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .og-card-status { flex-shrink: 0; }
+        .og-card-status select {
+            padding: 6px 12px; border: 1.5px solid var(--border); border-radius: 8px;
+            font-family: inherit; font-size: 0.78rem; font-weight: 600; cursor: pointer;
+            background: white; color: var(--navy); transition: border-color 0.2s;
+        }
+        .og-card-status select:focus { outline: none; border-color: var(--accent); }
+        .og-card-actions { display: flex; gap: 6px; flex-shrink: 0; }
+        .og-card-btn {
+            width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--border);
+            background: white; cursor: pointer; display: flex; align-items: center;
+            justify-content: center; font-size: 0.82rem; transition: all 0.2s;
+        }
+        .og-card-btn:hover { border-color: var(--accent); background: rgba(184,244,112,0.1); }
+
+        /* E-mail thread in klantenkaart */
+        .email-thread { max-height: 500px; overflow-y: auto; }
+        .email-item { padding: 16px 0; border-bottom: 1px solid var(--border); }
+        .email-item:last-child { border-bottom: none; }
+        .email-item-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+        .email-item-icon { font-size: 1.1rem; flex-shrink: 0; }
+        .email-item-type { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px; }
+        .email-item-type.verzonden { color: var(--info); }
+        .email-item-type.ontvangen { color: var(--success); }
+        .email-item-type.overig { color: var(--text-muted); }
+        .email-item-date { font-size: 0.72rem; color: var(--text-muted); margin-left: auto; }
+        .email-item-body { font-size: 0.88rem; line-height: 1.6; color: var(--text); white-space: pre-wrap; padding-left: 30px; }
+        .email-compose { margin-top: 16px; border-top: 1.5px solid var(--border); padding-top: 16px; }
+        .email-compose textarea {
+            width: 100%; padding: 12px; border: 1.5px solid var(--border); border-radius: 8px;
+            font-family: inherit; font-size: 0.88rem; resize: vertical; min-height: 80px;
+        }
+        .email-compose textarea:focus { outline: none; border-color: var(--accent); }
+        .email-compose-actions { display: flex; gap: 8px; margin-top: 8px; }
+        .email-compose-btn {
+            padding: 8px 16px; border: none; border-radius: 8px; font-family: inherit;
+            font-size: 0.82rem; font-weight: 700; cursor: pointer; transition: all 0.2s;
+        }
+        .email-compose-btn.primary { background: var(--accent); color: var(--navy); }
+        .email-compose-btn.secondary { background: var(--off-white); color: var(--text-muted); border: 1px solid var(--border); }
+
         .kk-tabs {
             display: flex; border-bottom: 1px solid var(--border);
             padding: 0 32px; background: var(--white);
@@ -449,6 +507,93 @@ html { overflow-x: hidden; max-width: 100vw; }
         .btn-seed:hover { background: var(--navy-deep); }
         .btn-seed:disabled { opacity: 0.5; cursor: not-allowed; }
 
+        /* ===== CRM PIPELINE DASHBOARD ===== */
+        .crm-view-toggle { display: flex; gap: 8px; margin-bottom: 20px; }
+        .crm-view-btn { padding: 8px 18px; border: 1.5px solid var(--border); border-radius: 8px; background: white; font-family: inherit; font-size: 0.82rem; font-weight: 600; cursor: pointer; color: var(--text-muted); transition: all 0.2s; }
+        .crm-view-btn.active { border-color: var(--accent); background: rgba(184,244,112,0.1); color: var(--navy); }
+        .crm-view-btn:hover { border-color: var(--accent); }
+
+        /* Kanban Board */
+        .kanban-board { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 16px; min-height: 500px; }
+        .kanban-column { min-width: 260px; max-width: 300px; flex: 1; background: var(--off-white); border-radius: 12px; display: flex; flex-direction: column; border: 1.5px solid var(--border); }
+        .kanban-column.drag-over { border-color: var(--accent); background: rgba(184,244,112,0.06); }
+        .kanban-col-header { padding: 14px 16px; border-bottom: 1.5px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+        .kanban-col-title { font-size: 0.78rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); }
+        .kanban-col-count { background: var(--border); color: var(--text-muted); font-size: 0.7rem; font-weight: 700; padding: 2px 8px; border-radius: 10px; }
+        .kanban-col-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+        .dot-lead { background: #3949ab; }
+        .dot-contact { background: #ef6c00; }
+        .dot-gesprek { background: #7b1fa2; }
+        .dot-voorstel { background: #00838f; }
+        .dot-onderhandeling { background: #f9a825; }
+        .dot-actief { background: #2e7d32; }
+        .dot-verloren { background: #c62828; }
+        .kanban-cards { flex: 1; padding: 8px; overflow-y: auto; max-height: 600px; display: flex; flex-direction: column; gap: 8px; }
+        .kanban-card { background: white; border-radius: 10px; padding: 14px; box-shadow: 0 1px 4px rgba(26,31,58,0.08); cursor: grab; transition: all 0.2s; border: 1.5px solid transparent; position: relative; }
+        .kanban-card:hover { box-shadow: 0 4px 12px rgba(26,31,58,0.12); border-color: var(--border); }
+        .kanban-card.dragging { opacity: 0.5; transform: rotate(2deg); }
+        .kanban-card-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 8px; }
+        .kanban-card-name { font-weight: 700; font-size: 0.88rem; color: var(--navy); cursor: pointer; }
+        .kanban-card-name:hover { color: var(--accent-dark); }
+        .kanban-card-company { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 8px; }
+        .kanban-card-meta { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+        .kanban-card-tag { font-size: 0.68rem; padding: 2px 8px; border-radius: 4px; font-weight: 600; }
+        .kanban-card-date { font-size: 0.7rem; color: var(--text-muted); }
+        .kanban-card-actions { display: flex; gap: 4px; margin-top: 10px; }
+        .kanban-card-btn { padding: 4px 10px; border: 1px solid var(--border); border-radius: 5px; background: white; font-size: 0.72rem; font-family: inherit; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        .kanban-card-btn:hover { border-color: var(--accent); background: rgba(184,244,112,0.1); }
+
+        /* Notification indicator on cards */
+        .crm-notification { position: absolute; top: -6px; right: -6px; width: 20px; height: 20px; background: var(--danger); color: white; border-radius: 50%; font-size: 0.65rem; font-weight: 800; display: flex; align-items: center; justify-content: center; border: 2px solid white; animation: pulse-notif 2s infinite; }
+        @keyframes pulse-notif { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
+
+        /* Action required banner on card */
+        .crm-action-banner { background: #fff3e0; border: 1px solid #ffe0b2; border-radius: 6px; padding: 8px 10px; margin-top: 8px; font-size: 0.78rem; color: #e65100; font-weight: 600; display: flex; align-items: center; gap: 6px; cursor: pointer; transition: background 0.2s; }
+        .crm-action-banner:hover { background: #ffe0b2; }
+        .crm-action-banner.urgent { background: #fce4ec; border-color: #f8bbd0; color: #c62828; }
+
+        /* CRM Stats Row */
+        .crm-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
+        .crm-stat { background: white; border-radius: 10px; padding: 16px; box-shadow: 0 1px 4px rgba(26,31,58,0.06); text-align: center; }
+        .crm-stat-value { font-size: 1.6rem; font-weight: 800; color: var(--navy); }
+        .crm-stat-label { font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; font-weight: 600; }
+
+        /* CRM Search */
+        .crm-toolbar { display: flex; gap: 12px; align-items: center; margin-bottom: 16px; flex-wrap: wrap; }
+        .crm-search { flex: 1; min-width: 200px; padding: 10px 16px; border: 1.5px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 0.88rem; transition: border-color 0.2s; }
+        .crm-search:focus { outline: none; border-color: var(--accent); }
+        .crm-search::placeholder { color: #b0b4c8; }
+
+        /* Follow-up list */
+        .followup-list { margin-bottom: 24px; }
+        .followup-item { display: flex; align-items: center; gap: 12px; background: white; border-radius: 10px; padding: 14px 18px; margin-bottom: 8px; box-shadow: 0 1px 4px rgba(26,31,58,0.06); border-left: 4px solid var(--warning); transition: all 0.2s; cursor: pointer; }
+        .followup-item:hover { box-shadow: 0 4px 12px rgba(26,31,58,0.1); }
+        .followup-item.overdue { border-left-color: var(--danger); }
+        .followup-icon { font-size: 1.3rem; flex-shrink: 0; }
+        .followup-info { flex: 1; }
+        .followup-info strong { font-size: 0.88rem; color: var(--navy); }
+        .followup-info p { font-size: 0.78rem; color: var(--text-muted); margin-top: 2px; }
+        .followup-date { font-size: 0.75rem; font-weight: 700; color: var(--warning); white-space: nowrap; }
+        .followup-date.overdue { color: var(--danger); }
+        .followup-actions { display: flex; gap: 6px; }
+        .followup-btn { padding: 6px 12px; border: 1px solid var(--border); border-radius: 6px; background: white; font-size: 0.75rem; font-weight: 600; font-family: inherit; cursor: pointer; transition: all 0.2s; }
+        .followup-btn:hover { border-color: var(--accent); background: rgba(184,244,112,0.1); }
+        .followup-btn.done { background: var(--accent); color: var(--navy); border-color: var(--accent); }
+
+        /* Log interaction modal */
+        .log-modal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+        .log-modal-grid > div { display: flex; flex-direction: column; }
+        .log-modal-grid label { font-size: 0.78rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .log-modal-grid select, .log-modal-grid input { padding: 10px; border: 1.5px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 0.88rem; }
+        .log-modal-grid select:focus, .log-modal-grid input:focus { outline: none; border-color: var(--accent); }
+
+        /* Status colors for pipeline */
+        .status-onderhandeling { background: #fff8e1; color: #f57f17; }
+        .status-actief { background: #e8f5e9; color: #2e7d32; }
+
+        /* CRM sidebar badge with action count */
+        .sidebar-link .badge-action { margin-left: auto; background: var(--warning); color: white; font-size: 0.7rem; font-weight: 700; padding: 2px 8px; border-radius: 10px; }
+
         @media (max-width: 768px) {
             .sidebar { display: none; }
             .stats-grid { grid-template-columns: repeat(2, 1fr); }
@@ -461,6 +606,9 @@ html { overflow-x: hidden; max-width: 100vw; }
             .kk-header { padding: 20px; }
             .kk-tabs { padding: 0 16px; overflow-x: auto; }
             .kk-tab-content { padding: 20px 16px; }
+            .kanban-board { flex-direction: column; }
+            .kanban-column { min-width: 100%; max-width: 100%; }
+            .crm-stats { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
 </head>
@@ -501,6 +649,7 @@ html { overflow-x: hidden; max-width: 100vw; }
     <!-- SIDEBAR -->
     <aside class="sidebar">
         <button class="sidebar-link active" onclick="showAdminPanel('dashboard', this)">📊 Dashboard</button>
+        <button class="sidebar-link" onclick="showAdminPanel('crmpipeline', this)">🚀 CRM Pipeline <span class="badge" id="crmActionBadge" style="background:var(--warning)">0</span></button>
         <button class="sidebar-link" onclick="showAdminPanel('opdrachtgevers', this)">🏢 Opdrachtgevers <span class="badge" id="opdrachtgeversBadge">0</span></button>
         <button class="sidebar-link" onclick="showAdminPanel('aanvragen', this)">📋 Vacature-aanvragen <span class="badge" id="aanvragenBadge">0</span></button>
         <button class="sidebar-link" onclick="showAdminPanel('vacatures', this)">📂 Vacatures beheren</button>
@@ -637,42 +786,100 @@ html { overflow-x: hidden; max-width: 100vw; }
             </div>
         </div>
 
+        <!-- ===== CRM PIPELINE DASHBOARD ===== -->
+        <div class="admin-panel" id="panel-crmpipeline">
+            <div class="section-header">
+                <h2>🚀 CRM Pipeline</h2>
+                <div style="display:flex;gap:8px;align-items:center;">
+                    <span class="count" id="crmTotalCount"></span>
+                    <button class="btn-sm" onclick="showNewOpdrachtgeverModal()" style="background:var(--accent);color:var(--navy);font-weight:700;border:none;padding:10px 20px;border-radius:8px;">+ Nieuwe lead</button>
+                </div>
+            </div>
+
+            <!-- Action required alerts -->
+            <div id="crmFollowups" class="followup-list"></div>
+
+            <!-- CRM Stats -->
+            <div class="crm-stats">
+                <div class="crm-stat">
+                    <div class="crm-stat-value" id="crmStatTotal">0</div>
+                    <div class="crm-stat-label">Totaal in pipeline</div>
+                </div>
+                <div class="crm-stat">
+                    <div class="crm-stat-value" id="crmStatActief">0</div>
+                    <div class="crm-stat-label">Actieve opdrachten</div>
+                </div>
+                <div class="crm-stat">
+                    <div class="crm-stat-value" id="crmStatActions">0</div>
+                    <div class="crm-stat-label">⚡ Actie vereist</div>
+                </div>
+                <div class="crm-stat">
+                    <div class="crm-stat-value" id="crmStatConversion">0%</div>
+                    <div class="crm-stat-label">Conversieratio</div>
+                </div>
+            </div>
+
+            <!-- Toolbar -->
+            <div class="crm-toolbar">
+                <input type="text" class="crm-search" id="crmSearch" placeholder="🔍 Zoek op bedrijf, contact, e-mail..." oninput="filterCrmPipeline()">
+                <div class="crm-view-toggle">
+                    <button class="crm-view-btn active" onclick="setCrmView('kanban', this)">📋 Kanban</button>
+                    <button class="crm-view-btn" onclick="setCrmView('list', this)">📃 Lijst</button>
+                </div>
+            </div>
+
+            <!-- Kanban View -->
+            <div id="crmKanbanView">
+                <div class="kanban-board" id="kanbanBoard"></div>
+            </div>
+
+            <!-- List View -->
+            <div id="crmListView" style="display:none;">
+                <div class="table-card">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Bedrijf / Contact</th>
+                                <th>Fase</th>
+                                <th>Laatste interactie</th>
+                                <th>Volgende actie</th>
+                                <th>Contact</th>
+                                <th>Acties</th>
+                            </tr>
+                        </thead>
+                        <tbody id="crmListTbody">
+                            <tr><td colspan="7" class="loading-text">Laden...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
         <!-- ===== OPDRACHTGEVERS (CRM) ===== -->
         <div class="admin-panel" id="panel-opdrachtgevers">
             <div class="section-header">
                 <h2>🏢 Opdrachtgevers</h2>
-                <div>
+                <div style="display:flex;gap:8px;align-items:center;">
                     <span class="count" id="opdrachtgeversCount"></span>
-                    <button class="btn-sm" onclick="showNewOpdrachtgeverModal()" style="background:var(--accent);color:var(--navy);font-weight:700;border:none;padding:10px 20px;border-radius:8px;margin-left:12px;">+ Nieuwe opdrachtgever</button>
+                    <button class="btn-sm" onclick="showNewOpdrachtgeverModal()" style="background:var(--accent);color:var(--navy);font-weight:700;border:none;padding:10px 20px;border-radius:8px;">+ Nieuwe opdrachtgever</button>
                 </div>
             </div>
-            <div class="pipeline-bar" id="pipelineBar">
-                <div class="pipeline-step active" onclick="filterOpdrachtgevers('alle')"><div class="pipe-count" id="pipeAlle">0</div><div class="pipe-label">Alle</div></div>
-                <div class="pipeline-step" onclick="filterOpdrachtgevers('lead')"><div class="pipe-count" id="pipeLead">0</div><div class="pipe-label">Lead</div></div>
-                <div class="pipeline-step" onclick="filterOpdrachtgevers('contact')"><div class="pipe-count" id="pipeContact">0</div><div class="pipe-label">Contact</div></div>
-                <div class="pipeline-step" onclick="filterOpdrachtgevers('gesprek')"><div class="pipe-count" id="pipeGesprek">0</div><div class="pipe-label">Gesprek</div></div>
-                <div class="pipeline-step" onclick="filterOpdrachtgevers('voorstel')"><div class="pipe-count" id="pipeVoorstel">0</div><div class="pipe-label">Voorstel</div></div>
-                <div class="pipeline-step" onclick="filterOpdrachtgevers('klant')"><div class="pipe-count" id="pipeKlant">0</div><div class="pipe-label">Klant</div></div>
-                <div class="pipeline-step" onclick="filterOpdrachtgevers('verloren')"><div class="pipe-count" id="pipeVerloren">0</div><div class="pipe-label">Verloren</div></div>
+            <div class="crm-toolbar" style="margin-bottom:16px;">
+                <input type="text" class="crm-search" id="ogSearch" placeholder="🔍 Zoek op naam, bedrijf..." oninput="renderOpdrachtgevers()">
+                <select id="ogFilterSelect" class="fase-select" style="padding:10px 14px;border-radius:8px;font-size:0.88rem;min-width:160px;" onchange="filterOpdrachtgevers(this.value)">
+                    <option value="alle">Alle statussen</option>
+                    <option value="lead">🎯 Lead</option>
+                    <option value="contact">📞 Contact gelegd</option>
+                    <option value="gesprek">💬 In gesprek</option>
+                    <option value="voorstel">📄 Voorstel verstuurd</option>
+                    <option value="onderhandeling">🤝 Onderhandeling</option>
+                    <option value="actief">✅ Actieve opdracht</option>
+                    <option value="klant">🏆 Klant</option>
+                    <option value="verloren">❌ Verloren</option>
+                </select>
             </div>
-            <div class="table-card">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Bedrijf / Contact</th>
-                            <th>E-mail</th>
-                            <th>Telefoon</th>
-                            <th>Bron</th>
-                            <th>Status</th>
-                            <th>Datum</th>
-                            <th>Acties</th>
-                        </tr>
-                    </thead>
-                    <tbody id="opdrachtgeversTbody">
-                        <tr><td colspan="7" class="loading-text">Laden...</td></tr>
-                    </tbody>
-                </table>
-            </div>
+            <div id="ogCardList" class="og-card-list"><div class="loading-text" style="padding:40px;text-align:center;">Laden...</div></div>
         </div>
 
         <!-- ===== TOOL GEBRUIK ===== -->
@@ -813,16 +1020,73 @@ html { overflow-x: hidden; max-width: 100vw; }
         <div class="kk-contact-bar" id="kkContactBar"></div>
         <div class="kk-tabs" id="kkTabs">
             <button class="kk-tab active" onclick="switchKkTab('overzicht', this)">Overzicht</button>
-            <button class="kk-tab" onclick="switchKkTab('documenten', this)">Documenten</button>
+            <button class="kk-tab" onclick="switchKkTab('emailcontact', this)">📧 E-mail & Contact</button>
             <button class="kk-tab" onclick="switchKkTab('activiteit', this)">Activiteit</button>
             <button class="kk-tab" onclick="switchKkTab('notities', this)">Notities</button>
-            <button class="kk-tab" onclick="switchKkTab('sollicitaties', this)">Sollicitaties</button>
+            <button class="kk-tab" onclick="switchKkTab('sollicitaties', this)">Gekoppeld</button>
         </div>
         <div class="kk-tab-content active" id="kkTab-overzicht"></div>
-        <div class="kk-tab-content" id="kkTab-documenten"></div>
+        <div class="kk-tab-content" id="kkTab-emailcontact"></div>
         <div class="kk-tab-content" id="kkTab-activiteit"></div>
         <div class="kk-tab-content" id="kkTab-notities"></div>
         <div class="kk-tab-content" id="kkTab-sollicitaties"></div>
+    </div>
+</div>
+
+<!-- LOG INTERACTIE MODAL -->
+<div class="modal-overlay" id="logInteractieModal">
+    <div class="modal" style="max-width:560px;">
+        <button class="modal-close" onclick="document.getElementById('logInteractieModal').classList.remove('show')">&times;</button>
+        <h3>📝 Interactie vastleggen</h3>
+        <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:16px;" id="logInteractieSubtitle"></p>
+        <form id="logInteractieForm" onsubmit="submitLogInteractie(event)">
+            <div class="log-modal-grid">
+                <div>
+                    <label>Type interactie</label>
+                    <select id="log-type">
+                        <option value="email_verzonden">📧 E-mail verzonden</option>
+                        <option value="email_ontvangen">📨 E-mail ontvangen</option>
+                        <option value="gebeld">📞 Gebeld</option>
+                        <option value="gebeld_door">📲 Gebeld door klant</option>
+                        <option value="whatsapp">💬 WhatsApp</option>
+                        <option value="meeting">🤝 Meeting / gesprek</option>
+                        <option value="voorstel_verstuurd">📄 Voorstel verstuurd</option>
+                        <option value="voorstel_akkoord">✅ Voorstel akkoord</option>
+                        <option value="contract">📋 Contract getekend</option>
+                        <option value="notitie">📝 Notitie</option>
+                    </select>
+                </div>
+                <div>
+                    <label>Verplaats naar fase</label>
+                    <select id="log-fase">
+                        <option value="">— Niet wijzigen —</option>
+                        <option value="lead">Lead</option>
+                        <option value="contact">Contact gelegd</option>
+                        <option value="gesprek">In gesprek</option>
+                        <option value="voorstel">Voorstel verstuurd</option>
+                        <option value="onderhandeling">Onderhandeling</option>
+                        <option value="actief">Actieve opdracht</option>
+                        <option value="verloren">Verloren</option>
+                    </select>
+                </div>
+                <div>
+                    <label>Follow-up datum</label>
+                    <input type="date" id="log-followup">
+                </div>
+                <div>
+                    <label>Follow-up actie</label>
+                    <input type="text" id="log-followup-actie" placeholder="Bijv. Terugbellen, Offerte sturen...">
+                </div>
+            </div>
+            <div style="margin-bottom:16px;">
+                <label style="font-size:0.78rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:4px;">Beschrijving *</label>
+                <textarea id="log-beschrijving" rows="3" required placeholder="Wat is er besproken / afgesproken?" style="width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:0.88rem;font-family:inherit;resize:vertical;"></textarea>
+            </div>
+            <div style="display:flex;gap:12px;justify-content:flex-end;">
+                <button type="button" onclick="document.getElementById('logInteractieModal').classList.remove('show')" style="padding:10px 20px;border:1.5px solid var(--border);border-radius:8px;background:white;font-family:inherit;font-size:0.88rem;cursor:pointer;">Annuleren</button>
+                <button type="submit" id="log-submit" style="padding:10px 24px;border:none;border-radius:8px;background:var(--accent);color:var(--navy);font-weight:700;font-family:inherit;font-size:0.88rem;cursor:pointer;">Vastleggen</button>
+            </div>
+        </form>
     </div>
 </div>
 
@@ -929,6 +1193,7 @@ function showAdminPanel(name, btn) {
     if (name === 'reacties') loadReacties();
     if (name === 'gebruikers') loadGebruikers();
     if (name === 'opdrachtgevers') loadOpdrachtgevers();
+    if (name === 'crmpipeline') loadCrmPipeline();
     if (name === 'toolgebruik') loadToolGebruik();
     if (name === 'contactberichten') loadContactBerichten();
 }
@@ -2033,7 +2298,10 @@ async function saveNotitie() {
     const tekst = input.value.trim();
     if (!tekst) return;
 
-    const collection = currentKkType === 'gebruiker' ? 'gebruikers' : 'vacature-aanvragen';
+    let collection;
+    if (currentKkType === 'gebruiker') collection = 'gebruikers';
+    else if (currentKkType === 'opdrachtgever') collection = 'opdrachtgevers';
+    else collection = 'vacature-aanvragen';
     const docId = currentKkDocId;
 
     await db.collection(collection).doc(docId).collection('notities').add({
@@ -2288,8 +2556,8 @@ let allOpdrachtgevers = [];
 let currentOgFilter = 'alle';
 
 async function loadOpdrachtgevers() {
-    const tbody = document.getElementById('opdrachtgeversTbody');
-    tbody.innerHTML = '<tr><td colspan="7" class="loading-text">Laden...</td></tr>';
+    const container = document.getElementById('ogCardList');
+    container.innerHTML = '<div class="loading-text" style="padding:40px;text-align:center;">Laden...</div>';
     try {
         const snap = await db.collection('opdrachtgevers').get();
         allOpdrachtgevers = snap.docs.sort((a, b) => {
@@ -2300,69 +2568,99 @@ async function loadOpdrachtgevers() {
         document.getElementById('opdrachtgeversCount').textContent = snap.size + ' opdrachtgevers';
         document.getElementById('opdrachtgeversBadge').textContent = snap.docs.filter(d => d.data().status === 'lead').length || '';
 
-        // Pipeline counts
-        const counts = { lead: 0, contact: 0, gesprek: 0, voorstel: 0, klant: 0, verloren: 0 };
-        snap.docs.forEach(d => { const s = d.data().status || 'lead'; if (counts[s] !== undefined) counts[s]++; });
-        document.getElementById('pipeAlle').textContent = snap.size;
-        document.getElementById('pipeLead').textContent = counts.lead;
-        document.getElementById('pipeContact').textContent = counts.contact;
-        document.getElementById('pipeGesprek').textContent = counts.gesprek;
-        document.getElementById('pipeVoorstel').textContent = counts.voorstel;
-        document.getElementById('pipeKlant').textContent = counts.klant;
-        document.getElementById('pipeVerloren').textContent = counts.verloren;
-
         renderOpdrachtgevers();
     } catch(e) {
         console.error('Opdrachtgevers laden mislukt:', e);
-        tbody.innerHTML = '<tr><td colspan="7" class="empty">Fout bij laden.</td></tr>';
+        container.innerHTML = '<div class="empty" style="padding:40px;">Fout bij laden.</div>';
     }
 }
 
 function filterOpdrachtgevers(status) {
     currentOgFilter = status;
-    document.querySelectorAll('.pipeline-step').forEach(s => s.classList.remove('active'));
-    event.currentTarget.classList.add('active');
     renderOpdrachtgevers();
 }
 
 function renderOpdrachtgevers() {
-    const tbody = document.getElementById('opdrachtgeversTbody');
-    tbody.innerHTML = '';
+    const container = document.getElementById('ogCardList');
+    container.innerHTML = '';
 
-    const filtered = currentOgFilter === 'alle'
+    const query = (document.getElementById('ogSearch') ? document.getElementById('ogSearch').value : '').toLowerCase();
+
+    let filtered = currentOgFilter === 'alle'
         ? allOpdrachtgevers
         : allOpdrachtgevers.filter(d => (d.data().status || 'lead') === currentOgFilter);
 
+    if (query) {
+        filtered = filtered.filter(d => {
+            const data = d.data();
+            return ((data.bedrijf || '') + ' ' + (data.contactpersoon || '') + ' ' + (data.email || '')).toLowerCase().includes(query);
+        });
+    }
+
     if (filtered.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="7" class="empty"><div class="icon">🏢</div>' + (currentOgFilter === 'alle' ? 'Nog geen opdrachtgevers' : 'Geen opdrachtgevers met status "' + currentOgFilter + '"') + '</td></tr>';
+        container.innerHTML = '<div class="empty" style="padding:60px 24px;"><div class="icon">🏢</div>' + (currentOgFilter === 'alle' ? 'Nog geen opdrachtgevers' : 'Geen opdrachtgevers met status "' + currentOgFilter + '"') + '</div>';
         return;
     }
 
     filtered.forEach(doc => {
         const d = doc.data();
-        const naam = d.contactpersoon || d.bedrijf || d.email || '—';
-        const bronLabels = { tool: '🔧 Tool', contact: '✉️ Contact', aanvraag: '📋 Aanvraag', handmatig: '✍️ Handmatig' };
-        const contactHtml = buildContactBtns(d.email, d.telefoon);
+        const contactNaam = d.contactpersoon || d.email || '—';
+        const bedrijfNaam = d.bedrijf || '';
+        const initials = getInitials(contactNaam);
+        const faseObj = CRM_FASES.find(f => f.id === (d.status || 'lead'));
 
-        const row = document.createElement('tr');
-        row.innerHTML = '<td><a class="clickable-name" onclick="openOpdrachtgeverKaart(\'' + doc.id + '\')">' + esc(naam) + '</a>'
-            + (d.bedrijf && d.contactpersoon ? '<br><span style="color:var(--text-muted);font-size:0.78rem">' + esc(d.bedrijf) + '</span>' : '') + '</td>'
-            + '<td>' + (d.email ? '<a href="mailto:' + esc(d.email) + '" style="color:var(--accent-dark)">' + esc(d.email) + '</a>' : '—') + '</td>'
-            + '<td>' + esc(d.telefoon || '—') + '</td>'
-            + '<td><span class="status-badge" style="font-size:0.7rem">' + (bronLabels[d.bron] || d.bron || '—') + '</span></td>'
-            + '<td><select class="fase-select" onchange="updateOpdrachtgeverStatus(\'' + doc.id + '\', this.value)">' + ogStatusOptions(d.status || 'lead') + '</select></td>'
-            + '<td>' + fmtDate(d.aangemaakt) + '</td>'
-            + '<td><div class="action-btns">'
-            + '<button class="btn-action btn-view" onclick="openOpdrachtgeverKaart(\'' + doc.id + '\')" title="Bekijken">👁</button>'
-            + '<button class="btn-action btn-delete" onclick="deleteOpdrachtgever(\'' + doc.id + '\')" title="Verwijderen">🗑</button>'
-            + '</div></td>';
-        tbody.appendChild(row);
+        const card = document.createElement('div');
+        card.className = 'og-card';
+        card.onclick = function(e) {
+            if (e.target.tagName === 'SELECT' || e.target.tagName === 'BUTTON' || e.target.closest('.og-card-status') || e.target.closest('.og-card-actions')) return;
+            openOpdrachtgeverKaart(doc.id);
+        };
+        card.innerHTML = '<div class="og-card-avatar">' + esc(initials) + '</div>'
+            + '<div class="og-card-info">'
+            + '<div class="og-card-name">' + esc(contactNaam) + '</div>'
+            + (bedrijfNaam ? '<div class="og-card-sub">' + esc(bedrijfNaam) + '</div>' : '')
+            + '</div>'
+            + '<div class="og-card-status">'
+            + '<select onchange="event.stopPropagation();updateOgStatusFromCard(\'' + doc.id + '\', this.value, this)">' + ogStatusOptions(d.status || 'lead') + '</select>'
+            + '</div>'
+            + '<div class="og-card-actions">'
+            + '<button class="og-card-btn" onclick="event.stopPropagation();deleteOpdrachtgever(\'' + doc.id + '\')" title="Verwijderen">🗑</button>'
+            + '</div>';
+        container.appendChild(card);
     });
 }
 
+async function updateOgStatusFromCard(docId, newStatus, selectEl) {
+    const doc = allOpdrachtgevers.find(d => d.id === docId);
+    const oldStatus = doc ? (doc.data().status || 'lead') : '';
+    if (oldStatus === newStatus) return;
+    
+    await db.collection('opdrachtgevers').doc(docId).update({
+        status: newStatus,
+        laatstBijgewerkt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    const faseLabel = CRM_FASES.find(f => f.id === newStatus);
+    await db.collection('opdrachtgevers').doc(docId).collection('notities').add({
+        tekst: 'Status gewijzigd naar "' + (faseLabel ? faseLabel.label : newStatus) + '"',
+        type: 'fase_wijziging',
+        auteur: ADMIN_EMAIL,
+        aangemaakt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    loadOpdrachtgevers();
+}
+
 function ogStatusOptions(current) {
-    const opts = ['lead', 'contact', 'gesprek', 'voorstel', 'klant', 'verloren'];
-    return opts.map(s => '<option value="' + s + '"' + (s === current ? ' selected' : '') + '>' + s.charAt(0).toUpperCase() + s.slice(1) + '</option>').join('');
+    const opts = [
+        { v: 'lead', l: '🎯 Lead' },
+        { v: 'contact', l: '📞 Contact gelegd' },
+        { v: 'gesprek', l: '💬 In gesprek' },
+        { v: 'voorstel', l: '📄 Voorstel verstuurd' },
+        { v: 'onderhandeling', l: '🤝 Onderhandeling' },
+        { v: 'actief', l: '✅ Actieve opdracht' },
+        { v: 'klant', l: '🏆 Klant' },
+        { v: 'verloren', l: '❌ Verloren' }
+    ];
+    return opts.map(s => '<option value="' + s.v + '"' + (s.v === current ? ' selected' : '') + '>' + s.l + '</option>').join('');
 }
 
 async function updateOpdrachtgeverStatus(docId, status) {
@@ -2376,6 +2674,27 @@ async function updateOpdrachtgeverStatus(docId, status) {
         auteur: ADMIN_EMAIL,
         aangemaakt: firebase.firestore.FieldValue.serverTimestamp()
     });
+}
+
+async function updateOgStatusFromKaart(docId, newStatus) {
+    await db.collection('opdrachtgevers').doc(docId).update({
+        status: newStatus,
+        laatstBijgewerkt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    const faseLabel = CRM_FASES.find(f => f.id === newStatus);
+    await db.collection('opdrachtgevers').doc(docId).collection('notities').add({
+        tekst: 'Status gewijzigd naar "' + (faseLabel ? faseLabel.label : newStatus) + '"',
+        type: 'fase_wijziging',
+        auteur: ADMIN_EMAIL,
+        aangemaakt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    // Update subtitle in modal
+    const statusLabels = { lead: 'Lead', contact: 'Contact gelegd', gesprek: 'In gesprek', voorstel: 'Voorstel', onderhandeling: 'Onderhandeling', actief: 'Actieve opdracht', klant: 'Klant', verloren: 'Verloren' };
+    const doc = await db.collection('opdrachtgevers').doc(docId).get();
+    if (doc.exists) {
+        const d = doc.data();
+        document.getElementById('kkSubtitle').textContent = 'Opdrachtgever • ' + (statusLabels[d.status] || d.status || 'Lead') + (d.bedrijf ? ' • ' + d.bedrijf : '');
+    }
 }
 
 async function deleteOpdrachtgever(docId) {
@@ -2449,7 +2768,7 @@ async function openOpdrachtgeverKaart(docId) {
 
     document.getElementById('kkAvatar').textContent = getInitials(naam);
     document.getElementById('kkNaam').textContent = naam;
-    const statusLabels = { lead: 'Lead', contact: 'Contact gelegd', gesprek: 'In gesprek', voorstel: 'Voorstel', klant: 'Klant', verloren: 'Verloren' };
+    const statusLabels = { lead: 'Lead', contact: 'Contact gelegd', gesprek: 'In gesprek', voorstel: 'Voorstel', onderhandeling: 'Onderhandeling', actief: 'Actieve opdracht', klant: 'Klant', verloren: 'Verloren' };
     document.getElementById('kkSubtitle').textContent = 'Opdrachtgever • ' + (statusLabels[d.status] || d.status || 'Lead') + (d.bedrijf ? ' • ' + d.bedrijf : '');
 
     document.getElementById('kkContactBar').innerHTML =
@@ -2465,25 +2784,26 @@ async function openOpdrachtgeverKaart(docId) {
         + kkField('Contactpersoon', d.contactpersoon)
         + kkField('E-mail', d.email)
         + kkField('Telefoon', d.telefoon)
-        + kkField('Status', '<span class="status-badge status-' + (d.status || 'lead') + '">' + (statusLabels[d.status] || 'Lead') + '</span>')
+        + '<div class="kk-field"><label>Status</label><span><select class="fase-select" style="padding:8px 14px;border-radius:8px;font-weight:600;" onchange="updateOgStatusFromKaart(\'' + docId + '\', this.value)">' + ogStatusOptions(d.status || 'lead') + '</select></span></div>'
         + kkField('Bron', bronLabels[d.bron] || d.bron || '—')
         + kkField('Aangemaakt', fmtDate(d.aangemaakt))
         + kkField('Laatst bijgewerkt', fmtDate(d.laatstBijgewerkt))
         + '</div>'
         + '<div style="margin-top:20px;display:flex;gap:8px;flex-wrap:wrap;">'
         + '<button class="btn-sm" style="background:var(--accent);color:var(--navy);border:none;font-weight:700;" onclick="editOpdrachtgever(\'' + docId + '\')">✏️ Bewerken</button>'
+        + '<button class="btn-sm" style="background:var(--info);color:white;border:none;font-weight:700;" onclick="openLogInteractie(\'' + docId + '\')">📝 Interactie vastleggen</button>'
         + '</div>';
 
     // Activiteit tab — show timeline from notities
     await loadOgActiviteit(docId, d);
 
-    // Documenten tab
-    document.getElementById('kkTab-documenten').innerHTML = '<p style="color:var(--text-muted);">Geen documenten beschikbaar voor opdrachtgevers.</p>';
+    // Email & Contact tab
+    await loadOgEmailContact(docId, d);
 
     // Notities tab
     await loadKkNotities('opdrachtgevers', docId);
 
-    // Sollicitaties tab — show linked vacature-aanvragen
+    // Gekoppelde items tab
     await loadOgLinkedItems(docId, d);
 
     switchKkTab('overzicht', document.querySelector('.kk-tab'));
@@ -2522,6 +2842,126 @@ async function loadOgActiviteit(docId, ogData) {
     el.innerHTML = '<div class="kk-timeline">' + events.map(e =>
         '<div class="kk-event"><div class="event-date">' + fmtDateTime(e.date) + '</div><div class="event-text">' + esc(e.text) + '</div></div>'
     ).join('') + '</div>';
+}
+
+// ===== EMAIL & CONTACT TAB =====
+async function loadOgEmailContact(docId, ogData) {
+    const el = document.getElementById('kkTab-emailcontact');
+    el.innerHTML = '<p style="color:var(--text-muted);">Laden...</p>';
+
+    // Load all notities that are contact-related (emails, calls, whatsapp, meetings)
+    let notSnap;
+    try {
+        notSnap = await db.collection('opdrachtgevers').doc(docId).collection('notities').orderBy('aangemaakt', 'desc').get();
+    } catch(e) {
+        // Fallback if index not ready
+        notSnap = await db.collection('opdrachtgevers').doc(docId).collection('notities').get();
+        notSnap.docs.sort((a, b) => {
+            const ta = a.data().aangemaakt ? a.data().aangemaakt.toMillis() : 0;
+            const tb = b.data().aangemaakt ? b.data().aangemaakt.toMillis() : 0;
+            return tb - ta;
+        });
+    }
+    
+    const contactTypes = ['email_verzonden', 'email_ontvangen', 'gebeld', 'gebeld_door', 'whatsapp', 'meeting', 'voorstel_verstuurd', 'voorstel_akkoord', 'contract', 'melding'];
+    
+    const contactItems = [];
+    notSnap.docs.forEach(doc => {
+        const n = doc.data();
+        // Show all interactions that have a type, or show all notities as communication log
+        contactItems.push({
+            id: doc.id,
+            type: n.type || 'notitie',
+            tekst: n.tekst || '',
+            auteur: n.auteur || '',
+            datum: n.aangemaakt
+        });
+    });
+
+    let html = '';
+    
+    // Quick actions bar
+    html += '<div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;">';
+    if (ogData.email) {
+        html += '<a class="kk-contact-btn" href="mailto:' + esc(ogData.email) + '" style="text-decoration:none;">✉️ E-mail sturen naar ' + esc(ogData.email) + '</a>';
+    }
+    if (ogData.telefoon) {
+        html += '<a class="kk-contact-btn" href="tel:' + esc(ogData.telefoon) + '" style="text-decoration:none;">📞 Bellen ' + esc(ogData.telefoon) + '</a>';
+        html += '<a class="kk-contact-btn" href="https://api.whatsapp.com/send?phone=' + esc(ogData.telefoon.replace(/\s/g,'').replace('+','').replace(/^0/,'31')) + '" target="_blank" rel="noopener" style="text-decoration:none;">💬 WhatsApp</a>';
+    }
+    html += '<button class="kk-contact-btn" onclick="openLogInteractie(\'' + docId + '\')">📝 Interactie vastleggen</button>';
+    html += '</div>';
+
+    // Contact thread
+    html += '<div class="email-thread">';
+    
+    if (contactItems.length === 0) {
+        html += '<div style="text-align:center;padding:40px;color:var(--text-muted);"><div style="font-size:2rem;margin-bottom:8px;">📭</div>Nog geen contactmomenten vastgelegd.<br><br><button class="kk-contact-btn" onclick="openLogInteractie(\'' + docId + '\')">📝 Eerste interactie vastleggen</button></div>';
+    } else {
+        contactItems.forEach(item => {
+            const typeLabel = INTERACTIE_LABELS[item.type] || '📝 Notitie';
+            let typeClass = 'overig';
+            if (item.type === 'email_verzonden' || item.type === 'voorstel_verstuurd') typeClass = 'verzonden';
+            else if (item.type === 'email_ontvangen' || item.type === 'gebeld_door' || item.type === 'melding') typeClass = 'ontvangen';
+            
+            const icon = typeLabel.split(' ')[0]; // Get emoji
+            
+            html += '<div class="email-item">'
+                + '<div class="email-item-header">'
+                + '<span class="email-item-icon">' + icon + '</span>'
+                + '<span class="email-item-type ' + typeClass + '">' + esc(typeLabel.substring(typeLabel.indexOf(' ') + 1)) + '</span>'
+                + (item.auteur ? '<span style="font-size:0.72rem;color:var(--text-muted);">door ' + esc(item.auteur === ADMIN_EMAIL ? 'Jij' : item.auteur) + '</span>' : '')
+                + '<span class="email-item-date">' + fmtDateTime(item.datum) + '</span>'
+                + '</div>'
+                + '<div class="email-item-body">' + esc(item.tekst) + '</div>'
+                + '</div>';
+        });
+    }
+    html += '</div>';
+
+    // Quick compose
+    html += '<div class="email-compose">'
+        + '<div style="font-size:0.82rem;font-weight:700;color:var(--text-muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px;">Snel vastleggen</div>'
+        + '<textarea id="kkQuickNote" placeholder="Typ wat je hebt gedaan of besproken..."></textarea>'
+        + '<div class="email-compose-actions">'
+        + '<select id="kkQuickType" style="padding:8px 12px;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:0.82rem;">'
+        + '<option value="email_verzonden">📧 E-mail verzonden</option>'
+        + '<option value="email_ontvangen">📨 E-mail ontvangen</option>'
+        + '<option value="gebeld">📞 Gebeld</option>'
+        + '<option value="gebeld_door">📲 Gebeld door klant</option>'
+        + '<option value="whatsapp">💬 WhatsApp</option>'
+        + '<option value="meeting">🤝 Meeting</option>'
+        + '<option value="notitie">📝 Notitie</option>'
+        + '</select>'
+        + '<button class="email-compose-btn primary" onclick="saveQuickContact(\'' + docId + '\')">Opslaan</button>'
+        + '</div>'
+        + '</div>';
+
+    el.innerHTML = html;
+}
+
+async function saveQuickContact(docId) {
+    const tekst = document.getElementById('kkQuickNote').value.trim();
+    if (!tekst) return;
+    const type = document.getElementById('kkQuickType').value;
+
+    await db.collection('opdrachtgevers').doc(docId).collection('notities').add({
+        tekst: tekst,
+        type: type,
+        auteur: ADMIN_EMAIL,
+        aangemaakt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    await db.collection('opdrachtgevers').doc(docId).update({
+        laatstBijgewerkt: firebase.firestore.FieldValue.serverTimestamp(),
+        heeftMelding: false
+    });
+
+    // Reload the tab
+    const doc = await db.collection('opdrachtgevers').doc(docId).get();
+    if (doc.exists) {
+        await loadOgEmailContact(docId, doc.data());
+    }
 }
 
 async function loadOgLinkedItems(docId, ogData) {
@@ -2605,6 +3045,474 @@ async function editOpdrachtgever(docId) {
     });
 
     openOpdrachtgeverKaart(docId);
+}
+
+// ===== CRM PIPELINE DASHBOARD =====
+const CRM_FASES = [
+    { id: 'lead', label: 'Lead', color: '#3949ab', icon: '🎯' },
+    { id: 'contact', label: 'Contact gelegd', color: '#ef6c00', icon: '📞' },
+    { id: 'gesprek', label: 'In gesprek', color: '#7b1fa2', icon: '💬' },
+    { id: 'voorstel', label: 'Voorstel verstuurd', color: '#00838f', icon: '📄' },
+    { id: 'onderhandeling', label: 'Onderhandeling', color: '#f57f17', icon: '🤝' },
+    { id: 'actief', label: 'Actieve opdracht', color: '#2e7d32', icon: '✅' },
+    { id: 'verloren', label: 'Verloren', color: '#c62828', icon: '❌' }
+];
+
+const INTERACTIE_LABELS = {
+    email_verzonden: '📧 E-mail verzonden',
+    email_ontvangen: '📨 E-mail ontvangen',
+    gebeld: '📞 Gebeld',
+    gebeld_door: '📲 Gebeld door klant',
+    whatsapp: '💬 WhatsApp',
+    meeting: '🤝 Meeting',
+    voorstel_verstuurd: '📄 Voorstel verstuurd',
+    voorstel_akkoord: '✅ Voorstel akkoord',
+    contract: '📋 Contract getekend',
+    notitie: '📝 Notitie'
+};
+
+let crmData = [];
+let crmView = 'kanban';
+let currentLogDocId = null;
+
+async function loadCrmPipeline() {
+    try {
+        const snap = await db.collection('opdrachtgevers').get();
+        crmData = [];
+        
+        // Load all opdrachtgevers with their latest interactie and follow-ups
+        const promises = snap.docs.map(async (doc) => {
+            const d = doc.data();
+            // Get latest interaction
+            const interSnap = await doc.ref.collection('notities').orderBy('aangemaakt', 'desc').limit(1).get();
+            const laatsteInteractie = interSnap.docs.length > 0 ? interSnap.docs[0].data() : null;
+            
+            return {
+                id: doc.id,
+                ...d,
+                laatsteInteractie: laatsteInteractie,
+                hasNotification: d.heeftMelding || false,
+                followupDate: d.followupDate || null,
+                followupActie: d.followupActie || null
+            };
+        });
+        
+        crmData = await Promise.all(promises);
+        
+        // Sort by latest activity
+        crmData.sort((a, b) => {
+            const ta = a.laatstBijgewerkt ? a.laatstBijgewerkt.toMillis() : (a.aangemaakt ? a.aangemaakt.toMillis() : 0);
+            const tb = b.laatstBijgewerkt ? b.laatstBijgewerkt.toMillis() : (b.aangemaakt ? b.aangemaakt.toMillis() : 0);
+            return tb - ta;
+        });
+
+        updateCrmStats();
+        renderCrmFollowups();
+        renderCrmView();
+        updateCrmBadge();
+    } catch (e) {
+        console.error('CRM Pipeline laden mislukt:', e);
+    }
+}
+
+function updateCrmStats() {
+    const total = crmData.filter(d => d.status !== 'verloren').length;
+    const actief = crmData.filter(d => d.status === 'actief').length;
+    const actions = crmData.filter(d => needsAction(d)).length;
+    const allCompleted = crmData.filter(d => d.status === 'actief' || d.status === 'verloren').length;
+    const conversionRate = crmData.length > 0 ? Math.round((actief / Math.max(allCompleted, 1)) * 100) : 0;
+
+    document.getElementById('crmStatTotal').textContent = total;
+    document.getElementById('crmStatActief').textContent = actief;
+    document.getElementById('crmStatActions').textContent = actions;
+    document.getElementById('crmStatConversion').textContent = conversionRate + '%';
+    document.getElementById('crmTotalCount').textContent = crmData.length + ' contacten';
+}
+
+function needsAction(og) {
+    // Needs action if: has notification, follow-up date passed, or no contact in >7 days
+    if (og.heeftMelding) return true;
+    if (og.followupDate) {
+        const fDate = og.followupDate.toDate ? og.followupDate.toDate() : new Date(og.followupDate);
+        if (fDate <= new Date()) return true;
+    }
+    if (og.status === 'verloren' || og.status === 'actief') return false;
+    // No activity in 7+ days
+    const lastDate = og.laatstBijgewerkt ? og.laatstBijgewerkt.toMillis() : (og.aangemaakt ? og.aangemaakt.toMillis() : 0);
+    const daysSince = (Date.now() - lastDate) / (1000 * 60 * 60 * 24);
+    return daysSince > 7;
+}
+
+function isOverdue(og) {
+    if (og.followupDate) {
+        const fDate = og.followupDate.toDate ? og.followupDate.toDate() : new Date(og.followupDate);
+        return fDate < new Date();
+    }
+    return false;
+}
+
+function renderCrmFollowups() {
+    const el = document.getElementById('crmFollowups');
+    const actionItems = crmData.filter(d => needsAction(d) && d.status !== 'verloren' && d.status !== 'actief');
+    
+    if (actionItems.length === 0) {
+        el.innerHTML = '';
+        return;
+    }
+
+    // Sort: overdue first, then by followup date, then by last update
+    actionItems.sort((a, b) => {
+        const aOverdue = isOverdue(a) ? 0 : 1;
+        const bOverdue = isOverdue(b) ? 0 : 1;
+        if (aOverdue !== bOverdue) return aOverdue - bOverdue;
+        return 0;
+    });
+
+    let html = '<div style="margin-bottom:8px;display:flex;align-items:center;gap:8px;"><span style="font-size:0.85rem;font-weight:700;color:var(--navy);">⚡ Actie vereist</span><span style="font-size:0.75rem;color:var(--text-muted);">' + actionItems.length + ' items</span></div>';
+
+    actionItems.slice(0, 5).forEach(og => {
+        const naam = og.contactpersoon || og.bedrijf || og.email || '—';
+        const overdue = isOverdue(og);
+        let reason = '';
+        let icon = '⏰';
+        
+        if (og.heeftMelding) {
+            reason = 'Nieuwe melding — reageer op dit contact';
+            icon = '🔔';
+        } else if (og.followupDate) {
+            const fDate = og.followupDate.toDate ? og.followupDate.toDate() : new Date(og.followupDate);
+            const dateStr = fDate.toLocaleDateString('nl-NL', { day: 'numeric', month: 'short' });
+            reason = (overdue ? 'Follow-up verlopen: ' : 'Follow-up: ') + (og.followupActie || 'Opvolgen') + ' — ' + dateStr;
+        } else {
+            const lastDate = og.laatstBijgewerkt ? og.laatstBijgewerkt.toMillis() : (og.aangemaakt ? og.aangemaakt.toMillis() : 0);
+            const days = Math.floor((Date.now() - lastDate) / (1000 * 60 * 60 * 24));
+            reason = 'Geen contact in ' + days + ' dagen';
+            icon = '⚠️';
+        }
+
+        const faseLabel = CRM_FASES.find(f => f.id === og.status);
+
+        html += '<div class="followup-item' + (overdue ? ' overdue' : '') + '" onclick="openOpdrachtgeverKaart(\'' + og.id + '\')">'
+            + '<div class="followup-icon">' + icon + '</div>'
+            + '<div class="followup-info"><strong>' + esc(naam) + '</strong>' + (og.bedrijf && og.contactpersoon ? ' <span style="color:var(--text-muted)">— ' + esc(og.bedrijf) + '</span>' : '') + '<p>' + esc(reason) + '</p></div>'
+            + '<span class="status-badge status-' + (og.status || 'lead') + '" style="font-size:0.68rem;">' + (faseLabel ? faseLabel.label : og.status) + '</span>'
+            + '<div class="followup-actions">'
+            + '<button class="followup-btn" onclick="event.stopPropagation();openLogInteractie(\'' + og.id + '\')" title="Interactie vastleggen">📝 Log</button>'
+            + '<button class="followup-btn done" onclick="event.stopPropagation();markFollowupDone(\'' + og.id + '\')" title="Actie afgerond">✓</button>'
+            + '</div>'
+            + '</div>';
+    });
+
+    if (actionItems.length > 5) {
+        html += '<div style="text-align:center;padding:8px;"><span style="font-size:0.82rem;color:var(--text-muted);">+ ' + (actionItems.length - 5) + ' meer items</span></div>';
+    }
+
+    el.innerHTML = html;
+}
+
+function updateCrmBadge() {
+    const actionCount = crmData.filter(d => needsAction(d) && d.status !== 'verloren' && d.status !== 'actief').length;
+    const badge = document.getElementById('crmActionBadge');
+    badge.textContent = actionCount || '';
+    badge.style.display = actionCount > 0 ? '' : 'none';
+}
+
+function setCrmView(view, btn) {
+    crmView = view;
+    document.querySelectorAll('.crm-view-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('crmKanbanView').style.display = view === 'kanban' ? '' : 'none';
+    document.getElementById('crmListView').style.display = view === 'list' ? '' : 'none';
+    renderCrmView();
+}
+
+function filterCrmPipeline() {
+    renderCrmView();
+}
+
+function getFilteredCrmData() {
+    const query = (document.getElementById('crmSearch').value || '').toLowerCase();
+    if (!query) return crmData;
+    return crmData.filter(d => {
+        const searchStr = ((d.bedrijf || '') + ' ' + (d.contactpersoon || '') + ' ' + (d.email || '')).toLowerCase();
+        return searchStr.includes(query);
+    });
+}
+
+function renderCrmView() {
+    if (crmView === 'kanban') renderKanban();
+    else renderCrmList();
+}
+
+// ===== KANBAN BOARD =====
+function renderKanban() {
+    const board = document.getElementById('kanbanBoard');
+    const filtered = getFilteredCrmData();
+    
+    board.innerHTML = '';
+    CRM_FASES.forEach(fase => {
+        const items = filtered.filter(d => (d.status || 'lead') === fase.id);
+        
+        const col = document.createElement('div');
+        col.className = 'kanban-column';
+        col.dataset.fase = fase.id;
+        
+        // Drag and drop zone
+        col.addEventListener('dragover', (e) => { e.preventDefault(); col.classList.add('drag-over'); });
+        col.addEventListener('dragleave', () => col.classList.remove('drag-over'));
+        col.addEventListener('drop', (e) => { e.preventDefault(); col.classList.remove('drag-over'); handleDrop(e, fase.id); });
+        
+        col.innerHTML = '<div class="kanban-col-header">'
+            + '<div style="display:flex;align-items:center;gap:8px;"><div class="kanban-col-dot dot-' + fase.id + '"></div><span class="kanban-col-title">' + fase.label + '</span></div>'
+            + '<span class="kanban-col-count">' + items.length + '</span>'
+            + '</div>';
+        
+        const cardsContainer = document.createElement('div');
+        cardsContainer.className = 'kanban-cards';
+        
+        if (items.length === 0) {
+            cardsContainer.innerHTML = '<div style="text-align:center;padding:24px 8px;color:var(--text-muted);font-size:0.82rem;">Geen items</div>';
+        } else {
+            items.forEach(og => {
+                cardsContainer.innerHTML += renderKanbanCard(og);
+            });
+        }
+        
+        col.appendChild(cardsContainer);
+        board.appendChild(col);
+    });
+
+    // Attach drag events to cards
+    board.querySelectorAll('.kanban-card').forEach(card => {
+        card.addEventListener('dragstart', (e) => {
+            e.dataTransfer.setData('text/plain', card.dataset.id);
+            card.classList.add('dragging');
+        });
+        card.addEventListener('dragend', () => card.classList.remove('dragging'));
+    });
+}
+
+function renderKanbanCard(og) {
+    const naam = og.contactpersoon || og.bedrijf || og.email || '—';
+    const hasAction = needsAction(og) && og.status !== 'verloren' && og.status !== 'actief';
+    const overdue = isOverdue(og);
+    
+    let notifHtml = '';
+    if (og.heeftMelding) {
+        notifHtml = '<div class="crm-notification">!</div>';
+    }
+    
+    let actionHtml = '';
+    if (hasAction) {
+        let actionText = '';
+        if (og.heeftMelding) {
+            actionText = '🔔 Nieuwe melding — reageer!';
+        } else if (og.followupDate) {
+            const fDate = og.followupDate.toDate ? og.followupDate.toDate() : new Date(og.followupDate);
+            actionText = (overdue ? '⚠️ Verlopen: ' : '⏰ ') + (og.followupActie || 'Follow-up') + ' — ' + fDate.toLocaleDateString('nl-NL', {day:'numeric',month:'short'});
+        } else {
+            const lastDate = og.laatstBijgewerkt ? og.laatstBijgewerkt.toMillis() : (og.aangemaakt ? og.aangemaakt.toMillis() : 0);
+            const days = Math.floor((Date.now() - lastDate) / (1000 * 60 * 60 * 24));
+            actionText = '⚠️ ' + days + ' dagen geen contact';
+        }
+        actionHtml = '<div class="crm-action-banner' + (overdue ? ' urgent' : '') + '" onclick="event.stopPropagation();openLogInteractie(\'' + og.id + '\')">' + actionText + '</div>';
+    }
+
+    const lastInteractie = og.laatsteInteractie ? (INTERACTIE_LABELS[og.laatsteInteractie.type] || og.laatsteInteractie.tekst || '—') : '—';
+
+    return '<div class="kanban-card" draggable="true" data-id="' + og.id + '">'
+        + notifHtml
+        + '<div class="kanban-card-header"><span class="kanban-card-name" onclick="openOpdrachtgeverKaart(\'' + og.id + '\')">' + esc(naam) + '</span></div>'
+        + (og.bedrijf && og.contactpersoon ? '<div class="kanban-card-company">' + esc(og.bedrijf) + '</div>' : '')
+        + '<div class="kanban-card-meta">'
+        + '<span class="kanban-card-date">' + fmtDate(og.laatstBijgewerkt || og.aangemaakt) + '</span>'
+        + '</div>'
+        + '<div style="font-size:0.78rem;color:var(--text-muted);margin-top:6px;">Laatste: ' + esc(typeof lastInteractie === 'string' ? lastInteractie.substring(0, 50) : '—') + '</div>'
+        + actionHtml
+        + '<div class="kanban-card-actions">'
+        + '<button class="kanban-card-btn" onclick="event.stopPropagation();openLogInteractie(\'' + og.id + '\')" title="Interactie loggen">📝 Log</button>'
+        + '<button class="kanban-card-btn" onclick="event.stopPropagation();openOpdrachtgeverKaart(\'' + og.id + '\')" title="Bekijken">👁 Bekijk</button>'
+        + '</div>'
+        + '</div>';
+}
+
+async function handleDrop(e, newFase) {
+    const docId = e.dataTransfer.getData('text/plain');
+    if (!docId) return;
+    
+    const og = crmData.find(d => d.id === docId);
+    if (!og || (og.status || 'lead') === newFase) return;
+
+    const oldFase = og.status || 'lead';
+    const faseLabel = CRM_FASES.find(f => f.id === newFase);
+    
+    await db.collection('opdrachtgevers').doc(docId).update({
+        status: newFase,
+        laatstBijgewerkt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    
+    await db.collection('opdrachtgevers').doc(docId).collection('notities').add({
+        tekst: 'Fase gewijzigd: ' + oldFase + ' → ' + (faseLabel ? faseLabel.label : newFase),
+        type: 'fase_wijziging',
+        auteur: ADMIN_EMAIL,
+        aangemaakt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    
+    loadCrmPipeline();
+}
+
+// ===== CRM LIST VIEW =====
+function renderCrmList() {
+    const tbody = document.getElementById('crmListTbody');
+    const filtered = getFilteredCrmData();
+    tbody.innerHTML = '';
+    
+    if (filtered.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" class="empty"><div class="icon">🚀</div>Geen contacten gevonden</td></tr>';
+        return;
+    }
+    
+    filtered.forEach(og => {
+        const naam = og.contactpersoon || og.bedrijf || og.email || '—';
+        const faseObj = CRM_FASES.find(f => f.id === (og.status || 'lead'));
+        const hasAction = needsAction(og) && og.status !== 'verloren' && og.status !== 'actief';
+        const contactHtml = buildContactBtns(og.email, og.telefoon);
+        
+        let lastInterText = '—';
+        if (og.laatsteInteractie) {
+            lastInterText = INTERACTIE_LABELS[og.laatsteInteractie.type] || og.laatsteInteractie.tekst || '—';
+            if (typeof lastInterText === 'string' && lastInterText.length > 40) lastInterText = lastInterText.substring(0, 40) + '…';
+        }
+
+        let followupText = '—';
+        if (og.followupDate) {
+            const fDate = og.followupDate.toDate ? og.followupDate.toDate() : new Date(og.followupDate);
+            followupText = (og.followupActie || 'Opvolgen') + '<br><span style="font-size:0.72rem;color:' + (isOverdue(og) ? 'var(--danger)' : 'var(--text-muted)') + ';">' + fDate.toLocaleDateString('nl-NL', {day:'numeric',month:'short',year:'numeric'}) + '</span>';
+        }
+
+        const row = document.createElement('tr');
+        row.innerHTML = '<td>' + (hasAction ? '<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--warning);" title="Actie vereist"></span>' : (og.heeftMelding ? '<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--danger);" title="Nieuwe melding"></span>' : '')) + '</td>'
+            + '<td><a class="clickable-name" onclick="openOpdrachtgeverKaart(\'' + og.id + '\')">' + esc(naam) + '</a>'
+            + (og.bedrijf && og.contactpersoon ? '<br><span style="color:var(--text-muted);font-size:0.78rem">' + esc(og.bedrijf) + '</span>' : '') + '</td>'
+            + '<td><span class="status-badge status-' + (og.status || 'lead') + '">' + (faseObj ? faseObj.icon + ' ' + faseObj.label : og.status || 'Lead') + '</span></td>'
+            + '<td style="font-size:0.82rem;">' + esc(lastInterText) + '</td>'
+            + '<td style="font-size:0.82rem;">' + followupText + '</td>'
+            + '<td>' + contactHtml + '</td>'
+            + '<td><div class="action-btns">'
+            + '<button class="btn-action btn-lead" onclick="openLogInteractie(\'' + og.id + '\')" title="Interactie loggen">📝</button>'
+            + '<button class="btn-action btn-view" onclick="openOpdrachtgeverKaart(\'' + og.id + '\')" title="Bekijken">👁</button>'
+            + '</div></td>';
+        tbody.appendChild(row);
+    });
+}
+
+// ===== LOG INTERACTIE =====
+function openLogInteractie(docId) {
+    currentLogDocId = docId;
+    const og = crmData.find(d => d.id === docId);
+    const naam = og ? (og.contactpersoon || og.bedrijf || og.email || '—') : '—';
+    
+    document.getElementById('logInteractieSubtitle').textContent = 'Vastleggen voor: ' + naam;
+    document.getElementById('log-type').value = 'email_verzonden';
+    document.getElementById('log-fase').value = '';
+    document.getElementById('log-followup').value = '';
+    document.getElementById('log-followup-actie').value = '';
+    document.getElementById('log-beschrijving').value = '';
+    
+    // Pre-select current fase
+    if (og) {
+        document.getElementById('log-fase').value = '';
+    }
+    
+    document.getElementById('logInteractieModal').classList.add('show');
+}
+
+async function submitLogInteractie(e) {
+    e.preventDefault();
+    if (!currentLogDocId) return;
+    
+    const btn = document.getElementById('log-submit');
+    btn.disabled = true;
+    btn.textContent = 'Opslaan...';
+    
+    const type = document.getElementById('log-type').value;
+    const newFase = document.getElementById('log-fase').value;
+    const followupDate = document.getElementById('log-followup').value;
+    const followupActie = document.getElementById('log-followup-actie').value.trim();
+    const beschrijving = document.getElementById('log-beschrijving').value.trim();
+    
+    // Save the interaction as a notitie
+    await db.collection('opdrachtgevers').doc(currentLogDocId).collection('notities').add({
+        tekst: beschrijving,
+        type: type,
+        auteur: ADMIN_EMAIL,
+        aangemaakt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    
+    // Build update object
+    const updateData = {
+        laatstBijgewerkt: firebase.firestore.FieldValue.serverTimestamp(),
+        heeftMelding: false
+    };
+    
+    if (newFase) {
+        updateData.status = newFase;
+        // Also log the fase change
+        const faseLabel = CRM_FASES.find(f => f.id === newFase);
+        await db.collection('opdrachtgevers').doc(currentLogDocId).collection('notities').add({
+            tekst: 'Fase gewijzigd naar: ' + (faseLabel ? faseLabel.label : newFase),
+            type: 'fase_wijziging',
+            auteur: ADMIN_EMAIL,
+            aangemaakt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+    }
+    
+    if (followupDate) {
+        updateData.followupDate = firebase.firestore.Timestamp.fromDate(new Date(followupDate));
+        updateData.followupActie = followupActie || 'Opvolgen';
+    } else {
+        updateData.followupDate = null;
+        updateData.followupActie = null;
+    }
+    
+    await db.collection('opdrachtgevers').doc(currentLogDocId).update(updateData);
+    
+    btn.disabled = false;
+    btn.textContent = 'Vastleggen';
+    document.getElementById('logInteractieModal').classList.remove('show');
+    
+    loadCrmPipeline();
+}
+
+async function markFollowupDone(docId) {
+    await db.collection('opdrachtgevers').doc(docId).update({
+        followupDate: null,
+        followupActie: null,
+        heeftMelding: false,
+        laatstBijgewerkt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    await db.collection('opdrachtgevers').doc(docId).collection('notities').add({
+        tekst: 'Follow-up als afgerond gemarkeerd',
+        type: 'notitie',
+        auteur: ADMIN_EMAIL,
+        aangemaakt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    loadCrmPipeline();
+}
+
+// Trigger notification for an opdrachtgever (can be called from other panels)
+async function triggerCrmNotification(docId, message) {
+    await db.collection('opdrachtgevers').doc(docId).update({
+        heeftMelding: true,
+        meldingTekst: message || 'Nieuwe activiteit',
+        laatstBijgewerkt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    await db.collection('opdrachtgevers').doc(docId).collection('notities').add({
+        tekst: '🔔 ' + (message || 'Nieuwe activiteit gedetecteerd'),
+        type: 'melding',
+        auteur: 'systeem',
+        aangemaakt: firebase.firestore.FieldValue.serverTimestamp()
+    });
 }
 </script>
 
