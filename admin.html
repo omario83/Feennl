@@ -1215,6 +1215,7 @@ auth.onAuthStateChanged(async (user) => {
         document.getElementById('adminLoginScreen').style.display = 'none';
         document.getElementById('adminApp').classList.add('visible');
         document.getElementById('adminEmail').textContent = user.email;
+        await autoSyncLeads();
         updateBadges();
         loadOgDashboard();
     } else if (user) {
@@ -1694,6 +1695,135 @@ async function updateBadges() {
         }
         document.getElementById('reactiesBadge').textContent = reactieCount;
     } catch(e) { console.error('Badge update mislukt:', e); }
+}
+
+// ===== AUTO-SYNC LEADS =====
+// Syncs vacature-aanvragen, tool-gebruik (met email), en contact-berichten
+// automatisch als lead in de opdrachtgevers pipeline
+async function autoSyncLeads() {
+    try {
+        const [ogSnap, aanvSnap, toolSnap, contactSnap] = await Promise.all([
+            db.collection('opdrachtgevers').get(),
+            db.collection('vacature-aanvragen').get(),
+            db.collection('tool-gebruik').get(),
+            db.collection('contact-berichten').get()
+        ]);
+
+        // Build set of existing bronId's to avoid duplicates
+        const bestaandeBronIds = new Set();
+        const bestaandeEmails = new Set();
+        ogSnap.docs.forEach(d => {
+            const data = d.data();
+            if (data.bronId) bestaandeBronIds.add(data.bronId);
+            if (data.email) bestaandeEmails.add(data.email.toLowerCase());
+        });
+
+        let aangemaakt = 0;
+
+        // 1. Vacature-aanvragen → lead
+        for (const doc of aanvSnap.docs) {
+            if (bestaandeBronIds.has(doc.id)) continue;
+            const d = doc.data();
+            if (d.email && bestaandeEmails.has(d.email.toLowerCase())) continue;
+
+            const ogRef = await db.collection('opdrachtgevers').add({
+                bedrijf: d.bedrijf || '',
+                contactpersoon: d.contactpersoon || '',
+                email: d.email || '',
+                telefoon: d.telefoon || '',
+                bron: 'aanvraag',
+                bronId: doc.id,
+                status: 'lead',
+                aangemaakt: d.aangemaakt || firebase.firestore.FieldValue.serverTimestamp(),
+                laatstBijgewerkt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            let notitie = 'Automatisch aangemaakt vanuit vacature-aanvraag.';
+            if (d.functie) notitie += '\nGezochte functie: ' + d.functie;
+            if (d.aantal) notitie += '\nAantal professionals: ' + d.aantal;
+            if (d.toelichting) notitie += '\nToelichting: ' + d.toelichting;
+            await ogRef.collection('notities').add({
+                tekst: notitie,
+                type: 'melding',
+                auteur: 'systeem',
+                aangemaakt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            if (d.email) bestaandeEmails.add(d.email.toLowerCase());
+            bestaandeBronIds.add(doc.id);
+            aangemaakt++;
+        }
+
+        // 2. Tool-gebruik (met email) → lead
+        for (const doc of toolSnap.docs) {
+            const d = doc.data();
+            if (!d.email) continue;
+            if (bestaandeBronIds.has(doc.id)) continue;
+            if (bestaandeEmails.has(d.email.toLowerCase())) continue;
+
+            const ogRef = await db.collection('opdrachtgevers').add({
+                bedrijf: '',
+                contactpersoon: '',
+                email: d.email,
+                telefoon: '',
+                bron: 'tool',
+                bronId: doc.id,
+                status: 'lead',
+                aangemaakt: d.aangemaakt || firebase.firestore.FieldValue.serverTimestamp(),
+                laatstBijgewerkt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            let notitie = 'Automatisch aangemaakt vanuit ' + (d.type || 'tool') + '-gebruik.';
+            if (d.type === 'rekentool') {
+                notitie += '\nFunctie: ' + (d.functie || '—') + ', ' + (d.medewerkers || 0) + ' medewerkers, besparing €' + (d.besparingPerMaand || 0).toFixed(2) + '/mnd.';
+            } else if (d.type === 'checklist') {
+                notitie += '\nScore: ' + (d.score || 0) + '/' + (d.maxScore || 15) + ', Fase: ' + (d.faseTitel || '—') + '.';
+            }
+            await ogRef.collection('notities').add({
+                tekst: notitie,
+                type: 'melding',
+                auteur: 'systeem',
+                aangemaakt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            bestaandeEmails.add(d.email.toLowerCase());
+            bestaandeBronIds.add(doc.id);
+            aangemaakt++;
+        }
+
+        // 3. Contact-berichten → lead
+        for (const doc of contactSnap.docs) {
+            if (bestaandeBronIds.has(doc.id)) continue;
+            const d = doc.data();
+            if (d.email && bestaandeEmails.has(d.email.toLowerCase())) continue;
+
+            const ogRef = await db.collection('opdrachtgevers').add({
+                bedrijf: '',
+                contactpersoon: d.naam || '',
+                email: d.email || '',
+                telefoon: d.telefoon || '',
+                bron: 'contact',
+                bronId: doc.id,
+                status: 'lead',
+                aangemaakt: d.aangemaakt || firebase.firestore.FieldValue.serverTimestamp(),
+                laatstBijgewerkt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            let notitie = 'Automatisch aangemaakt vanuit contactformulier.';
+            if (d.onderwerp) notitie += '\nOnderwerp: ' + d.onderwerp;
+            if (d.bericht) notitie += '\nBericht: ' + d.bericht;
+            await ogRef.collection('notities').add({
+                tekst: notitie,
+                type: 'melding',
+                auteur: 'systeem',
+                aangemaakt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            if (d.email) bestaandeEmails.add(d.email.toLowerCase());
+            bestaandeBronIds.add(doc.id);
+            aangemaakt++;
+        }
+
+        if (aangemaakt > 0) {
+            console.log('Auto-sync: ' + aangemaakt + ' nieuwe leads aangemaakt');
+        }
+    } catch(e) {
+        console.error('Auto-sync leads mislukt:', e);
+    }
 }
 
 // ===== OPDRACHTGEVERS DASHBOARD =====
