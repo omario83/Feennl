@@ -775,6 +775,7 @@ html { overflow-x: hidden; max-width: 100vw; }
                     <h3 style="margin:0;">📂 Recente vacatures</h3>
                     <div style="display:flex;gap:8px;">
                         <button class="btn-seed" id="seedBtn" onclick="seedDemoVacatures()">🌱 Demo vacatures</button>
+                        <button class="btn-seed" onclick="seedZzpOpdrachten()" style="background:#e0f2f1;color:#00695c;">📋 ZZP opdrachten</button>
                         <button class="btn-sm" onclick="showNewVacatureModal()" style="background:var(--accent);color:var(--navy);font-weight:700;border:none;padding:8px 16px;border-radius:8px;">+ Nieuwe vacature</button>
                     </div>
                 </div>
@@ -1671,6 +1672,213 @@ async function seedDemoVacatures() {
         }
         btn.textContent = 'Fout — probeer opnieuw';
         btn.disabled = false;
+    }
+}
+
+// ===== SEED ZZP OPDRACHTEN (eenmalig) =====
+async function seedZzpOpdrachten() {
+    const zzpVacs = [
+        {
+            id: 'zzp-interim-assistent-accountant-gelderland',
+            functie: 'Zelfstandig Interim Assistent Accountant',
+            bedrijf: 'Vertrouwelijk',
+            locatie: 'Omgeving Gelderland',
+            dienstverband: 'ZZP / Freelance',
+            uren: 'Fulltime',
+            ervaring: 'Medior',
+            duur: '6-12 maanden',
+            salaris: '€45 - €65 /uur',
+            badge: 'new', badgeText: 'Nieuw',
+            omschrijving: 'Voor een gerenommeerd accountantskantoor in de regio Gelderland zijn wij op zoek naar een zelfstandig interim assistent accountant. Je ondersteunt bij wettelijke controles en samenstelopdrachten voor MKB-klanten. Een afwisselende opdracht waarbij je direct aan de slag gaat met een eigen portefeuille dossiers. Ideaal voor een ervaren professional die zelfstandig kan werken en waarde toevoegt vanaf dag één.',
+            werkzaamheden: [
+                'Uitvoeren van controlewerkzaamheden bij MKB-cliënten',
+                'Samenstellen van jaarrekeningen conform Dutch GAAP',
+                'Opstellen en beoordelen van consolidaties',
+                'Afhandelen van interimcontroles en eindejaarscontroles',
+                'Opstellen van managementletters en boardrapportages',
+                'Onderhouden van contact met cliënten en sparren over bevindingen',
+                'Begeleiden van junior medewerkers op dossiers'
+            ],
+            vereisten: [
+                'HBO/WO Accountancy afgerond',
+                'Minimaal 3 jaar ervaring in de accountancypraktijk',
+                'Ervaring met zowel controle- als samenstelopdrachten',
+                'Kennis van Caseware, Audittool of vergelijkbaar',
+                'Ingeschreven bij de KvK als zelfstandige',
+                'In bezit van een geldige VOG',
+                'Zelfstandig, nauwkeurig en communicatief sterk'
+            ],
+            wensen: [
+                'AA- of RA-titel (of in afrondende fase)',
+                'Ervaring met meerdere branches (handel, zorg, bouw)',
+                'Beschikbaar voor minimaal 32 uur per week'
+            ],
+            aanbod: [
+                'Uurtarief €45 - €65 (afhankelijk van ervaring en kwalificaties)',
+                'Opdracht van 6-12 maanden met mogelijkheid tot verlenging',
+                'Flexibele inzet (32-40 uur per week)',
+                'Zelfstandig werken met eigen verantwoordelijkheid',
+                'Werkplek op kantoor in de regio Gelderland',
+                'Directe start mogelijk',
+                'Professioneel en collegiaal team'
+            ]
+        },
+        {
+            id: 'zzp-interim-controller-utrecht',
+            functie: 'Zelfstandig Interim Controller',
+            bedrijf: 'Vertrouwelijk',
+            locatie: 'Omgeving Utrecht',
+            dienstverband: 'ZZP / Freelance',
+            uren: 'Fulltime',
+            ervaring: 'Senior',
+            duur: '6-12 maanden',
+            salaris: '€70 - €95 /uur',
+            badge: 'new', badgeText: 'Nieuw',
+            omschrijving: 'Een groeiende organisatie in de regio Utrecht zoekt een ervaren zelfstandig interim controller. Je wordt verantwoordelijk voor de financiële rapportages, maandafsluitingen en het verbeteren van de financiële processen. Je rapporteert direct aan de CFO en hebt een sleutelrol in de professionalisering van de financiële functie. Een uitdagende opdracht voor een hands-on controller met strategisch inzicht.',
+            werkzaamheden: [
+                'Verantwoordelijk voor de maand-, kwartaal- en jaarafsluitingen',
+                'Opstellen van financiële rapportages en managementinformatie',
+                'Budgettering, forecasting en rolling forecasts',
+                'Analyseren van afwijkingen en adviseren van het management',
+                'Verbeteren en optimaliseren van financiële processen en interne controls',
+                'Aansturen van de financiële administratie',
+                'Samenwerken met de externe accountant bij de jaarrekeningcontrole',
+                'Implementeren van KPI-dashboards en business intelligence'
+            ],
+            vereisten: [
+                'WO Bedrijfseconomie, Finance of Accountancy',
+                'Minimaal 5 jaar ervaring als (financial) controller',
+                'Sterke kennis van IFRS en/of Dutch GAAP',
+                'Ervaring met ERP-systemen (SAP, Exact, Oracle of vergelijkbaar)',
+                'Uitstekende Excel- en data-analysevaardigheden',
+                'Zelfstandig, proactief en hands-on mentaliteit',
+                'Ingeschreven bij de KvK als zelfstandige'
+            ],
+            wensen: [
+                'RC-titel of vergelijkbare kwalificatie',
+                'Ervaring met Power BI of Tableau',
+                'Ervaring in een vergelijkbare sector (technologie, dienstverlening of industrie)',
+                'Beschikbaar voor minimaal 36 uur per week'
+            ],
+            aanbod: [
+                'Uurtarief €70 - €95 (afhankelijk van ervaring en kwalificaties)',
+                'Opdracht van 6-12 maanden met optie tot verlenging',
+                'Flexibele werktijden en mogelijkheid om deels remote te werken',
+                'Directe start mogelijk',
+                'Werkplek op kantoor in de regio Utrecht',
+                'Strategische en impactvolle rol binnen de organisatie',
+                'Professionele en ambitieuze werkomgeving'
+            ]
+        },
+        {
+            id: 'zzp-interim-controller-gelderland',
+            functie: 'Zelfstandig Interim Controller',
+            bedrijf: 'Vertrouwelijk',
+            locatie: 'Omgeving Gelderland',
+            dienstverband: 'ZZP / Freelance',
+            uren: 'Fulltime',
+            ervaring: 'Senior',
+            duur: '6-12 maanden',
+            salaris: '€70 - €95 /uur',
+            badge: 'new', badgeText: 'Nieuw',
+            omschrijving: 'Voor een middelgrote onderneming in de regio Gelderland zoeken wij een zelfstandig interim controller die de financiële afdeling tijdelijk komt versterken. Je neemt de volledige controlling-functie over en zorgt voor betrouwbare financiële informatie richting directie en stakeholders. Een veelzijdige opdracht waarbij je impact maakt op de financiële sturing van de organisatie.',
+            werkzaamheden: [
+                'Volledige verantwoordelijkheid voor de controlling-functie',
+                'Opstellen van maand- en kwartaalrapportages',
+                'Uitvoeren van financiële analyses en business cases',
+                'Budgettering en forecasting in samenwerking met het management',
+                'Bewaken van de interne beheersing en het verbeteren van processen',
+                'Verzorgen van de consolidatie bij meerdere entiteiten',
+                'Contact onderhouden met de externe accountant en belastingadviseur',
+                'Adviseren van de directie over financiële vraagstukken'
+            ],
+            vereisten: [
+                'WO Bedrijfseconomie, Accountancy of Finance',
+                'Minimaal 5 jaar ervaring in een vergelijkbare controlling-functie',
+                'Ervaring met maand- en jaarafsluitingen',
+                'Goede kennis van ERP-systemen (Exact, SAP of vergelijkbaar)',
+                'Sterke analytische en communicatieve vaardigheden',
+                'Hands-on en resultaatgericht',
+                'Ingeschreven bij de KvK als zelfstandige'
+            ],
+            wensen: [
+                'RC-titel of in opleiding',
+                'Ervaring met consolidaties en intercompany-transacties',
+                'Kennis van IFRS',
+                'Ervaring in de maakindustrie of logistiek'
+            ],
+            aanbod: [
+                'Uurtarief €70 - €95 (afhankelijk van ervaring en kwalificaties)',
+                'Opdracht van 6-12 maanden met mogelijkheid tot verlenging',
+                'Fulltime inzet (36-40 uur per week)',
+                'Directe start mogelijk',
+                'Werkplek op kantoor in de regio Gelderland',
+                'Zelfstandige en verantwoordelijke rol',
+                'Prettige en informele werkomgeving'
+            ]
+        },
+        {
+            id: 'zzp-aa-accountant-amersfoort',
+            functie: 'AA Accountant',
+            bedrijf: 'Vertrouwelijk',
+            locatie: 'Omgeving Amersfoort',
+            dienstverband: 'ZZP / Freelance',
+            uren: 'Fulltime',
+            ervaring: 'Medior',
+            duur: '6-12 maanden',
+            salaris: '€55 - €80 /uur',
+            badge: 'new', badgeText: 'Nieuw',
+            omschrijving: 'Een gerenommeerd MKB-accountantskantoor in de omgeving Amersfoort is op zoek naar een zelfstandig AA Accountant op interim basis. Je krijgt een eigen portefeuille met samenstel- en beoordelingsopdrachten en bent het aanspreekpunt voor een diverse groep MKB-ondernemers. Een mooie opdracht voor een AA\'er die graag zelfstandig werkt en breed inzetbaar is.',
+            werkzaamheden: [
+                'Samenstellen en beoordelen van jaarrekeningen voor MKB-cliënten',
+                'Verzorgen van aangiften vennootschapsbelasting en inkomstenbelasting',
+                'Adviseren van ondernemers op bedrijfseconomisch en fiscaal vlak',
+                'Beoordelen en verbeteren van administratieve processen',
+                'Opstellen van tussentijdse rapportages en prognoses',
+                'Onderhouden van cliëntrelaties en fungeren als vertrouwd adviseur',
+                'Signaleren van fiscale kansen en risico\'s'
+            ],
+            vereisten: [
+                'AA-titel (afgerond en ingeschreven in het register)',
+                'Minimaal 3 jaar ervaring in de MKB-accountancypraktijk',
+                'Ervaring met samenstel- en beoordelingsopdrachten',
+                'Goede kennis van fiscale wet- en regelgeving',
+                'Ervaring met Exact Online, Twinfield, Unit4 of vergelijkbaar',
+                'Zelfstandig, klantgericht en communicatief vaardig',
+                'Ingeschreven bij de KvK als zelfstandige'
+            ],
+            wensen: [
+                'PE-punten op orde en actueel',
+                'Ervaring met diverse branches (horeca, retail, bouw, zorg)',
+                'Kennis van salarisadministratie',
+                'Beschikbaar voor minimaal 32 uur per week'
+            ],
+            aanbod: [
+                'Uurtarief €55 - €80 (afhankelijk van ervaring en kwalificaties)',
+                'Opdracht van 6-12 maanden met mogelijkheid tot verlenging',
+                'Eigen portefeuille met diverse MKB-cliënten',
+                'Flexibele werktijden en mogelijkheid om deels op afstand te werken',
+                'Directe start mogelijk',
+                'Werkplek op kantoor in de omgeving Amersfoort',
+                'Collegiale en professionele werkomgeving',
+                'Goede bereikbaarheid met OV en auto'
+            ]
+        }
+    ];
+
+    try {
+        const batch = db.batch();
+        for (const v of zzpVacs) {
+            const ref = db.collection('vacatures').doc(v.id);
+            const { id, ...data } = v;
+            batch.set(ref, { ...data, actief: true, geplaatst: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true });
+        }
+        await batch.commit();
+        console.log('✓ 4 ZZP-opdrachten aangemaakt!');
+        return true;
+    } catch(e) {
+        console.error('ZZP seed mislukt:', e);
+        return false;
     }
 }
 
