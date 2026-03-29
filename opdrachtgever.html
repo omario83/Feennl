@@ -342,7 +342,7 @@
                 <div class="slide-bg" style="background-image:url('https://images.unsplash.com/photo-1553028826-f4804a6dba3b?w=1400&q=80&fit=crop')"></div>
                 <div class="slide-content">
                     <h3>100% de laagste fee.<br>Gegarandeerd.</h3>
-                    <p>Waar anderen 15-20% rekenen, betaalt u bij Feen slechts 6%. Dat bespaart duizenden euro's per maand — zonder concessies aan kwaliteit.</p>
+                    <p>Waar anderen 15-20% rekenen, betaalt u bij Feen vanaf 8% bemiddelingsfee. Dat bespaart duizenden euro's per maand — zonder concessies aan kwaliteit.</p>
                     <a href="#" class="slide-btn" onclick="showPanel('rekentool'); return false;">Bespaar nu met Feen &rarr;</a>
                 </div>
             </div>
@@ -416,7 +416,7 @@
                     <div class="result-comparison">
                         <p style="margin-bottom:6px">Bij een gemiddelde bemiddelaar (15-20%) betaalt u:</p>
                         <div class="savings" id="resultComparison" style="color:#c0392b"></div>
-                        <p style="margin-top:14px;margin-bottom:6px">Bij Feen (6%) betaalt u:</p>
+                        <p style="margin-top:14px;margin-bottom:6px">Bij Feen (vanaf 8%) betaalt u:</p>
                         <div class="savings" id="resultAmount" style="color:#1a5e1a"></div>
                     </div>
                 </div>
@@ -737,7 +737,7 @@ function berekenKosten() {
     var uren = parseInt(document.getElementById('calc-uren').value);
     if (!functie || !medewerkers || !uurloon || !uren) { alert('Vul alle velden in.'); return; }
     var total = medewerkers * uurloon * uren;
-    var feen = total * 0.06, markt = total * 0.175, save = markt - feen;
+    var feen = total * 0.08, markt = total * 0.175, save = markt - feen;
     document.getElementById('resultSavings').textContent = '€ ' + save.toLocaleString('nl-NL', {minimumFractionDigits:2,maximumFractionDigits:2}) + ' per maand';
     document.getElementById('resultDetail').textContent = medewerkers + 'x ' + functie + ' · ' + uren + ' uur · €' + uurloon + '/uur';
     document.getElementById('resultComparison').textContent = '€ ' + markt.toLocaleString('nl-NL', {minimumFractionDigits:2,maximumFractionDigits:2}) + ' per maand';
