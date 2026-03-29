@@ -880,6 +880,7 @@ html { overflow-x: hidden; max-width: 100vw; }
                 <h2>🚀 CRM Pipeline</h2>
                 <div style="display:flex;gap:8px;align-items:center;">
                     <span class="count" id="crmTotalCount"></span>
+                    <button class="btn-sm" onclick="document.getElementById('linkedinImportModal').classList.add('show')" style="background:#1565c0;color:white;font-weight:700;border:none;padding:10px 20px;border-radius:8px;">🔗 LinkedIn import</button>
                     <button class="btn-sm" onclick="showNewOpdrachtgeverModal()" style="background:var(--accent);color:var(--navy);font-weight:700;border:none;padding:10px 20px;border-radius:8px;">+ Nieuwe lead</button>
                 </div>
             </div>
@@ -950,6 +951,7 @@ html { overflow-x: hidden; max-width: 100vw; }
                 <h2>🏢 Opdrachtgevers</h2>
                 <div style="display:flex;gap:8px;align-items:center;">
                     <span class="count" id="opdrachtgeversCount"></span>
+                    <button class="btn-sm" onclick="document.getElementById('linkedinImportModal').classList.add('show')" style="background:#1565c0;color:white;font-weight:700;border:none;padding:10px 20px;border-radius:8px;">🔗 LinkedIn import</button>
                     <button class="btn-sm" onclick="showNewOpdrachtgeverModal()" style="background:var(--accent);color:var(--navy);font-weight:700;border:none;padding:10px 20px;border-radius:8px;">+ Nieuwe opdrachtgever</button>
                 </div>
             </div>
@@ -1194,6 +1196,25 @@ html { overflow-x: hidden; max-width: 100vw; }
             </div>
             <button type="submit" id="og-submit" style="margin-top:16px;width:100%;padding:14px;background:var(--accent);color:var(--navy);border:none;border-radius:8px;font-size:1rem;font-weight:700;font-family:inherit;cursor:pointer;">Opdrachtgever aanmaken</button>
         </form>
+    </div>
+</div>
+
+<!-- LINKEDIN IMPORT MODAL -->
+<div class="modal-overlay" id="linkedinImportModal">
+    <div class="modal" style="max-width:640px;">
+        <button class="modal-close" onclick="document.getElementById('linkedinImportModal').classList.remove('show')">&times;</button>
+        <h3>🔗 LinkedIn Leads Importeren</h3>
+        <p style="font-size:0.88rem;color:#666;margin-top:8px;">Plak hieronder de gegevens van LinkedIn profielen. Eén lead per regel, gescheiden door komma's of tabs.</p>
+        <div style="margin-top:12px;padding:12px;background:#f5f5f5;border-radius:8px;font-size:0.82rem;color:#555;">
+            <strong>Format per regel:</strong> Bedrijfsnaam, Contactpersoon, Email, Telefoon, Notitie<br>
+            <em>Voorbeeld: AWL-Techniek, Jan de Vries, info@awl.nl, 0341-411811, Gevonden via LinkedIn</em><br><br>
+            <strong>Tip:</strong> Je kunt ook alleen bedrijfsnaam invullen. Lege velden kun je overslaan met komma's.
+        </div>
+        <textarea id="linkedinImportData" rows="8" placeholder="Bedrijf1, Contact1, email1@test.nl, 06-12345678, Notitie1&#10;Bedrijf2, Contact2, email2@test.nl, , Gevonden op LinkedIn&#10;Bedrijf3, , , , Alleen bedrijfsnaam" style="width:100%;margin-top:12px;padding:12px;border:1px solid var(--border);border-radius:8px;font-family:monospace;font-size:0.85rem;resize:vertical;"></textarea>
+        <div style="display:flex;gap:12px;margin-top:16px;">
+            <button type="button" onclick="document.getElementById('linkedinImportModal').classList.remove('show')" style="flex:1;padding:12px;border:1.5px solid var(--border);border-radius:8px;background:white;font-family:inherit;font-size:0.88rem;cursor:pointer;">Annuleren</button>
+            <button type="button" id="linkedinImportBtn" onclick="importLinkedInLeads()" style="flex:1;padding:12px;border:none;border-radius:8px;background:#1565c0;color:white;font-weight:700;font-family:inherit;font-size:0.88rem;cursor:pointer;">🔗 Importeren</button>
+        </div>
     </div>
 </div>
 
@@ -2026,12 +2047,107 @@ async function autoSyncLeads() {
             aangemaakt++;
         }
 
+        // 4. Hardcoded LinkedIn leads → lead
+        const linkedinLeads = [
+            { bedrijf: 'Iederzon en Zongenoot', contactpersoon: '', email: 'info@iederzon.nl', telefoon: '020-723 92 93', notitie: 'Bron: LinkedIn. Jonathan Nieuwenhuijzen werkt hier als Interim Controller. Bedrijf verhuurt zonnepanelen aan huurders van woningcorporaties (Ymere/Stadgenoot). Locatie: Amsterdam.' },
+            { bedrijf: 'Kasparov Finance & BI', contactpersoon: 'Jasper van Eck (Managing Director & Founder)', email: 'info@kasparov-financials.nl', telefoon: '+31(0)76 514 57 05', notitie: 'Bron: LinkedIn. Nikki van Oorschot is hier Interim Financial. Detachering & recruitment bureau in finance. Managing Director: Jasper van Eck. Adres: Liesbosstraat 45, 4813 BC Breda.' },
+            { bedrijf: 'Stichting PCPO Capelle-Krimpen', contactpersoon: 'Gerard Toonen (Bestuurder a.i.)', email: 'info@stichtingpcpo.nl', telefoon: '010-4512197', notitie: 'Bron: LinkedIn. Claudia Alards werkt hier als Interim Controller Onderwijs. 9 scholen, primair christelijk onderwijs. Adres: Kanaalweg 67, 2903 LR Capelle aan den IJssel.' },
+            { bedrijf: 'AWL-Techniek', contactpersoon: 'Peter Sikkema (Director of Finance)', email: 'info@awl.nl', telefoon: '+31(0)341 411 811', notitie: 'Bron: LinkedIn. Peter van Leeuwen werkt hier als Group Business Controller. Co-CEOs: Alexander Mulder & Arjen Vos. Director of Finance: Peter Sikkema. Adres: Keplerstraat 5, 3846 CN Harderwijk.' },
+            { bedrijf: 'VB-Airsuspension', contactpersoon: '', email: '', telefoon: '', notitie: 'Bron: LinkedIn. Remco Huisstede RC werkt hier als Interim Corporate Controller. Marktleider luchtvering, 195 medewerkers, HQ Varsseveld.' },
+            { bedrijf: 'Fresenius Kabi Nederland', contactpersoon: '', email: '', telefoon: '', notitie: 'Bron: LinkedIn. Marloes Vos werkt hier als Interim Controller (via Finanxe). Farma/medtech, Beilen, Drenthe.' }
+        ];
+
+        const bestaandeBedrijven = new Set(ogSnap.docs.map(d => (d.data().bedrijf || '').toLowerCase()));
+        for (const li of linkedinLeads) {
+            if (bestaandeBedrijven.has(li.bedrijf.toLowerCase())) continue;
+            if (li.email && bestaandeEmails.has(li.email.toLowerCase())) continue;
+            const ogRef = await db.collection('opdrachtgevers').add({
+                bedrijf: li.bedrijf, contactpersoon: li.contactpersoon,
+                email: li.email, telefoon: li.telefoon,
+                bron: 'linkedin', bronId: '',
+                status: 'lead',
+                aangemaakt: firebase.firestore.FieldValue.serverTimestamp(),
+                laatstBijgewerkt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            if (li.notitie) {
+                await ogRef.collection('notities').add({ tekst: li.notitie, type: 'melding', auteur: 'systeem', aangemaakt: firebase.firestore.FieldValue.serverTimestamp() });
+            }
+            if (li.email) bestaandeEmails.add(li.email.toLowerCase());
+            bestaandeBedrijven.add(li.bedrijf.toLowerCase());
+            aangemaakt++;
+        }
+
         if (aangemaakt > 0) {
-            console.log('Auto-sync: ' + aangemaakt + ' nieuwe leads aangemaakt');
+            console.log('Auto-sync: ' + aangemaakt + ' nieuwe leads aangemaakt (incl. LinkedIn)');
         }
     } catch(e) {
         console.error('Auto-sync leads mislukt:', e);
     }
+}
+
+// ===== LINKEDIN IMPORT =====
+async function importLinkedInLeads() {
+    const btn = document.getElementById('linkedinImportBtn');
+    const raw = document.getElementById('linkedinImportData').value.trim();
+    if (!raw) { alert('Plak eerst leads in het tekstveld.'); return; }
+
+    const lines = raw.split('\n').filter(l => l.trim());
+    if (lines.length === 0) { alert('Geen geldige regels gevonden.'); return; }
+
+    btn.disabled = true; btn.textContent = 'Importeren...';
+
+    let aangemaakt = 0;
+    let overgeslagen = 0;
+    try {
+        const existing = await db.collection('opdrachtgevers').get();
+        const bestaandeBedrijven = new Set(existing.docs.map(d => (d.data().bedrijf || '').toLowerCase()));
+        const bestaandeEmails = new Set(existing.docs.map(d => (d.data().email || '').toLowerCase()).filter(e => e));
+
+        for (const line of lines) {
+            const parts = line.includes('\t') ? line.split('\t') : line.split(',');
+            const bedrijf = (parts[0] || '').trim();
+            const contact = (parts[1] || '').trim();
+            const email = (parts[2] || '').trim();
+            const telefoon = (parts[3] || '').trim();
+            const notitie = (parts[4] || '').trim();
+
+            if (!bedrijf) continue;
+            if (bestaandeBedrijven.has(bedrijf.toLowerCase())) { overgeslagen++; continue; }
+            if (email && bestaandeEmails.has(email.toLowerCase())) { overgeslagen++; continue; }
+
+            const ogRef = await db.collection('opdrachtgevers').add({
+                bedrijf: bedrijf,
+                contactpersoon: contact,
+                email: email,
+                telefoon: telefoon,
+                bron: 'linkedin',
+                bronId: '',
+                status: 'lead',
+                aangemaakt: firebase.firestore.FieldValue.serverTimestamp(),
+                laatstBijgewerkt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            const notitieTekst = notitie || 'Ge\u00EFmporteerd via LinkedIn import.';
+            await ogRef.collection('notities').add({
+                tekst: notitieTekst,
+                auteur: ADMIN_EMAIL,
+                aangemaakt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            if (email) bestaandeEmails.add(email.toLowerCase());
+            bestaandeBedrijven.add(bedrijf.toLowerCase());
+            aangemaakt++;
+        }
+
+        alert('\u2713 ' + aangemaakt + ' leads ge\u00EFmporteerd! ' + overgeslagen + ' overgeslagen (bestonden al).');
+        document.getElementById('linkedinImportData').value = '';
+        document.getElementById('linkedinImportModal').classList.remove('show');
+        loadOpdrachtgevers();
+        loadOgDashboard();
+        updateBadges();
+    } catch(e) {
+        console.error('LinkedIn import mislukt:', e);
+        alert('Fout bij importeren: ' + e.message);
+    }
+    btn.disabled = false; btn.textContent = '\uD83D\uDD17 Importeren';
 }
 
 // ===== OPDRACHTGEVERS DASHBOARD =====
